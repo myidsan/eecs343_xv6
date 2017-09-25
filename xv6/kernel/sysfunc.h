@@ -24,4 +24,5 @@ int sys_wait(void);
 int sys_write(void);
 int sys_uptime(void);
 
+
 #endif // _SYSFUNC_H_

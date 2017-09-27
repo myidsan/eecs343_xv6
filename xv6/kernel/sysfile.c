@@ -391,8 +391,3 @@ sys_pipe(void)
   return 0;
 }
 
-int 
-sys_ps(void)
-{
-  return "ang gimothi";
-}

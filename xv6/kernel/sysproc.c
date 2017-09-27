@@ -5,6 +5,7 @@
 #include "mmu.h"
 #include "proc.h"
 #include "sysfunc.h"
+#include "ProcessInfo.h"
 
 int
 sys_fork(void)
@@ -87,33 +88,11 @@ sys_uptime(void)
   xticks = ticks;
   release(&tickslock);
   return xticks;
-
-// returns number of current processes in the kernel
-int 
-getprocs(struct ProcessInfo processInfoTable[])
-{
-  /*
-  struct proc *p;
-  int count = 0;
-  acquire(&ptable.lock);
-  for (p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
-    if(p->state != UNSED)
-      count++;
-  }  
-  release(&ptable.lock);
-  return count;
- */
-  
-  // Include cases that could be completed
-  // returns -1
-  int count = 0;
-  int i = 0;
-  int len = sizeof(processInfoTable)/sizeof(processInfoTable[0]);
-  for (i = 0; i < len; i++) {
-    // fix UNUSED issue. Currently 0 is the placeholder
-    if (processInfoTable[i].state != 0) count++;
-  }
-  return count;
 }
-
-
+// write int sys_getprocs() it will need to populate getprocs table for all processes.
+int 
+sys_getprocs(void)
+{
+  struct ProcessInfo* proc_info_table 
+  return getprocs(proc_info_table);
+}

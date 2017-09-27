@@ -3,7 +3,7 @@
 #include "user.h"
 
 int main() {
-  int result = getprocs(ptable);
-  printf("%d\n", result);
-  return 0;
+  //int result = getprocs(ptable);
+  printf(1, "hihi\n");
+  exit();
 }

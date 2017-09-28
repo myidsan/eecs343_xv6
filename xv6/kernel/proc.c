@@ -450,6 +450,7 @@ getprocs(struct ProcessInfo* pi)
 {
   int count = 0;
   struct proc * p;
+  (*pi).state = 100;
   //pi = &ptable; 
   
   // implement error checking

@@ -454,7 +454,7 @@ getprocs(struct ProcessInfo* pi)
   
   // implement error checking
   // if so, return -1
-  for (p = ptable.proc; p < ptable.proc[NPROC]; p++) {
+  for (p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
     if (p->state != UNUSED) {
 	    count++;
     }	    

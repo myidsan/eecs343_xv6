@@ -5,6 +5,7 @@
 #include "x86.h"
 #include "proc.h"
 #include "spinlock.h"
+#include "ProcessInfo.h"
 
 struct {
   struct spinlock lock;
@@ -445,14 +446,15 @@ procdump(void)
 
 // Write getprocs(struct ProcessInfo processInfoTable[]); getprocs need to count the number
 int 
-getprocs(void)
+getprocs(struct ProcessInfo* pi)
 {
   int count = 0;
   struct proc * p;
+  //pi = &ptable; 
   
   // implement error checking
   // if so, return -1
-  for (p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
+  for (p = ptable.proc; p < ptable.proc[NPROC]; p++) {
     if (p->state != UNUSED) {
 	    count++;
     }	    

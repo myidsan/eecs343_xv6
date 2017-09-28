@@ -92,7 +92,12 @@ sys_uptime(void)
 // write int sys_getprocs() it will need to populate getprocs table for all processes.
 int 
 sys_getprocs(void)
-{
-  struct ProcessInfo* proc_info_table 
+{ 
+  struct ProcessInfo* proc_info_table;
+  //struct ProcessInfo head;
+  //proc_info_table = &head;
+  if (argptr (1, (void*)&proc_info_table, sizeof(proc_info_table)) < 0) {
+    return -1;
+  }
   return getprocs(proc_info_table);
-}
+} 

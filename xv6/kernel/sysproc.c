@@ -96,5 +96,9 @@ sys_getprocs(void)
   struct ProcessInfo* proc_info_table;
   struct ProcessInfo head;
   proc_info_table = &head;
-  return 3;
+  int result = getprocs(proc_info_table);
+  if (result == 3){
+    return result;
+  }
+  return 4;
 } 

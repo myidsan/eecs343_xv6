@@ -9,6 +9,7 @@ int main() {
   proc_info_table = &head;
 
   int result = getprocs(proc_info_table);
+  //printf(1, "%x\n", &head);
   printf(1, "%d\n", result);
   exit();
 }

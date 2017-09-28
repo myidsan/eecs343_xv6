@@ -110,7 +110,7 @@ void            userinit(void);
 int             wait(void);
 void            wakeup(void*);
 void            yield(void);
-int  		getprocs(struct ProcessInfo*); 
+int  		getprocs(void); 
 
 // swtch.S
 void            swtch(struct context**, struct context*);

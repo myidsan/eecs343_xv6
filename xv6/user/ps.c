@@ -11,6 +11,7 @@ int main() {
   struct proc * p; 
   p = ptable.proc;
   int result = getprocs(proc_info_table);
+  //printf(1, "%x\n", &head);
   printf(1, "%d\n", result);
   printf("%x\n", p);
   exit();

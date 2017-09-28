@@ -93,5 +93,16 @@ sys_uptime(void)
 int 
 sys_getprocs(struct ProcessInfo *)
 { 
+<<<<<<< HEAD
   return getprocs();
+=======
+  struct ProcessInfo* proc_info_table;
+  struct ProcessInfo head;
+  proc_info_table = &head;
+  int result = getprocs(proc_info_table);
+  if (result == 3){
+    return result;
+  }
+  return 4;
+>>>>>>> 5a06894615bae6b4267115a218b770a090cbffcf
 } 

@@ -445,20 +445,8 @@ procdump(void)
 }
 
 // Write getprocs(struct ProcessInfo processInfoTable[]); getprocs need to count the number
-int 
-getprocs(struct ProcessInfo* pi)
+struct proc*
+getprocs(void)
 {
-  int count = 0;
-  struct proc * p;
-  (*pi).state = 100;
-  //pi = &ptable; 
-  
-  // implement error checking
-  // if so, return -1
-  for (p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
-    if (p->state != UNUSED) {
-	    count++;
-    }	    
-  }  
-  return count;
+  return ptable.proc;
 }

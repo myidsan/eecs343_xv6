@@ -90,14 +90,38 @@ sys_uptime(void)
   return xticks;
 }
 // write int sys_getprocs() it will need to populate getprocs table for all processes.
+extern struct proc * getprocs(void);
 int 
 sys_getprocs(void)
 { 
-  struct ProcessInfo* proc_info_table;
-  //struct ProcessInfo head;
-  //proc_info_table = &head;
-  if (argptr (1, (void*)&proc_info_table, sizeof(proc_info_table)) < 0) {
+  int table_size;
+  char *traverse;
+  char *table_start;
+  struct proc *ptable;
+  
+  if(argint(0, &table_size) < 0) {
     return -1;
   }
-  return getprocs(proc_info_table);
+  if(argptr(1, &table_start, table_size) < 0) {
+    return -1;
+  }
+  
+  traverse = table_start;
+  ptable = getprocs();
+
+  while(table_start + table_size > traverse  && ptable -> state != UNUSED) {
+    *(int *)traverse = ptable -> pid;
+    traverse += 4;
+    *(int *)traverse = ptable -> parent -> pid;
+    traverse += 4;
+    *(int *)traverse = ptable -> state;
+    traverse += 4;
+    *(int *)traverse = ptable -> sz; 
+    traverse += 4;
+    memmove(traverse, ptable -> name, 16);
+    traverse += 16;
+    ptable++;  
+  }
+  
+  return 0;
 } 

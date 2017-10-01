@@ -2,8 +2,12 @@
 #include "stat.h"
 #include "user.h"
 
-int main()
+int main(int argc, char *argv[])
 {
+  if(argc > 1){
+    printf(1, "Error. tag(s) is(are) not supported in this version. Try just ps.\n");
+    exit();
+  }
   enum procstate { UNUSED, EMBRYO, SLEEPING, RUNNABLE, RUNNING, ZOMBIE };
   struct ProcessInfo ptable[65];
   struct ProcessInfo *head;

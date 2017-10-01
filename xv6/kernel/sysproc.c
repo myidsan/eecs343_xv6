@@ -90,7 +90,7 @@ sys_uptime(void)
   return xticks;
 }
 // write int sys_getprocs() it will need to populate getprocs table for all processes.
-extern struct proc * getprocs(void);
+struct proc * getprocs(void);
 int 
 sys_getprocs(void)
 { 

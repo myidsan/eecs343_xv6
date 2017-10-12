@@ -59,7 +59,9 @@ argptr(int n, char **pp, int size)
   
   if(argint(n, &i) < 0)
     return -1;
-  if((uint)i >= proc->sz || (uint)i+size > proc->sz)
+  if((uint)i >= proc->sz || (uint)i + size > proc->sz)
+    return -1;
+  if((uint)i <= PGSIZE)
     return -1;
   *pp = (char*)i;
   return 0;
@@ -78,10 +80,9 @@ argstr(int n, char **pp)
   return fetchstr(proc, addr, pp);
 }
 
-// syscall function declarations moved to sysfunc.h so compiler
-// can catch definitions that don't match
-
-// array of function pointers to handlers for all the syscalls
+// syscall function declarations moved to sysfunc.h so compiler 
+// can catch definitions that don't match 
+// array of function pointers to handlers for all the syscalls 
 static int (*syscalls[])(void) = {
 [SYS_chdir]   sys_chdir,
 [SYS_close]   sys_close,

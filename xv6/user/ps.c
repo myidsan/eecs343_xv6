@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
   int flag;
   
   flag = getprocs(65*sizeof(struct ProcessInfo), &ptable);
-  if( flag != 0){
+  if(flag != 0){
     printf(1, "error getting table");
     exit();
   }

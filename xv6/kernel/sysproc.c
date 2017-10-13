@@ -126,7 +126,7 @@ sys_getprocs(void)
   return 0;
 } 
 
-void* 
+void*
 sys_shmem_access(void)
 {
   int page_number;

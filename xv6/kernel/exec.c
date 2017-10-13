@@ -87,6 +87,10 @@ exec(char *path, char **argv)
   proc->sz = sz;
   proc->tf->eip = elf.entry;  // main
   proc->tf->esp = sp;
+  for(i = 0; i < 4; i++) {
+    proc->shmem_va[i] = NULL;
+  }
+  proc->shmem_cnt = 0;
   switchuvm(proc);
   freevm(oldpgdir);
 

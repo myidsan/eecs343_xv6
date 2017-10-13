@@ -30,3 +30,6 @@ SYSCALL(sbrk)
 SYSCALL(sleep)
 SYSCALL(uptime)
 SYSCALL(getprocs)
+SYSCALL(shmem_access)
+SYSCALL(shmem_count)
+

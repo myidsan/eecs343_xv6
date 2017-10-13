@@ -10,6 +10,10 @@ extern char data[];  // defined in data.S
 
 static pde_t *kpgdir;  // for use in scheduler()
 
+// Share memory information
+int shmem_counter[SHMEM_PAGE_NUMBER]
+void* shmem_addr[SHMEM_PAGE_NUMBER] 
+
 // Allocate one page table for the machine for the kernel address
 // space for scheduler processes.
 void
@@ -292,6 +296,10 @@ freevm(pde_t *pgdir)
       kfree((char*)PTE_ADDR(pgdir[i]));
   }
   kfree((char*)pgdir);
+
+ for(i = 0; i < SHMEM_PGNUM; i++) {
+   if( 
+ } 
 }
 
 // Given a parent process's page table, create a copy
@@ -364,3 +372,19 @@ copyout(pde_t *pgdir, uint va, void *p, uint len)
   }
   return 0;
 }
+
+void* shmem_access(int page_number) {
+  if (page_number < 0 || page_number > 3) 
+    return NULL;
+  if (p->shmem_addr[page_number] == NULL)
+    
+}
+
+int
+shmem_count(int page_number) {
+  if (page_number < 0 || page_number > 3) 
+    return -1;
+
+  return shmem_counter[page_number]
+}
+

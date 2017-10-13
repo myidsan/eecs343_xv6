@@ -9,6 +9,9 @@
 extern char data[];  // defined in data.S
 
 static pde_t *kpgdir;  // for use in scheduler()
+int shmem_counters[4];
+void *shmem_pa[4];
+int OUR_roof = USERTOP;
 
 // Allocate one page table for the machine for the kernel address
 // space for scheduler processes.
@@ -231,7 +234,7 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
   char *mem;
   uint a;
 
-  if(newsz > USERTOP)
+  if(newsz > OUR_roof)
     return 0;
   if(newsz < oldsz)
     return oldsz;
@@ -253,8 +256,8 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
 // Deallocate user pages to bring the process size from oldsz to
 // newsz.  oldsz and newsz need not be page-aligned, nor does newsz
 // need to be less than oldsz.  oldsz can be larger than the actual
-// process size.  Returns the new process size.
-int
+// process size.  Returns the new process size.  
+int 
 deallocuvm(pde_t *pgdir, uint oldsz, uint newsz)
 {
   pte_t *pte;
@@ -286,7 +289,7 @@ freevm(pde_t *pgdir)
 
   if(pgdir == 0)
     panic("freevm: no pgdir");
-  deallocuvm(pgdir, USERTOP, 0);
+  deallocuvm(pgdir, OUR_roof, 0);
   for(i = 0; i < NPDENTRIES; i++){
     if(pgdir[i] & PTE_P)
       kfree((char*)PTE_ADDR(pgdir[i]));
@@ -363,4 +366,37 @@ copyout(pde_t *pgdir, uint va, void *p, uint len)
     va = va0 + PGSIZE;
   }
   return 0;
+}
+
+void* 
+shmem_access(int page_number)
+{
+  // Checked if page_number is valid
+  if( page_number < 0 || page_number > 3 ) {
+    return NULL:
+  }
+  // Checked if it already has access && knows the la that maps to shared pa
+  if( shmem_counters[page_number] > -1 ) {
+    shmem_counters[page_number]++; 
+    return proc->shmem_addresses[page_number];
+  }
+  // Checked if we have enough memory
+  if( proc->sz > OUR_roof ) {
+    return NULL; 
+  } 
+  // Check if that page number has a linked pa 
+  if( shmem_pa[page_number] != NULL ) {
+    return  
+  }
+  OUR_roof = OUR_roof - (PGSIZE * shmem_counts);
+  void * va = OUR_roof;
+  walkpgdir(proc->pgdir, va, 1)
+  
+  
+}
+
+int 
+shmem_count(int page_number)
+{
+  return shmem_counters[page_number];
 }

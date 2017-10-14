@@ -288,7 +288,7 @@ freevm(pde_t *pgdir)
 
   if(pgdir == 0)
     panic("freevm: no pgdir");
-  deallocuvm(pgdir, USERTOP - (proc->shmem_cnt) * PGSIZE, 0);
+  deallocuvm(pgdir, USERTOP - (proc->shmem_cnt + 1) * PGSIZE, 0);
   // deducts global shmem_total_counter
   for(i = 0; i < 4; i++) {
     if(proc->shmem_va[i] != NULL) {

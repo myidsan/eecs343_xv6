@@ -126,14 +126,14 @@ sys_getprocs(void)
   return 0;
 } 
 
-void*
+int
 sys_shmem_access(void)
 {
   int page_number;
   if (argint(0, &page_number) < 0) {
     return NULL;
   }
-  return shmem_access(page_number); 
+  return (int)shmem_access(page_number); 
 }
 
 int

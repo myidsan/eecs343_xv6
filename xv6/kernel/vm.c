@@ -8,8 +8,7 @@
 
 extern char data[];  // defined in data.S
 
-static pde_t *kpgdir;  // for use in scheduler()
-int 
+static pde_t *kpgdir;  // for use in scheduler() 
 int shmem_total_counters[4]; // Stores number of processes using that page
 void *shmem_pa[4]; // Stores pa of the shmem
 
@@ -234,7 +233,7 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
   char *mem;
   uint a;
 
-  if(newsz > USERTOP - (proc->shmem_count + 1) * PGSIZE)
+  if(newsz > USERTOP - (proc->shmem_cnt + 1) * PGSIZE)
     return 0;
   if(newsz < oldsz)
     return oldsz;
@@ -289,15 +288,15 @@ freevm(pde_t *pgdir)
 
   if(pgdir == 0)
     panic("freevm: no pgdir");
-  deallocuvm(pgdir, USERTOP - (proc->shmem_count) * PGSIZE, 0);
+  deallocuvm(pgdir, USERTOP - (proc->shmem_cnt) * PGSIZE, 0);
   // deducts global shmem_total_counter
   for(i = 0; i < 4; i++) {
-    if(p->shmem_va[i] != NULL) {
+    if(proc->shmem_va[i] != NULL) {
       shmem_total_counters[i]--;
-      p->shmem_va[i] = NULL;
+      proc->shmem_va[i] = NULL;
     }
   }
-  p->shmem_count = 0;
+  proc->shmem_cnt = 0;
   for(i = 0; i < NPDENTRIES; i++){
     if(pgdir[i] & PTE_P)
       kfree((char*)PTE_ADDR(pgdir[i]));
@@ -308,7 +307,7 @@ freevm(pde_t *pgdir)
 // Given a parent process's page table, create a copy
 // of it for a child.
 pde_t*
-copyuvm(pde_t *pgdir, uint sz, void* parent_shmem_va, void* child_shmem_va)
+copyuvm(pde_t *pgdir, uint sz, void** parent_shmem_va, void** child_shmem_va) // changed to void** since it is an array of void pointer
 {
   pde_t *d;
   pte_t *pte;
@@ -331,8 +330,8 @@ copyuvm(pde_t *pgdir, uint sz, void* parent_shmem_va, void* child_shmem_va)
   }
   for(i = 0; i < 4; i++) {
     child_shmem_va[i] = parent_shmem_va[i];
-    if(child_shmem_access[i] != NULL) {
-      shmem_total_counter[i]++;
+    if(child_shmem_va[i] != NULL) {
+      shmem_total_counters[i]++;
       if(mappages(d, child_shmem_va[i], PGSIZE, (uint)shmem_pa[i], PTE_W|PTE_U) < 0) {
         goto bad;
       }
@@ -391,13 +390,13 @@ shmem_access(int page_number)
 {
   // Check if page_number is valid
   if( page_number < 0 || page_number > 3 ) {
-    return NULL:
+    return NULL;
   }
   // Check if process already has access to specified shared memory
   if( proc->shmem_va[page_number] != 0 ) {
-    return shmem_va[page_number];
+    return proc->shmem_va[page_number];
   } 
-  void* va = (void*) (USERTOP - (proc->shmem_count + 1) * PGSIZE);
+  void* va = (void*) (USERTOP - (proc->shmem_cnt + 1) * PGSIZE);
   // Check if address space can tolerate one more page
   if( proc->sz >= (uint)va ) {
     return NULL; 
@@ -406,7 +405,7 @@ shmem_access(int page_number)
   if(mappages(proc->pgdir, va, PGSIZE, (uint)shmem_pa[page_number], PTE_W | PTE_U) < 0) {
     return NULL; 
   }
-  proc->shmem_va[page_number] = va
+  proc->shmem_va[page_number] = va;
   proc->shmem_cnt++;
   shmem_total_counters[page_number]++;
   return va;

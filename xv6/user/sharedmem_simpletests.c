@@ -47,7 +47,9 @@ afterRequestingSharedMemory_countReturns1()
 {
   printf(1, "Test: afterRequestingSharedMemory_countReturns1...");
   char* sharedPage = shmem_access(0);
+  printf(1, "\nNow allowed to access page number 0\n");
   int count = shmem_count(0);
+  printf(1, "\nRetrieved the count of current processes writing to shared pages\n");
 
   if(count == 1) {
     testPassed();

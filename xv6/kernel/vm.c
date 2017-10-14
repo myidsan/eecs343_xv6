@@ -288,7 +288,7 @@ freevm(pde_t *pgdir, struct proc* p)
 
   if(pgdir == 0)
     panic("freevm: no pgdir");
-  deallocuvm(pgdir, USERTOP - (proc->shmem_cnt + 1) * PGSIZE, 0);
+  deallocuvm(pgdir, USERTOP - (proc->shmem_cnt) * PGSIZE, 0);
   // deducts global shmem_total_counter
   for(i = 0; i < 4; i++) {
     if(p->shmem_va[i] != NULL) {
@@ -392,28 +392,37 @@ shmem_access(int page_number)
   if( page_number < 0 || page_number > 3 ) {
     return NULL;
   }
+  cprintf("page number valid\n");
   // Check if process already has access to specified shared memory
   if( proc->shmem_va[page_number] != 0 ) {
+    cprintf("process does have access to specified page already\n");
     return proc->shmem_va[page_number];
   } 
+  cprintf("process doesn't have access to specified page\n");
   void* va = (void*) (USERTOP - (proc->shmem_cnt + 1) * PGSIZE);
   // Check if address space can tolerate one more page
   if( proc->sz >= (uint)va ) {
     return NULL; 
   } 
+  cprintf("address space is big enough to have one more page\n");
   // Allocate space in address space, assigning pte, linking va to shmem_pa[page_number] 
   if(mappages(proc->pgdir, va, PGSIZE, (uint)shmem_pa[page_number], PTE_W | PTE_U) == -1) {
     panic("shmem_access");
   }
+  cprintf("linking la to pa done\n");
   proc->shmem_va[page_number] = va;
+  cprintf("assigning accessible pages to local\n");
   proc->shmem_cnt++;
+  cprintf("increased page's shared page count by 1\n");
   shmem_total_counters[page_number]++;
+  cprintf("increased total counter of processes sharing that page\n");
   return va;
 }
 
 int 
 shmem_count(int page_number)
 {
+  cprintf("accessing total counter of processes sharing that page\n");
   return shmem_total_counters[page_number];
 }
 
@@ -421,7 +430,7 @@ void
 shmeminit()
 {
   int i;
-  for(i = 0; i < 4; i++) {
+  for(i = 0; i < 4; ++i) {
     shmem_total_counters[i] = 0;
     if ((shmem_pa[i] = kalloc()) == 0) {
       panic("shmeminit failed");    

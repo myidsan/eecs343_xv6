@@ -139,11 +139,13 @@ sys_shmem_access(void)
 int
 sys_shmem_count(void)
 {
-  int page_number;
+  int page_number = 0;
   if (argint(0, &page_number < 0)) {
     return -1;
   }
-  if(page_number < 0 || page_number > 3)
+  if(page_number < 0 || page_number > 3){
     return -1;
+  }
+  cprintf("Got into syscall. About to call shmem_count from page %d");
   return shmem_count(page_number);
 }

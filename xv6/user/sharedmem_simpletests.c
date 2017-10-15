@@ -47,7 +47,8 @@ afterRequestingSharedMemory_countReturns1()
 {
   printf(1, "Test: afterRequestingSharedMemory_countReturns1...");
   char* sharedPage = shmem_access(0);
-  printf(1, "\nNow allowed to access page number 0\n");
+  printf(1, "\nNow able to access page number 0\n");
+  printf(1, "\nAttempting to get count of processes on page 0\n");
   int count = shmem_count(0);
   printf(1, "\nRetrieved the count of current processes writing to shared pages\n");
 
@@ -126,8 +127,9 @@ whenSharingAPageBetween2Processes_countReturns2()
     // in child
     char* childsSharedPage = shmem_access(0);
     childsSharedPage = childsSharedPage + 0;  // silence unused variable error
-
+    printf(1, "going to get count");
     int count = shmem_count(0);
+    printf(1, "successfully got count!");
     if(count != 2){
       testFailed();
       expectedVersusActualNumeric("'count'", 2, count);
@@ -203,12 +205,12 @@ main(void)
   }
   wait();
   
-  pid = fork();
-  if(pid == 0){
-    afterRequestingSharedMemory_countReturns1();
-    exit();
-  }
-  wait();
+  //pid = fork();
+  //if(pid == 0){
+  //  afterRequestingSharedMemory_countReturns1();
+  //  exit();
+  //}
+  //wait();
 
   pid = fork();
   if(pid == 0){
@@ -224,26 +226,26 @@ main(void)
   }
   wait();
 
-  pid = fork();
-  if(pid == 0){
-    whenProcessExits_SharedPageIsFreed();
-    exit();
-  }
-  wait();
+  //pid = fork();
+  //if(pid == 0){
+  //  whenProcessExits_SharedPageIsFreed();
+  //  exit();
+  //}
+  //wait();
 
-  pid = fork();
-  if(pid == 0){
-    whenProcessExists_countReturns0();
-    exit();
-  }
-  wait();
+  //pid = fork();
+  //if(pid == 0){
+  //  whenProcessExists_countReturns0();
+  //  exit();
+  //}
+  //wait();
 
-  pid = fork();
-  if(pid == 0){
-    beforeRequestingSharedMemory_countReturns0();
-    exit();
-  }
-  wait();
+  //pid = fork();
+  //if(pid == 0){
+  //  beforeRequestingSharedMemory_countReturns0();
+  //  exit();
+  //}
+  //wait();
 
 
   exit();

@@ -235,9 +235,8 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
 
   if(newsz < oldsz)
     return oldsz;
-  if(newsz > USERTOP - ((proc->shmem_cnt + 1) * PGSIZE))
+  if(newsz > USERTOP - proc->shmem_cnt * PGSIZE)
     return 0;
-
   a = PGROUNDUP(oldsz);
   for(; a < newsz; a += PGSIZE){
     mem = kalloc();
@@ -261,6 +260,7 @@ deallocuvm(pde_t *pgdir, uint oldsz, uint newsz)
 {
   pte_t *pte;
   uint a, pa;
+  int i;
 
   if(newsz >= oldsz)
     return oldsz;
@@ -276,20 +276,31 @@ deallocuvm(pde_t *pgdir, uint oldsz, uint newsz)
       *pte = 0;
     }
   }
+  for(i = 0; i < 4; i++) {
+    if (proc->shmem_va[i] != NULL) {
+      shmem_total_counters[i]--;
+    }
+  }
   return newsz;
 }
 
 // Free a page table and all the physical memory pages
 // in the user part.
 void
-freevm(pde_t *pgdir, struct proc* p)
+freevm(pde_t *pgdir, struct proc *p)
 {
   uint i;
-
+  int gone = 0;
+  gone = gone + 0;
   if(pgdir == 0)
     panic("freevm: no pgdir");
-  deallocuvm(pgdir, USERTOP - (proc->shmem_cnt) * PGSIZE, 0);
-  // deducts global shmem_total_counter
+  for(i = 0; i < 4; i++) {
+    if(p->shmem_va[i] != NULL) {
+      shmem_total_counters[i]--;
+      p->shmem_va[i] = NULL;
+    }
+  }
+  deallocuvm(pgdir, USERTOP - (proc->shmem_cnt + 1) * PGSIZE, 0);
   for(i = 0; i < 4; i++) {
     if(p->shmem_va[i] != NULL) {
       shmem_total_counters[i]--;
@@ -307,7 +318,7 @@ freevm(pde_t *pgdir, struct proc* p)
 // Given a parent process's page table, create a copy
 // of it for a child.
 pde_t*
-copyuvm(pde_t *pgdir, uint sz, void** parent_shmem_va, void** child_shmem_va)
+copyuvm(pde_t *pgdir, uint sz, struct proc *p)
 {
   pde_t *d;
   pte_t *pte;
@@ -329,14 +340,16 @@ copyuvm(pde_t *pgdir, uint sz, void** parent_shmem_va, void** child_shmem_va)
       goto bad;
   }
   for(i = 0; i < 4; i++) {
-    child_shmem_va[i] = parent_shmem_va[i];
-    if(child_shmem_va[i] != NULL) {
+    p->shmem_va[i] = proc->shmem_va[i];
+    if(p->shmem_va[i] != NULL) {
       shmem_total_counters[i]++;
-      if(mappages(d, child_shmem_va[i], PGSIZE, (uint)shmem_pa[i], PTE_W|PTE_U) < 0) {
+      if(mappages(d, p->shmem_va[i], PGSIZE, (uint)shmem_pa[i], PTE_W|PTE_U) < 0) {
         goto bad;
       }
-    }   
+    }
   }
+  p->shmem_cnt = proc->shmem_cnt;
+  
   return d;
 
 bad:
@@ -406,7 +419,7 @@ shmem_access(int page_number)
   } 
   cprintf("address space is big enough to have one more page\n");
   // Allocate space in address space, assigning pte, linking va to shmem_pa[page_number] 
-  if(mappages(proc->pgdir, va, PGSIZE, (uint)shmem_pa[page_number], PTE_W | PTE_U) == -1) {
+  if(mappages(proc->pgdir, va, PGSIZE, PADDR((uint)shmem_pa[page_number]), PTE_W | PTE_U) == -1) {
     panic("shmem_access");
   }
   cprintf("linking la to pa done\n");
@@ -435,5 +448,6 @@ shmeminit()
     if ((shmem_pa[i] = kalloc()) == 0) {
       panic("shmeminit failed");    
     }
+    cprintf("%x\n", (unsigned int)shmem_pa[i]);
   }
 }

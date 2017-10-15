@@ -165,7 +165,7 @@ int             deallocuvm(pde_t*, uint, uint);
 void            freevm(pde_t*, struct proc*);
 void            inituvm(pde_t*, char*, uint);
 int             loaduvm(pde_t*, char*, struct inode*, uint, uint);
-pde_t*          copyuvm(pde_t*, uint, void**, void**);
+pde_t*          copyuvm(pde_t*, uint, struct proc*);
 void            switchuvm(struct proc*);
 void            switchkvm(void);
 int             copyout(pde_t*, uint, void*, uint);

@@ -131,7 +131,7 @@ sys_shmem_access(void)
 {
   int page_number;
   if (argint(0, &page_number) < 0) {
-    return NULL;
+    return -1;
   }
   return (int)shmem_access(page_number); 
 }
@@ -143,5 +143,7 @@ sys_shmem_count(void)
   if (argint(0, &page_number < 0)) {
     return -1;
   }
+  if(page_number < 0 || page_number > 3)
+    return -1;
   return shmem_count(page_number);
 }

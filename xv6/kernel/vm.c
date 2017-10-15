@@ -8,7 +8,7 @@
 
 extern char data[];  // defined in data.S
 
-static pde_t *kpgdir;  // for use in scheduler() 
+static pde_t *kpgdir;  // for use in scheduler()
 int shmem_total_counters[4]; // Stores number of processes using that page
 void *shmem_pa[4]; // Stores pa of the shmem
 
@@ -233,10 +233,15 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
   char *mem;
   uint a;
 
+<<<<<<< HEAD
   if(newsz > USERTOP - (proc->shmem_cnt + 1) * PGSIZE)
     return 0;
+=======
+>>>>>>> 429fcff7d5c6a981893e193992f7f83ed21f467e
   if(newsz < oldsz)
     return oldsz;
+  if(newsz > USERTOP - ((proc->shmem_cnt + 1) * PGSIZE))
+    return 0;
 
   a = PGROUNDUP(oldsz);
   for(; a < newsz; a += PGSIZE){
@@ -282,7 +287,7 @@ deallocuvm(pde_t *pgdir, uint oldsz, uint newsz)
 // Free a page table and all the physical memory pages
 // in the user part.
 void
-freevm(pde_t *pgdir)
+freevm(pde_t *pgdir, struct proc* p)
 {
   uint i;
 
@@ -296,7 +301,7 @@ freevm(pde_t *pgdir)
       proc->shmem_va[i] = NULL;
     }
   }
-  proc->shmem_cnt = 0;
+  p->shmem_cnt = 0;
   for(i = 0; i < NPDENTRIES; i++){
     if(pgdir[i] & PTE_P)
       kfree((char*)PTE_ADDR(pgdir[i]));
@@ -307,7 +312,7 @@ freevm(pde_t *pgdir)
 // Given a parent process's page table, create a copy
 // of it for a child.
 pde_t*
-copyuvm(pde_t *pgdir, uint sz, void** parent_shmem_va, void** child_shmem_va) // changed to void** since it is an array of void pointer
+copyuvm(pde_t *pgdir, uint sz, void** parent_shmem_va, void** child_shmem_va)
 {
   pde_t *d;
   pte_t *pte;
@@ -340,7 +345,7 @@ copyuvm(pde_t *pgdir, uint sz, void** parent_shmem_va, void** child_shmem_va) //
   return d;
 
 bad:
-  freevm(d);
+  freevm(d, proc);
   return 0;
 }
 
@@ -402,8 +407,8 @@ shmem_access(int page_number)
     return NULL; 
   } 
   // Allocate space in address space, assigning pte, linking va to shmem_pa[page_number] 
-  if(mappages(proc->pgdir, va, PGSIZE, (uint)shmem_pa[page_number], PTE_W | PTE_U) < 0) {
-    return NULL; 
+  if(mappages(proc->pgdir, va, PGSIZE, (uint)shmem_pa[page_number], PTE_W | PTE_U) == -1) {
+    panic("shmem_access");
   }
   proc->shmem_va[page_number] = va;
   proc->shmem_cnt++;

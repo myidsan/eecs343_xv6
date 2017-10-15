@@ -20,7 +20,8 @@ USER_PROGS := \
 	ps\
 	usertests_2_1\
 	nulltest\
-        sharedmem_simpletests
+        sharedmem_simpletests\
+	usertests_2_2
 
 USER_PROGS := $(addprefix user/, $(USER_PROGS))
 

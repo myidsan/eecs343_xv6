@@ -5,7 +5,6 @@
 #include "mmu.h"
 #include "proc.h"
 #include "sysfunc.h"
-#include "ProcessInfo.h"
 
 int
 sys_fork(void)
@@ -89,62 +88,31 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
-// write int sys_getprocs() it will need to populate getprocs table for all processes.
-struct proc * getprocs(void);
+
 int 
-sys_getprocs(void)
-{ 
-  int table_size;
-  char *traverse;
-  char *table_start;
-  struct proc *ptable;
-  
-  if(argint(0, &table_size) < 0) {
-    return -1;
-  }
-  if(argptr(1, &table_start, table_size) < 0) {
-    return -1;
-  }
-  
-  traverse = table_start;
-  ptable = getprocs();
-
-  while(table_start + table_size > traverse  && ptable -> state != UNUSED) {
-    *(int *)traverse = ptable -> pid;
-    traverse += 4;
-    *(int *)traverse = ptable -> parent -> pid;
-    traverse += 4;
-    *(int *)traverse = ptable -> state;
-    traverse += 4;
-    *(int *)traverse = ptable -> sz; 
-    traverse += 4;
-    memmove(traverse, ptable -> name, 16);
-    traverse += 16;
-    ptable++;  
-  }
-  
-  return 0;
-} 
-
-int
 sys_shmem_access(void)
 {
-  int page_number;
-  if (argint(0, &page_number) < 0) {
+  int pn;
+  if(argint(0, &pn) < 0){
     return -1;
   }
-  return (int)shmem_access(page_number); 
+  if(pn < 0 || pn > 3) {
+    return -1;
+  }
+
+  return (int)shmem_access(pn);
 }
 
 int
 sys_shmem_count(void)
 {
-  int page_number = 0;
-  if (argint(0, &page_number < 0)) {
+  int pn;
+  if(argint(0, &pn) < 0){
     return -1;
   }
-  if(page_number < 0 || page_number > 3){
+  if(pn < 0 || pn > 3) {
     return -1;
   }
-  return shmem_count(page_number);
+
+  return shmem_count(pn);
 }

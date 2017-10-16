@@ -1,6 +1,5 @@
 #ifndef _USER_H_
 #define _USER_H_
-#include "ProcessInfo.h"
 
 struct stat;
 
@@ -26,7 +25,6 @@ int getpid(void);
 char* sbrk(int);
 int sleep(int);
 int uptime(void);
-int getprocs(int,void *);
 void* shmem_access(int);
 int shmem_count(int);
 

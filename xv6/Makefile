@@ -35,7 +35,6 @@ CFLAGS += -ggdb
 # C Preprocessor
 CPP := cpp
 
-
 # Assembler options
 # http://sourceware.org/binutils/docs/as/Invoking.html
 AS := gcc

@@ -15,7 +15,6 @@ exec(char *path, char **argv)
   struct elfhdr elf;
   struct inode *ip;
   struct proghdr ph;
-  struct proc oldproc;
   pde_t *pgdir, *oldpgdir;
 
   if((ip = namei(path)) == 0)
@@ -31,7 +30,6 @@ exec(char *path, char **argv)
 
   if((pgdir = setupkvm()) == 0)
     goto bad;
-
 
   // Load program into memory.
   sz = PGSIZE;
@@ -84,23 +82,18 @@ exec(char *path, char **argv)
 
   // Commit to the user image.
   oldpgdir = proc->pgdir;
-  oldproc = *proc;
   proc->pgdir = pgdir;
   proc->sz = sz;
   proc->tf->eip = elf.entry;  // main
   proc->tf->esp = sp;
-  for(i = 0; i < 4; i++) {
-    proc->shmem_va[i] = NULL;
-  }
-  proc->shmem_cnt = 0;
   switchuvm(proc);
-  freevm(oldpgdir, &oldproc);
+  freevm(oldpgdir);
 
   return 0;
 
  bad:
   if(pgdir)
-    freevm(pgdir, proc);
+    freevm(pgdir);
   if(ip)
     iunlockput(ip);
   return -1;

@@ -146,6 +146,5 @@ sys_shmem_count(void)
   if(page_number < 0 || page_number > 3){
     return -1;
   }
-  cprintf("Got into syscall. About to call shmem_count from page %d");
   return shmem_count(page_number);
 }

@@ -233,11 +233,8 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
   char *mem;
   uint a;
 
-<<<<<<< HEAD
   if(newsz > USERTOP - (proc->shmem_cnt + 1) * PGSIZE)
     return 0;
-=======
->>>>>>> 429fcff7d5c6a981893e193992f7f83ed21f467e
   if(newsz < oldsz)
     return oldsz;
   if(newsz > USERTOP - ((proc->shmem_cnt + 1) * PGSIZE))

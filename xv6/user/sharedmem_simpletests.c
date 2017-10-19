@@ -47,6 +47,7 @@ afterRequestingSharedMemory_countReturns1()
 {
   printf(1, "Test: afterRequestingSharedMemory_countReturns1...");
   char* sharedPage = shmem_access(0);
+  printf(1, "allows access");
   int count = shmem_count(0);
 
   if(count == 1) {
@@ -101,7 +102,7 @@ whenProcessExits_SharedPageIsFreed()
     wait();
     //
     char* parentsSharedPage = shmem_access(0);
-    if(parentsSharedPage[0] == 42){
+    if(parentsSharedPage[0] != 42){
       testPassed();
     } else {
       // should be garbage value after being freed, but it's still 42

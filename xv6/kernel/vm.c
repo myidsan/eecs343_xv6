@@ -286,25 +286,20 @@ void
 freevm(pde_t *pgdir, struct proc* p)
 {
   uint i;
-  int deathrow[4];
-  int killcount = 0;
 
   if(pgdir == 0)
     panic("freevm: no pgdir");
-  deallocuvm(pgdir, USERTOP - (p->shmem_cnt + 1)*PGSIZE, 0);
+  //deallocuvm(pgdir, USERTOP - (p->shmem_cnt + 1)*PGSIZE, 0);
+  deallocuvm(pgdir, USERTOP - (4)*PGSIZE, 0);
   
   for(i = 0; i < 4; i++) {
     if(p->shmem_va[i] != NULL) {
       shmem_counter[i]--;
       if(shmem_counter[i] == 0) {
-	deathrow[killcount] = i;
-	killcount++;
+        //kfree((char*)shmem_pa[i]);
       }
       p->shmem_va[i] = NULL;
     }
-  }
-  for(i = 0; i < killcount; i++) {
-    deallocuvm(pgdir, USERTOP - (deathrow[i] + 1)*PGSIZE, USERTOP - (deathrow[i]) * PGSIZE);
   }
   p->shmem_cnt = 0;
   for(i = 0; i < NPDENTRIES; i++){
@@ -412,6 +407,9 @@ shmem_access(int pn)
   void* va = (void*) USERTOP - ((proc->shmem_cnt + 1) * PGSIZE);
   if((uint)va <= proc->sz) {
     return NULL;
+  }
+  if(shmem_counter[pn] == 0 && shmem_pa[pn] == NULL) {
+    shmem_pa[pn] = kalloc();
   }
   if(mappages(proc->pgdir, va, PGSIZE, (uint)shmem_pa[pn], PTE_W | PTE_U) == -1) {
     panic("shmem_access");

@@ -47,7 +47,6 @@ afterRequestingSharedMemory_countReturns1()
 {
   printf(1, "Test: afterRequestingSharedMemory_countReturns1...");
   char* sharedPage = shmem_access(0);
-  printf(1, "allows access");
   int count = shmem_count(0);
 
   if(count == 1) {

@@ -301,7 +301,6 @@ freevm(pde_t *pgdir, struct proc* p)
   for(i = 0; i < 4; i++) {
     if(p->shmem_va[i] != NULL) {
       if(shmem_counter[i] == 1) {
-        cprintf("\n%d\n", i);
         kfree((char*)shmem_pa[i]);
         shmem_pa[i] = NULL;
       }
@@ -443,6 +442,5 @@ shmem_init(void)
   for(i = 0; i < 4; i++) {
     shmem_counter[i] = 0;
     shmem_pa[i] = kalloc();
-    cprintf("\n%x\n", shmem_pa[i]);
   }
 }

@@ -442,5 +442,9 @@ shmem_init(void)
   for(i = 0; i < 4; i++) {
     shmem_counter[i] = 0;
     shmem_pa[i] = kalloc();
+<<<<<<< HEAD
+=======
+    //cprintf("\n%x\n", shmem_pa[i]);
+>>>>>>> b6f036bc4582600cef5079f23ab7763f5bc7ec85
   }
 }

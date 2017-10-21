@@ -17,9 +17,11 @@ USER_PROGS := \
 	usertests\
 	wc\
 	zombie\
-	ps\
-	usertests_2_1\
-	nulltest
+	nulltest\
+	calltest\
+	sharedmem_simpletests\
+	ta_tests_2_ec
+	
 
 USER_PROGS := $(addprefix user/, $(USER_PROGS))
 

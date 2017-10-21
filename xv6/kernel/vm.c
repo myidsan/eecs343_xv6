@@ -5,10 +5,16 @@
 #include "mmu.h"
 #include "proc.h"
 #include "elf.h"
+#include "spinlock.h"
 
 extern char data[];  // defined in data.S
 
 static pde_t *kpgdir;  // for use in scheduler()
+
+int shmem_counter[4];
+void* shmem_pa[4];
+struct spinlock shmem_lock;
+
 
 // Allocate one page table for the machine for the kernel address
 // space for scheduler processes.
@@ -136,6 +142,7 @@ setupkvm(void)
 {
   pde_t *pgdir;
   struct kmap *k;
+  initlock(&shmem_lock, "shmem_lock");
 
   if((pgdir = (pde_t*)kalloc()) == 0)
     return 0;
@@ -231,7 +238,7 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
   char *mem;
   uint a;
 
-  if(newsz > USERTOP)
+  if(newsz > USERTOP - ((proc->shmem_cnt + 1) * PGSIZE))
     return 0;
   if(newsz < oldsz)
     return oldsz;
@@ -280,13 +287,28 @@ deallocuvm(pde_t *pgdir, uint oldsz, uint newsz)
 // Free a page table and all the physical memory pages
 // in the user part.
 void
-freevm(pde_t *pgdir)
+freevm(pde_t *pgdir, struct proc* p)
 {
   uint i;
 
   if(pgdir == 0)
     panic("freevm: no pgdir");
-  deallocuvm(pgdir, USERTOP, 0);
+  //deallocuvm(pgdir, USERTOP - (p->shmem_cnt + 1)*PGSIZE, 0);
+  //deallocuvm(pgdir, USERTOP - (p->shmem_cnt+1)*PGSIZE, 0);
+  deallocuvm(pgdir, USERTOP - (p->shmem_cnt) * PGSIZE, PGSIZE);
+
+  
+  for(i = 0; i < 4; i++) {
+    if(p->shmem_va[i] != NULL) {
+      if(shmem_counter[i] == 1) {
+        kfree((char*)shmem_pa[i]);
+        shmem_pa[i] = NULL;
+      }
+      shmem_counter[i]--;
+      p->shmem_va[i] = NULL;
+    }
+  }
+  p->shmem_cnt = 0;
   for(i = 0; i < NPDENTRIES; i++){
     if(pgdir[i] & PTE_P)
       kfree((char*)PTE_ADDR(pgdir[i]));
@@ -297,7 +319,7 @@ freevm(pde_t *pgdir)
 // Given a parent process's page table, create a copy
 // of it for a child.
 pde_t*
-copyuvm(pde_t *pgdir, uint sz)
+copyuvm(pde_t *pgdir, uint sz, struct proc* p)
 {
   pde_t *d;
   pte_t *pte;
@@ -318,10 +340,20 @@ copyuvm(pde_t *pgdir, uint sz)
     if(mappages(d, (void*)i, PGSIZE, PADDR(mem), PTE_W|PTE_U) < 0)
       goto bad;
   }
+  for(i = USERTOP - (p->shmem_cnt) * PGSIZE; i < USERTOP; i += PGSIZE){
+    if((pte = walkpgdir(d, (void*)i, 0)) == 0)
+      panic("copyuvm: pte should exist");
+    if((*pte & PTE_P))
+      panic("copyuvm: page not present");
+     pa = PTE_ADDR(*pte);
+     if(mappages(d, (void*)i, PGSIZE, pa, PTE_W|PTE_U) < 0)
+       goto bad;
+  }
+  
   return d;
 
 bad:
-  freevm(d);
+  freevm(d, proc);
   return 0;
 }
 
@@ -364,3 +396,52 @@ copyout(pde_t *pgdir, uint va, void *p, uint len)
   }
   return 0;
 }
+
+void*
+shmem_access(int pn)
+{
+  // valid page number
+  if(pn < 0 || pn > 3) {
+    return NULL;
+  }
+  // already paged
+  if(proc->shmem_va[pn] != NULL) {
+    return proc->shmem_va[pn];
+  }
+  // enough room 
+  void* va = (void*) USERTOP - ((proc->shmem_cnt + 1) * PGSIZE);
+  if((uint)va <= proc->sz) {
+    return NULL;
+  }
+  if(shmem_counter[pn] == 0) {
+    acquire(&shmem_lock);
+    shmem_pa[pn] = kalloc();
+    release(&shmem_lock);
+  }
+  acquire(&shmem_lock);
+  if(mappages(proc->pgdir, va, PGSIZE, (uint)shmem_pa[pn], PTE_W | PTE_U) == -1) {
+    panic("shmem_access");
+  }
+  proc->shmem_va[pn] = va;
+  proc->shmem_cnt++;
+  shmem_counter[pn]++;
+  release(&shmem_lock);
+  return va;
+}
+
+int
+shmem_count(int pagenumber)
+{
+  return shmem_counter[pagenumber];
+}
+
+void
+shmem_init(void)
+{
+  int i;
+  for(i = 0; i < 4; i++) {
+    shmem_counter[i] = 0;
+    shmem_pa[i] = kalloc();
+  }
+}
+

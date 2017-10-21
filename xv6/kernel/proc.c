@@ -5,7 +5,6 @@
 #include "x86.h"
 #include "proc.h"
 #include "spinlock.h"
-#include "ProcessInfo.h"
 
 struct {
   struct spinlock lock;
@@ -136,7 +135,7 @@ fork(void)
     return -1;
 
   // Copy process state from p.
-  if((np->pgdir = copyuvm(proc->pgdir, proc->sz)) == 0){
+  if((np->pgdir = copyuvm(proc->pgdir, proc->sz, np)) == 0){
     kfree(np->kstack);
     np->kstack = 0;
     np->state = UNUSED;
@@ -224,7 +223,7 @@ wait(void)
         pid = p->pid;
         kfree(p->kstack);
         p->kstack = 0;
-        freevm(p->pgdir);
+        freevm(p->pgdir, p);
         p->state = UNUSED;
         p->pid = 0;
         p->parent = 0;
@@ -444,9 +443,4 @@ procdump(void)
   }
 }
 
-// Write getprocs(struct ProcessInfo processInfoTable[]); getprocs need to count the number
-struct proc*
-getprocs(void)
-{
-  return ptable.proc;
-}
+

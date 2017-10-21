@@ -6,7 +6,6 @@
 #include "x86.h"
 #include "syscall.h"
 #include "sysfunc.h"
-#include "ProcessInfo.h"
 
 // User code makes a system call with INT T_SYSCALL.
 // System call number in %eax.
@@ -59,7 +58,7 @@ argptr(int n, char **pp, int size)
   
   if(argint(n, &i) < 0)
     return -1;
-  if((uint)i >= proc->sz || (uint)i + size > proc->sz)
+  if((uint)i >= proc->sz || (uint)i+size > proc->sz)
     return -1;
   if((uint)i <= PGSIZE)
     return -1;
@@ -80,9 +79,10 @@ argstr(int n, char **pp)
   return fetchstr(proc, addr, pp);
 }
 
-// syscall function declarations moved to sysfunc.h so compiler 
-// can catch definitions that don't match 
-// array of function pointers to handlers for all the syscalls 
+// syscall function declarations moved to sysfunc.h so compiler
+// can catch definitions that don't match
+
+// array of function pointers to handlers for all the syscalls
 static int (*syscalls[])(void) = {
 [SYS_chdir]   sys_chdir,
 [SYS_close]   sys_close,
@@ -105,7 +105,8 @@ static int (*syscalls[])(void) = {
 [SYS_wait]    sys_wait,
 [SYS_write]   sys_write,
 [SYS_uptime]  sys_uptime,
-[SYS_getprocs] sys_getprocs,
+[SYS_shmem_access] sys_shmem_access,
+[SYS_shmem_count] sys_shmem_count,
 };
 
 // Called on a syscall trap. Checks that the syscall number (passed via eax)
@@ -114,7 +115,7 @@ void
 syscall(void)
 {
   int num;
-   
+  
   num = proc->tf->eax;
   if(num > 0 && num < NELEM(syscalls) && syscalls[num] != NULL) {
     proc->tf->eax = syscalls[num]();

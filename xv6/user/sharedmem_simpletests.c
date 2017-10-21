@@ -347,16 +347,7 @@ whenLastProcessExits_SharedPageIsFreed()
     }
 }
 
-/*
-// If a virtual memory page is being used as shared memory, 
-// it cannot also be used as “normal” unshared memory and vice versa.
-void
-whenUsedAsSharedMem_cannotBeUsedAsNormalMem()
-{
-  printf(1, "whenUsedAsSharedMem_cannotBeUsedAsNormalMem...");
-     
-}
-*/
+
 int
 main(void)
 {

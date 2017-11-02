@@ -88,31 +88,3 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
-
-int 
-sys_shmem_access(void)
-{
-  int pn;
-  if(argint(0, &pn) < 0){
-    return -1;
-  }
-  if(pn < 0 || pn > 3) {
-    return -1;
-  }
-
-  return (int)shmem_access(pn);
-}
-
-int
-sys_shmem_count(void)
-{
-  int pn;
-  if(argint(0, &pn) < 0){
-    return -1;
-  }
-  if(pn < 0 || pn > 3) {
-    return -1;
-  }
-
-  return shmem_count(pn);
-}

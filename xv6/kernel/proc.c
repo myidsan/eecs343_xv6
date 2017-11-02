@@ -135,7 +135,7 @@ fork(void)
     return -1;
 
   // Copy process state from p.
-  if((np->pgdir = copyuvm(proc->pgdir, proc->sz, np)) == 0){
+  if((np->pgdir = copyuvm(proc->pgdir, proc->sz)) == 0){
     kfree(np->kstack);
     np->kstack = 0;
     np->state = UNUSED;
@@ -159,6 +159,7 @@ fork(void)
   return pid;
 }
 
+
 // Exit the current process.  Does not return.
 // An exited process remains in the zombie state
 // until its parent calls wait() to find out it exited.
@@ -170,6 +171,10 @@ exit(void)
 
   if(proc == initproc)
     panic("init exiting");
+
+  if (proc->isThread == 0) {
+    kill(proc->pid);	
+  }
 
   // Close all open files.
   for(fd = 0; fd < NOFILE; fd++){
@@ -223,7 +228,7 @@ wait(void)
         pid = p->pid;
         kfree(p->kstack);
         p->kstack = 0;
-        freevm(p->pgdir, p);
+        freevm(p->pgdir);
         p->state = UNUSED;
         p->pid = 0;
         p->parent = 0;
@@ -443,4 +448,56 @@ procdump(void)
   }
 }
 
+int
+clone(void(*fcn)(void*), void*arg, void* stack){
+  int i, tid;
+  struct proc *thread *p;
+  int *retaddr, *myarg;
+
+  // requirement 8
+  if ( (thread = allocproc() == 0) ) {
+    return -1;
+  }
+
+  if ( !(stack % PGSIZE) ) {
+	return -1;
+  }
+
+  thread->isThread = 1 // requirement 11;
+  thread->pgdir = proc->pgdir; // requirement 2
+  thread->sz = proc->sz;
+  thread->ustack = (char*)stack; // requirement 5
+  *(thread->tf) = *(proc->tf);
+
+  // find the top parent 
+  // requirement 9
+  p = proc;
+  while (p->isThread == 1) {
+    p = p->parent;
+  }
+  thread->parent = p;
+
+  // requirement 4
+  proc->tf->eip = (uint*)fcn;
+
+  // requirement 7
+  retaddr = stack + PGSIZE - 2 * sizeof(int*);
+  *retaddr = 0xFFFFFFFF;
+
+  // requirement 6
+  myarg = stack + PGSIZE - sizeof(int*); 
+  *myarg = (int)arg;
+
+  // requirement 3
+  for(i = 0; i < NOFILE; i++)
+    if(proc->ofile[i])
+      np->ofile[i] = filedup(proc->ofile[i]);
+  np->cwd = idup(proc->cwd);
+
+  tid = thread->pid;
+  thread->state = RUNNABLE;
+  safestrcpy(proc->name, thread->name, sizeof(proc->name));
+ 
+  return tid;
+}
 

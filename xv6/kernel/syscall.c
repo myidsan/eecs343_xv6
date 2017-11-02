@@ -60,8 +60,6 @@ argptr(int n, char **pp, int size)
     return -1;
   if((uint)i >= proc->sz || (uint)i+size > proc->sz)
     return -1;
-  if((uint)i <= PGSIZE)
-    return -1;
   *pp = (char*)i;
   return 0;
 }
@@ -105,8 +103,7 @@ static int (*syscalls[])(void) = {
 [SYS_wait]    sys_wait,
 [SYS_write]   sys_write,
 [SYS_uptime]  sys_uptime,
-[SYS_shmem_access] sys_shmem_access,
-[SYS_shmem_count] sys_shmem_count,
+[SYS_clone]   sys_clone,
 };
 
 // Called on a syscall trap. Checks that the syscall number (passed via eax)

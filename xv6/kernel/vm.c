@@ -9,8 +9,6 @@
 extern char data[];  // defined in data.S
 
 static pde_t *kpgdir;  // for use in scheduler()
-int shmem_total_counters[4]; // Stores number of processes using that page
-void *shmem_pa[4]; // Stores pa of the shmem
 
 // Allocate one page table for the machine for the kernel address
 // space for scheduler processes.
@@ -233,12 +231,10 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
   char *mem;
   uint a;
 
-  if(newsz > USERTOP - (proc->shmem_cnt + 1) * PGSIZE)
+  if(newsz > USERTOP)
     return 0;
   if(newsz < oldsz)
     return oldsz;
-  if(newsz > USERTOP - ((proc->shmem_cnt + 1) * PGSIZE))
-    return 0;
 
   a = PGROUNDUP(oldsz);
   for(; a < newsz; a += PGSIZE){
@@ -257,8 +253,8 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
 // Deallocate user pages to bring the process size from oldsz to
 // newsz.  oldsz and newsz need not be page-aligned, nor does newsz
 // need to be less than oldsz.  oldsz can be larger than the actual
-// process size.  Returns the new process size.  
-int 
+// process size.  Returns the new process size.
+int
 deallocuvm(pde_t *pgdir, uint oldsz, uint newsz)
 {
   pte_t *pte;
@@ -284,21 +280,13 @@ deallocuvm(pde_t *pgdir, uint oldsz, uint newsz)
 // Free a page table and all the physical memory pages
 // in the user part.
 void
-freevm(pde_t *pgdir, struct proc* p)
+freevm(pde_t *pgdir)
 {
   uint i;
 
   if(pgdir == 0)
     panic("freevm: no pgdir");
-  deallocuvm(pgdir, USERTOP - (proc->shmem_cnt + 1) * PGSIZE, 0);
-  // deducts global shmem_total_counter
-  for(i = 0; i < 4; i++) {
-    if(proc->shmem_va[i] != NULL) {
-      shmem_total_counters[i]--;
-      proc->shmem_va[i] = NULL;
-    }
-  }
-  p->shmem_cnt = 0;
+  deallocuvm(pgdir, USERTOP, 0);
   for(i = 0; i < NPDENTRIES; i++){
     if(pgdir[i] & PTE_P)
       kfree((char*)PTE_ADDR(pgdir[i]));
@@ -309,7 +297,7 @@ freevm(pde_t *pgdir, struct proc* p)
 // Given a parent process's page table, create a copy
 // of it for a child.
 pde_t*
-copyuvm(pde_t *pgdir, uint sz, void** parent_shmem_va, void** child_shmem_va)
+copyuvm(pde_t *pgdir, uint sz)
 {
   pde_t *d;
   pte_t *pte;
@@ -318,7 +306,7 @@ copyuvm(pde_t *pgdir, uint sz, void** parent_shmem_va, void** child_shmem_va)
 
   if((d = setupkvm()) == 0)
     return 0;
-  for(i = PGSIZE; i < sz; i += PGSIZE){
+  for(i = 0; i < sz; i += PGSIZE){
     if((pte = walkpgdir(pgdir, (void*)i, 0)) == 0)
       panic("copyuvm: pte should exist");
     if(!(*pte & PTE_P))
@@ -330,19 +318,10 @@ copyuvm(pde_t *pgdir, uint sz, void** parent_shmem_va, void** child_shmem_va)
     if(mappages(d, (void*)i, PGSIZE, PADDR(mem), PTE_W|PTE_U) < 0)
       goto bad;
   }
-  for(i = 0; i < 4; i++) {
-    child_shmem_va[i] = parent_shmem_va[i];
-    if(child_shmem_va[i] != NULL) {
-      shmem_total_counters[i]++;
-      if(mappages(d, child_shmem_va[i], PGSIZE, (uint)shmem_pa[i], PTE_W|PTE_U) < 0) {
-        goto bad;
-      }
-    }   
-  }
   return d;
 
 bad:
-  freevm(d, proc);
+  freevm(d);
   return 0;
 }
 
@@ -384,49 +363,4 @@ copyout(pde_t *pgdir, uint va, void *p, uint len)
     va = va0 + PGSIZE;
   }
   return 0;
-}
-
-
-void* 
-shmem_access(int page_number)
-{
-  // Check if page_number is valid
-  if( page_number < 0 || page_number > 3 ) {
-    return NULL;
-  }
-  // Check if process already has access to specified shared memory
-  if( proc->shmem_va[page_number] != 0 ) {
-    return proc->shmem_va[page_number];
-  } 
-  void* va = (void*) (USERTOP - (proc->shmem_cnt + 1) * PGSIZE);
-  // Check if address space can tolerate one more page
-  if( proc->sz >= (uint)va ) {
-    return NULL; 
-  } 
-  // Allocate space in address space, assigning pte, linking va to shmem_pa[page_number] 
-  if(mappages(proc->pgdir, va, PGSIZE, (uint)shmem_pa[page_number], PTE_W | PTE_U) == -1) {
-    panic("shmem_access");
-  }
-  proc->shmem_va[page_number] = va;
-  proc->shmem_cnt++;
-  shmem_total_counters[page_number]++;
-  return va;
-}
-
-int 
-shmem_count(int page_number)
-{
-  return shmem_total_counters[page_number];
-}
-
-void
-shmeminit()
-{
-  int i;
-  for(i = 0; i < 4; i++) {
-    shmem_total_counters[i] = 0;
-    if ((shmem_pa[i] = kalloc()) == 0) {
-      panic("shmeminit failed");    
-    }
-  }
 }

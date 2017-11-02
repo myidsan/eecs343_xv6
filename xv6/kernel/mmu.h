@@ -118,7 +118,6 @@ struct segdesc {
 
 #define PGSIZE		4096		// bytes mapped by a page
 #define PGSHIFT		12		// log2(PGSIZE)
-#define SHMEM_PGNUM      4              // shared page number is 0, 1, 2, 3
 
 #define PTXSHIFT	12		// offset of PTX in a linear address
 #define PDXSHIFT	22		// offset of PDX in a linear address

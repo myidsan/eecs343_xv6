@@ -35,7 +35,6 @@ CFLAGS += -ggdb
 # C Preprocessor
 CPP := cpp
 
-
 # Assembler options
 # http://sourceware.org/binutils/docs/as/Invoking.html
 AS := gcc
@@ -54,7 +53,7 @@ OBJDUMP := objdump
 ################################################################################
 
 # If the makefile can't find QEMU, specify its path here
-QEMU := /home/software/qemu/bin/qemu-system-i386
+#QEMU :=
 
 # Try to infer the correct QEMU if not specified
 ifndef QEMU

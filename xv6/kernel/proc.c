@@ -46,6 +46,11 @@ found:
   p->state = EMBRYO;
   p->pid = nextpid++;
   release(&ptable.lock);
+  // init lock - requirement 12
+  // making a new process
+  p->isThread = 0;
+  p->parent = proc;
+  initlock(&p->lock, "proc_lock");
 
   // Allocate kernel stack if possible.
   if((p->kstack = kalloc()) == 0){
@@ -103,21 +108,39 @@ userinit(void)
 
 // Grow current process's memory by n bytes.
 // Return 0 on success, -1 on failure.
+// requirement 12
 int
 growproc(int n)
 {
   uint sz;
-  
+  struct proc *p;
+  if (proc->isThread == 0) {
+    acquire(&proc->lock);
+  } else {
+    for(p = proc; p->isThread == 1; p->parent) {
+	  proc->parent = p;
+	} // finding the process as parent
+	acquire(&proc->parent->lock);
+  }
+
   sz = proc->sz;
   if(n > 0){
-    if((sz = allocuvm(proc->pgdir, sz, sz + n)) == 0)
-      return -1;
+    if((sz = allocuvm(proc->pgdir, sz, sz + n)) == 0) {
+	  if(proc->isThread == 0) release(&proc->lock);
+	  else relase(&proc->parent->lock);
+	  return -1;
+	}
   } else if(n < 0){
-    if((sz = deallocuvm(proc->pgdir, sz, sz + n)) == 0)
+    if((sz = deallocuvm(proc->pgdir, sz, sz + n)) == 0) {
+	  if(proc->isThread == 0) release(&proc->lock);
+	  else release(&proc->parent->lock);
       return -1;
+	}
   }
   proc->sz = sz;
   switchuvm(proc);
+  if(proc->isThread == 0) release(&proc->lock);
+  else release(&proc->parent->lock);
   return 0;
 }
 
@@ -172,10 +195,6 @@ exit(void)
   if(proc == initproc)
     panic("init exiting");
 
-  if (proc->isThread == 0) {
-    kill(proc->pid);	
-  }
-
   // Close all open files.
   for(fd = 0; fd < NOFILE; fd++){
     if(proc->ofile[fd]){
@@ -194,7 +213,7 @@ exit(void)
 
   // Pass abandoned children to init.
   for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
-    if(p->parent == proc){
+	if(proc->isThread == 0 && p->parent == proc) { // check if it is a thread
       p->parent = initproc;
       if(p->state == ZOMBIE)
         wakeup1(initproc);
@@ -220,7 +239,7 @@ wait(void)
     // Scan through table looking for zombie children.
     havekids = 0;
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
-      if(p->parent != proc)
+      if(p->isThread == 1 || p->parent != proc)
         continue;
       havekids = 1;
       if(p->state == ZOMBIE){
@@ -467,7 +486,7 @@ clone(void(*fcn)(void*), void*arg, void* stack){
   thread->pgdir = proc->pgdir; // requirement 2
   thread->sz = proc->sz;
   thread->ustack = (char*)stack; // requirement 5
-  *(thread->tf) = *(proc->tf);
+  *(thread->tf) = *(proc->tf); // trap frame holds register values
 
   // find the top parent 
   // requirement 9
@@ -477,9 +496,6 @@ clone(void(*fcn)(void*), void*arg, void* stack){
   }
   thread->parent = p;
 
-  // requirement 4
-  proc->tf->eip = (uint*)fcn;
-
   // requirement 7
   retaddr = stack + PGSIZE - 2 * sizeof(int*);
   *retaddr = 0xFFFFFFFF;
@@ -487,7 +503,9 @@ clone(void(*fcn)(void*), void*arg, void* stack){
   // requirement 6
   myarg = stack + PGSIZE - sizeof(int*); 
   *myarg = (int)arg;
-
+  // requirement 4
+  proc->tf->eip = (uint)fcn;
+  thread->tf->esp = (unit)(stack + PGSIZE - 8);
   // requirement 3
   for(i = 0; i < NOFILE; i++)
     if(proc->ofile[i])
@@ -501,3 +519,7 @@ clone(void(*fcn)(void*), void*arg, void* stack){
   return tid;
 }
 
+int
+join(int pid)
+{
+}

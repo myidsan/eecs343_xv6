@@ -50,7 +50,8 @@ found:
   // making a new process
   p->isThread = 0;
   p->parent = proc;
-  initlock(&p->lock, "proc_lock");
+  // trap happening here
+  initlock(p->lock, "proc_lock");
 
   // Allocate kernel stack if possible.
   if((p->kstack = kalloc()) == 0){
@@ -115,32 +116,37 @@ growproc(int n)
   uint sz;
   struct proc *p;
   if (proc->isThread == 0) {
-    acquire(&proc->lock);
+    acquire(proc->lock);
   } else {
-    for(p = proc; p->isThread == 1; p->parent) {
-	  proc->parent = p;
-	} // finding the process as parent
-	acquire(&proc->parent->lock);
+	p = proc;
+	while (p->isThread == 1) {
+	  p->parent = p;
+	}
+	proc->parent = p; 
+    //for(p = proc; p->isThread == 1; p->parent) {
+	//  proc->parent = p;
+	//} // finding the process as parent
+	acquire(proc->parent->lock);
   }
 
   sz = proc->sz;
   if(n > 0){
     if((sz = allocuvm(proc->pgdir, sz, sz + n)) == 0) {
-	  if(proc->isThread == 0) release(&proc->lock);
-	  else relase(&proc->parent->lock);
+	  if(proc->isThread == 0) release(proc->lock);
+	  else release(proc->parent->lock);
 	  return -1;
 	}
   } else if(n < 0){
     if((sz = deallocuvm(proc->pgdir, sz, sz + n)) == 0) {
-	  if(proc->isThread == 0) release(&proc->lock);
-	  else release(&proc->parent->lock);
+	  if(proc->isThread == 0) release(proc->lock);
+	  else release(proc->parent->lock);
       return -1;
 	}
   }
   proc->sz = sz;
   switchuvm(proc);
-  if(proc->isThread == 0) release(&proc->lock);
-  else release(&proc->parent->lock);
+  if(proc->isThread == 0) release(proc->lock);
+  else release(proc->parent->lock);
   return 0;
 }
 
@@ -470,19 +476,20 @@ procdump(void)
 int
 clone(void(*fcn)(void*), void*arg, void* stack){
   int i, tid;
-  struct proc *thread *p;
+  struct proc *thread, *p;
   int *retaddr, *myarg;
 
   // requirement 8
-  if ( (thread = allocproc() == 0) ) {
+  if ( (thread = allocproc()) == 0) {
     return -1;
   }
 
-  if ( !(stack % PGSIZE) ) {
+  // check page allignment
+  if ( !((uint)stack % PGSIZE) ) {
 	return -1;
   }
 
-  thread->isThread = 1 // requirement 11;
+  thread->isThread = 1; // requirement 11;
   thread->pgdir = proc->pgdir; // requirement 2
   thread->sz = proc->sz;
   thread->ustack = (char*)stack; // requirement 5
@@ -505,12 +512,12 @@ clone(void(*fcn)(void*), void*arg, void* stack){
   *myarg = (int)arg;
   // requirement 4
   proc->tf->eip = (uint)fcn;
-  thread->tf->esp = (unit)(stack + PGSIZE - 8);
+  thread->tf->esp = (uint)(stack + PGSIZE - 8);
   // requirement 3
   for(i = 0; i < NOFILE; i++)
     if(proc->ofile[i])
-      np->ofile[i] = filedup(proc->ofile[i]);
-  np->cwd = idup(proc->cwd);
+      thread->ofile[i] = filedup(proc->ofile[i]);
+  thread->cwd = idup(proc->cwd);
 
   tid = thread->pid;
   thread->state = RUNNABLE;
@@ -519,7 +526,9 @@ clone(void(*fcn)(void*), void*arg, void* stack){
   return tid;
 }
 
+/*
 int
 join(int pid)
 {
 }
+*/

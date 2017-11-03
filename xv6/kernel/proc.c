@@ -51,7 +51,7 @@ found:
   p->isThread = 0;
   p->parent = proc;
   // trap happening here
-  initlock(p->lock, "proc_lock");
+  initlock(&p->lock, "proc_lock");
 
   // Allocate kernel stack if possible.
   if((p->kstack = kalloc()) == 0){
@@ -59,7 +59,8 @@ found:
     return 0;
   }
   sp = p->kstack + KSTACKSIZE;
-  
+  cprintf("kalloc success\n");
+
   // Leave room for trap frame.
   sp -= sizeof *p->tf;
   p->tf = (struct trapframe*)sp;
@@ -74,6 +75,7 @@ found:
   memset(p->context, 0, sizeof *p->context);
   p->context->eip = (uint)forkret;
 
+  cprintf("before return success\n");
   return p;
 }
 
@@ -116,7 +118,7 @@ growproc(int n)
   uint sz;
   struct proc *p;
   if (proc->isThread == 0) {
-    acquire(proc->lock);
+    acquire(&proc->lock);
   } else {
 	p = proc;
 	while (p->isThread == 1) {
@@ -126,27 +128,27 @@ growproc(int n)
     //for(p = proc; p->isThread == 1; p->parent) {
 	//  proc->parent = p;
 	//} // finding the process as parent
-	acquire(proc->parent->lock);
+	acquire(&proc->parent->lock);
   }
 
   sz = proc->sz;
   if(n > 0){
     if((sz = allocuvm(proc->pgdir, sz, sz + n)) == 0) {
-	  if(proc->isThread == 0) release(proc->lock);
-	  else release(proc->parent->lock);
+	  if(proc->isThread == 0) release(&proc->lock);
+	  else release(&proc->parent->lock);
 	  return -1;
 	}
   } else if(n < 0){
     if((sz = deallocuvm(proc->pgdir, sz, sz + n)) == 0) {
-	  if(proc->isThread == 0) release(proc->lock);
-	  else release(proc->parent->lock);
+	  if(proc->isThread == 0) release(&proc->lock);
+	  else release(&proc->parent->lock);
       return -1;
 	}
   }
   proc->sz = sz;
   switchuvm(proc);
-  if(proc->isThread == 0) release(proc->lock);
-  else release(proc->parent->lock);
+  if(proc->isThread == 0) release(&proc->lock);
+  else release(&proc->parent->lock);
   return 0;
 }
 

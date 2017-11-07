@@ -108,6 +108,7 @@ growproc(int n)
 {
   uint sz;
   
+  // acquire(&ptable.lock);
   sz = proc->sz;
   if(n > 0){
     if((sz = allocuvm(proc->pgdir, sz, sz + n)) == 0)
@@ -453,6 +454,7 @@ clone(void(*fcn)(void*), void*arg, void* stack){
   int i, tid;
   struct proc *thread *p;
   int *retaddr, *myarg;
+  struct proc *np;
 
   // requirement 8
   if ( (thread = allocproc() == 0) ) {
@@ -478,6 +480,7 @@ clone(void(*fcn)(void*), void*arg, void* stack){
   thread->parent = p;
 
   // requirement 4
+  // page 24 of book-rev9.pdf
   proc->tf->eip = (uint*)fcn;
 
   // requirement 7
@@ -485,10 +488,13 @@ clone(void(*fcn)(void*), void*arg, void* stack){
   *retaddr = 0xFFFFFFFF;
 
   // requirement 6
+  // ??? this doesn't do anything.... 
+  // calling convention is to push esp to ebp, as mentioned in the wikipedia of calling conventions of os dev
   myarg = stack + PGSIZE - sizeof(int*); 
   *myarg = (int)arg;
 
   // requirement 3
+  // taken from fork, nofile == number of files
   for(i = 0; i < NOFILE; i++)
     if(proc->ofile[i])
       np->ofile[i] = filedup(proc->ofile[i]);

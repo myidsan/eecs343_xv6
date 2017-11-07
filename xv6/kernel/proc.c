@@ -46,6 +46,12 @@ found:
   p->state = EMBRYO;
   p->pid = nextpid++;
   release(&ptable.lock);
+  // init lock - requirement 12
+  // making a new process
+  p->isThread = 0;
+  p->parent = proc;
+  // trap happening here
+  initlock(&p->lock, "proc_lock");
 
   // Allocate kernel stack if possible.
   if((p->kstack = kalloc()) == 0){
@@ -53,7 +59,8 @@ found:
     return 0;
   }
   sp = p->kstack + KSTACKSIZE;
-  
+  cprintf("kalloc success\n");
+
   // Leave room for trap frame.
   sp -= sizeof *p->tf;
   p->tf = (struct trapframe*)sp;
@@ -68,6 +75,7 @@ found:
   memset(p->context, 0, sizeof *p->context);
   p->context->eip = (uint)forkret;
 
+  cprintf("before return success\n");
   return p;
 }
 
@@ -103,22 +111,45 @@ userinit(void)
 
 // Grow current process's memory by n bytes.
 // Return 0 on success, -1 on failure.
+// requirement 12
 int
 growproc(int n)
 {
   uint sz;
-  
   // acquire(&ptable.lock);
+  struct proc *p;
+  if (proc->isThread == 0) {
+    acquire(&proc->lock);
+  } else {
+	p = proc;
+	while (p->isThread == 1) {
+	  p->parent = p;
+	}
+	proc->parent = p; 
+    //for(p = proc; p->isThread == 1; p->parent) {
+	//  proc->parent = p;
+	//} // finding the process as parent
+	acquire(&proc->parent->lock);
+  }
+
   sz = proc->sz;
   if(n > 0){
-    if((sz = allocuvm(proc->pgdir, sz, sz + n)) == 0)
-      return -1;
+    if((sz = allocuvm(proc->pgdir, sz, sz + n)) == 0) {
+	  if(proc->isThread == 0) release(&proc->lock);
+	  else release(&proc->parent->lock);
+	  return -1;
+	}
   } else if(n < 0){
-    if((sz = deallocuvm(proc->pgdir, sz, sz + n)) == 0)
+    if((sz = deallocuvm(proc->pgdir, sz, sz + n)) == 0) {
+	  if(proc->isThread == 0) release(&proc->lock);
+	  else release(&proc->parent->lock);
       return -1;
+	}
   }
   proc->sz = sz;
   switchuvm(proc);
+  if(proc->isThread == 0) release(&proc->lock);
+  else release(&proc->parent->lock);
   return 0;
 }
 
@@ -173,10 +204,6 @@ exit(void)
   if(proc == initproc)
     panic("init exiting");
 
-  if (proc->isThread == 0) {
-    kill(proc->pid);	
-  }
-
   // Close all open files.
   for(fd = 0; fd < NOFILE; fd++){
     if(proc->ofile[fd]){
@@ -195,10 +222,17 @@ exit(void)
 
   // Pass abandoned children to init.
   for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
-    if(p->parent == proc){
-      p->parent = initproc;
-      if(p->state == ZOMBIE)
-        wakeup1(initproc);
+	if(p->parent == proc) { // check if it is a thread
+      if(p->isThread == 1) {
+        kfree(p->kstack);
+        p->kstack = 0;
+        p->ustack = UNUSED;
+      }
+      else {
+        p->parent = initproc;
+        if(p->state == ZOMBIE)
+          wakeup1(initproc);
+      }
     }
   }
 
@@ -221,7 +255,7 @@ wait(void)
     // Scan through table looking for zombie children.
     havekids = 0;
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
-      if(p->parent != proc)
+      if(p->isThread == 1 || p->parent != proc)
         continue;
       havekids = 1;
       if(p->state == ZOMBIE){
@@ -452,24 +486,25 @@ procdump(void)
 int
 clone(void(*fcn)(void*), void*arg, void* stack){
   int i, tid;
-  struct proc *thread *p;
+  struct proc *thread, *p;
   int *retaddr, *myarg;
-  struct proc *np;
 
   // requirement 8
-  if ( (thread = allocproc() == 0) ) {
+  if ((thread = allocproc()) == 0) {
     return -1;
   }
 
-  if ( !(stack % PGSIZE) ) {
-	return -1;
+  // check page allignment
+  if (!((uint)stack % PGSIZE) ) {
+	  return -1;
   }
 
-  thread->isThread = 1 // requirement 11;
+  thread->isThread = 1; // requirement 11;
   thread->pgdir = proc->pgdir; // requirement 2
   thread->sz = proc->sz;
+  thread->parent = proc;
   thread->ustack = (char*)stack; // requirement 5
-  *(thread->tf) = *(proc->tf);
+  *(thread->tf) = *(proc->tf); // trap frame holds register values
 
   // find the top parent 
   // requirement 9
@@ -477,33 +512,40 @@ clone(void(*fcn)(void*), void*arg, void* stack){
   while (p->isThread == 1) {
     p = p->parent;
   }
-  thread->parent = p;
-
-  // requirement 4
-  // page 24 of book-rev9.pdf
-  proc->tf->eip = (uint*)fcn;
 
   // requirement 7
   retaddr = stack + PGSIZE - 2 * sizeof(int*);
   *retaddr = 0xFFFFFFFF;
 
   // requirement 6
-  // ??? this doesn't do anything.... 
-  // calling convention is to push esp to ebp, as mentioned in the wikipedia of calling conventions of os dev
   myarg = stack + PGSIZE - sizeof(int*); 
   *myarg = (int)arg;
-
+  // requirement 4
+  proc->tf->eip = (int)fcn;
+  // calling convention is to push esp to ebp, as mentioned in the wikipedia of calling conventions of os dev
+  thread->tf->esp = (int)(stack + PGSIZE - 2 * sizeof(int *));
+  thread->tf->ebp = thread->tf->esp;
   // requirement 3
   // taken from fork, nofile == number of files
   for(i = 0; i < NOFILE; i++)
     if(proc->ofile[i])
-      np->ofile[i] = filedup(proc->ofile[i]);
-  np->cwd = idup(proc->cwd);
+      thread->ofile[i] = filedup(proc->ofile[i]);
+  thread->cwd = idup(proc->cwd);
+
+  safestrcpy(proc->name, thread->name, sizeof(proc->name));
 
   tid = thread->pid;
+
+  acquire(&ptable.lock);
   thread->state = RUNNABLE;
-  safestrcpy(proc->name, thread->name, sizeof(proc->name));
+  release(&ptable.lock);
  
   return tid;
 }
 
+/*
+int
+join(int pid)
+{
+}
+*/

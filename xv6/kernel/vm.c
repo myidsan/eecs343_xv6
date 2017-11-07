@@ -11,14 +11,6 @@ extern char data[];  // defined in data.S
 
 static pde_t *kpgdir;  // for use in scheduler()
 
-<<<<<<< HEAD
-int shmem_counter[4];
-void* shmem_pa[4];
-struct spinlock shmem_lock;
-
-
-=======
->>>>>>> 751b5bee1212d0862a7a560ea7f86c0c7fd03a0d
 // Allocate one page table for the machine for the kernel address
 // space for scheduler processes.
 void
@@ -145,7 +137,6 @@ setupkvm(void)
 {
   pde_t *pgdir;
   struct kmap *k;
-  initlock(&shmem_lock, "shmem_lock");
 
   if((pgdir = (pde_t*)kalloc()) == 0)
     return 0;
@@ -296,26 +287,7 @@ freevm(pde_t *pgdir)
 
   if(pgdir == 0)
     panic("freevm: no pgdir");
-<<<<<<< HEAD
-  //deallocuvm(pgdir, USERTOP - (p->shmem_cnt + 1)*PGSIZE, 0);
-  //deallocuvm(pgdir, USERTOP - (p->shmem_cnt+1)*PGSIZE, 0);
-  deallocuvm(pgdir, USERTOP - (p->shmem_cnt) * PGSIZE, PGSIZE);
-
-  
-  for(i = 0; i < 4; i++) {
-    if(p->shmem_va[i] != NULL) {
-      if(shmem_counter[i] == 1) {
-        kfree((char*)shmem_pa[i]);
-        shmem_pa[i] = NULL;
-      }
-      shmem_counter[i]--;
-      p->shmem_va[i] = NULL;
-    }
-  }
-  p->shmem_cnt = 0;
-=======
   deallocuvm(pgdir, USERTOP, 0);
->>>>>>> 751b5bee1212d0862a7a560ea7f86c0c7fd03a0d
   for(i = 0; i < NPDENTRIES; i++){
     if(pgdir[i] & PTE_P)
       kfree((char*)PTE_ADDR(pgdir[i]));
@@ -394,55 +366,4 @@ copyout(pde_t *pgdir, uint va, void *p, uint len)
   }
   return 0;
 }
-<<<<<<< HEAD
 
-void*
-shmem_access(int pn)
-{
-  // valid page number
-  if(pn < 0 || pn > 3) {
-    return NULL;
-  }
-  // already paged
-  if(proc->shmem_va[pn] != NULL) {
-    return proc->shmem_va[pn];
-  }
-  // enough room 
-  void* va = (void*) USERTOP - ((proc->shmem_cnt + 1) * PGSIZE);
-  if((uint)va <= proc->sz) {
-    return NULL;
-  }
-  if(shmem_counter[pn] == 0) {
-    acquire(&shmem_lock);
-    shmem_pa[pn] = kalloc();
-    release(&shmem_lock);
-  }
-  acquire(&shmem_lock);
-  if(mappages(proc->pgdir, va, PGSIZE, (uint)shmem_pa[pn], PTE_W | PTE_U) == -1) {
-    panic("shmem_access");
-  }
-  proc->shmem_va[pn] = va;
-  proc->shmem_cnt++;
-  shmem_counter[pn]++;
-  release(&shmem_lock);
-  return va;
-}
-
-int
-shmem_count(int pagenumber)
-{
-  return shmem_counter[pagenumber];
-}
-
-void
-shmem_init(void)
-{
-  int i;
-  for(i = 0; i < 4; i++) {
-    shmem_counter[i] = 0;
-    shmem_pa[i] = kalloc();
-  }
-}
-
-=======
->>>>>>> 751b5bee1212d0862a7a560ea7f86c0c7fd03a0d

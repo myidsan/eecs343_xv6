@@ -19,6 +19,8 @@ extern void trapret(void);
 
 static void wakeup1(void *chan);
 
+struct spinlock growproclock;
+
 void
 pinit(void)
 {
@@ -115,6 +117,7 @@ userinit(void)
 int
 growproc(int n)
 {
+  /*
   uint sz;
   // acquire(&ptable.lock);
   struct proc *p;
@@ -151,6 +154,33 @@ growproc(int n)
   if(proc->isThread == 0) release(&proc->lock);
   else release(&proc->parent->lock);
   return 0;
+  */
+   uint sz;
+   struct proc *p;
+
+   pde_t* pgdirtemp = proc->pgdir;
+   sz = proc->sz;
+   if(n > 0){
+     if((sz = allocuvm(proc->pgdir, sz, sz + n)) == 0)
+       return -1;
+   } else if(n < 0){
+     if((sz = deallocuvm(proc->pgdir, sz, sz + n)) == 0)
+       return -1;
+   }
+   proc->sz = sz;
+   switchuvm(proc);
+
+   acquire(&ptable.lock);
+   for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+     if(p->pgdir == pgdirtemp){
+       p->sz = sz;
+       acquire(&growproclock);
+       switchuvm(p);
+       release(&growproclock);
+     }
+   }
+   release(&ptable.lock);
+   return 0;
 }
 
 // Create a new process copying p as the parent.
@@ -487,7 +517,8 @@ int
 clone(void(*fcn)(void*), void*arg, void* stack){
   int i, tid;
   struct proc *thread, *p;
-  int *retaddr, *myarg;
+  void *retaddr, *myarg;
+  uint load[2];
 
   // requirement 8
   if ((thread = allocproc()) == 0) {
@@ -495,9 +526,11 @@ clone(void(*fcn)(void*), void*arg, void* stack){
   }
 
   // check page allignment
+  /*
   if (!((uint)stack % PGSIZE) ) {
 	  return -1;
   }
+  */
 
   thread->isThread = 1; // requirement 11;
   thread->pgdir = proc->pgdir; // requirement 2
@@ -512,19 +545,25 @@ clone(void(*fcn)(void*), void*arg, void* stack){
   while (p->isThread == 1) {
     p = p->parent;
   }
+  load[0] = 0xffffffff;
+  load[1] = (uint)arg;
+  
 
   // requirement 7
-  retaddr = stack + PGSIZE - 2 * sizeof(int*);
-  *retaddr = 0xFFFFFFFF;
+  retaddr = stack + PGSIZE - 2 * sizeof(void*);
+  *(uint*)retaddr = 0xFFFFFFFF;
 
   // requirement 6
-  myarg = stack + PGSIZE - sizeof(int*); 
-  *myarg = (int)arg;
-  // requirement 4
-  proc->tf->eip = (int)fcn;
+  myarg = stack + PGSIZE - sizeof(void*); 
+  *(uint*)myarg = (uint)arg;
   // calling convention is to push esp to ebp, as mentioned in the wikipedia of calling conventions of os dev
-  thread->tf->esp = (int)(stack + PGSIZE - 2 * sizeof(int *));
+  thread->tf->esp = (uint)(stack);
+  memmove((void*)thread->tf->esp, stack, PGSIZE);
+  thread->tf->esp += PGSIZE - 2 * 4;
+  copyout(thread->pgdir, thread->tf->esp, load, 8);
   thread->tf->ebp = thread->tf->esp;
+  thread->tf->eip = (uint)fcn; // requirement 4
+  thread->tf->eax = 0;
   // requirement 3
   // taken from fork, nofile == number of files
   for(i = 0; i < NOFILE; i++)
@@ -532,20 +571,20 @@ clone(void(*fcn)(void*), void*arg, void* stack){
       thread->ofile[i] = filedup(proc->ofile[i]);
   thread->cwd = idup(proc->cwd);
 
-  safestrcpy(proc->name, thread->name, sizeof(proc->name));
 
   tid = thread->pid;
 
   acquire(&ptable.lock);
   thread->state = RUNNABLE;
   release(&ptable.lock);
+  safestrcpy(proc->name, thread->name, sizeof(proc->name));
  
   return tid;
 }
 
-/*
 int
 join(int pid)
 {
+  
+  return pid
 }
-*/

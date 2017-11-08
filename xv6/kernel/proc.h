@@ -77,7 +77,7 @@ struct proc {
   struct inode *cwd;           // Current directory
   char name[16];               // Process name (debugging)
   int isThread;				   // 0 is process, 1 if thread
-  char *ustack;				   // User Stack
+  char *ustack;				   // User Stack? do u mean thread stack?
   struct spinlock lock;        // Mutex
 };
 

@@ -582,9 +582,23 @@ clone(void(*fcn)(void*), void*arg, void* stack){
   return tid;
 }
 
+/*
 int
 join(int pid)
 {
+  // requirement 3 
+  // calling join on main thread(a process)
+  if (proc->pid == pid)
+    return -1;
+   
+  struct proc *p;
+  int havekids, pid;
+
+  acquire(&ptable.lock);
+
+
+
   
-  return pid
+  return pid;
 }
+*/

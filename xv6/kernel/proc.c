@@ -531,12 +531,13 @@ clone(void(*fcn)(void*), void*arg, void* stack){
 	  return -1;
   }
   */
-    if((uint)stack%PGSIZE != 0){
-      return -1;
-    }
-    if((proc->sz - (uint)stack) < PGSIZE){
-      return -1;
-    }
+  if((uint)stack%PGSIZE != 0){
+    return -1;
+  }
+
+  if((proc->sz - (uint)stack) < PGSIZE){
+    return -1;
+  }
 
   thread->isThread = 1; // requirement 11;
   thread->pgdir = proc->pgdir; // requirement 2

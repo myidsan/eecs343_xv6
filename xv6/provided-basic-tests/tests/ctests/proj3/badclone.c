@@ -31,10 +31,14 @@ main(int argc, char *argv[])
    assert(clone(worker, 0, stack) == -1);  // when stack is not page-aligned, clone should fail
 
    stack = sbrk(0);
+   // sbrk assigns additional memory to the user program
+   // here it is pointing the stack to be at the beginning of this user program memeory
    if((uint)stack % PGSIZE){
      stack = stack + (PGSIZE - (uint)stack % PGSIZE);
-   }
+   } // at this point the stack is page alligned but no memory is allocated yet
    sbrk( ((uint)stack - (uint)sbrk(0)) + PGSIZE/2 );
+   // sbrk here is allocating half PGSIZE to the user program her 
+   // starting from stack - sbrk(0)
    assert((uint)stack % PGSIZE == 0);
    assert((uint)sbrk(0) - (uint)stack == PGSIZE/2);
 

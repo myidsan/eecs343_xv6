@@ -252,11 +252,12 @@ exit(void)
 
   // Pass abandoned children to init.
   for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
-	if(p->parent == proc) { // check if it is a thread
+	  if(p->parent == proc) { // check if it is a thread
       if(p->isThread == 1) {
         kfree(p->kstack);
         p->kstack = 0;
         p->ustack = UNUSED;
+        p->state = ZOMBIE;
       }
       else {
         p->parent = initproc;
@@ -285,7 +286,7 @@ wait(void)
     // Scan through table looking for zombie children.
     havekids = 0;
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
-      if(p->parent != proc)
+      if(p->isThread == 1 || p->parent != proc)
         continue;
       havekids = 1;
       if(p->state == ZOMBIE){
@@ -591,26 +592,33 @@ clone(void(*fcn)(void*), void*arg, void* stack){
 int
 join(int pid)
 {
-  // requirement 3 
-  // calling join on main thread(a process)
   if (proc->pid == pid)
     return -1;
+ 
+  cprintf("trying to find %d in process %d.\n", pid, proc->pid);
 
   int havekids;
+  int found = 0;
   struct proc *p;
-   
-  //struct proc *p;
-  //int havekids, pid;
+  
 
   acquire(&ptable.lock);
   for(;;){
     havekids = 0;
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
-      if(p->parent != proc)
+      if(p->parent->pid != proc->pid || p -> isThread != 1)
         continue;
-      havekids = 1;
-      if(p->state == ZOMBIE) {
-        pid = p -> pid;
+      cprintf("thread's pid is(in kernel): %d while finding %d\n", p->pid, pid);
+      cprintf("thread %d parent pid is %d\n", p->pid, p->parent->pid);
+      cprintf("state of thread pid %d is %d\n", p->pid, p->state);
+      if(p->pid == pid) {
+        found = 1;
+      }
+
+      if(p->state == ZOMBIE && pid == p->pid) {
+        cprintf("releasing pid %d\n", pid);
+        havekids = 1;
+        kfree(p->kstack);
         p -> state = UNUSED;
         p -> pid = 0;
         p -> parent = 0;
@@ -620,12 +628,12 @@ join(int pid)
         return pid;
       }
     }
-    if(!havekids || proc -> killed) {
+    cprintf("%d is whether it found a thread or not\n", havekids);
+    if((havekids == 0 && found != 1) || proc -> killed) {
       release(&ptable.lock);
+      cprintf("couldn't find %d. exiting with -1\n", pid);
       return -1;
     }
     sleep(proc, &ptable.lock);
   }
-  
-  return pid;
 }

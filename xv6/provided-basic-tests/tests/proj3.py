@@ -19,6 +19,8 @@ test_values = [
   {'name': 'clone'},
   {'name': 'badclone'},
   {'name': 'join'},
+  {'name': 'join-2'},
+  {'name': 'join-3'},
 ]
 
 all_tests = []

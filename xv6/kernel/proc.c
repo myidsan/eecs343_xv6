@@ -285,7 +285,7 @@ wait(void)
     // Scan through table looking for zombie children.
     havekids = 0;
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
-      if(p->isThread == 1 || p->parent != proc)
+      if(p->parent != proc)
         continue;
       havekids = 1;
       if(p->state == ZOMBIE){
@@ -588,7 +588,6 @@ clone(void(*fcn)(void*), void*arg, void* stack){
   return tid;
 }
 
-/*
 int
 join(int pid)
 {
@@ -596,15 +595,37 @@ join(int pid)
   // calling join on main thread(a process)
   if (proc->pid == pid)
     return -1;
-   
+
+  int havekids;
   struct proc *p;
-  int havekids, pid;
+   
+  //struct proc *p;
+  //int havekids, pid;
 
   acquire(&ptable.lock);
-
-
-
+  for(;;){
+    havekids = 0;
+    for(p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
+      if(p->parent != proc)
+        continue;
+      havekids = 1;
+      if(p->state == ZOMBIE) {
+        pid = p -> pid;
+        p -> state = UNUSED;
+        p -> pid = 0;
+        p -> parent = 0;
+        p -> name[0] = 0;
+        p -> killed = 0;
+        release(&ptable.lock);
+        return pid;
+      }
+    }
+    if(!havekids || proc -> killed) {
+      release(&ptable.lock);
+      return -1;
+    }
+    sleep(proc, &ptable.lock);
+  }
   
   return pid;
 }
-*/

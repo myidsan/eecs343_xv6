@@ -103,12 +103,11 @@ sys_clone(void)
   return clone(fcn, arg, stack);
 }
 
-/*
 int 
 sys_join(void)
 {
   int pid;
-  if (argint(0, &pid, 4) < 0)
+  if (argint(0, &pid) < 0)
     return -1;
+  return join(pid);
 }
-*/

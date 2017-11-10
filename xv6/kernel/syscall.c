@@ -105,9 +105,14 @@ static int (*syscalls[])(void) = {
 [SYS_uptime]  sys_uptime,
 [SYS_clone]   sys_clone,
 [SYS_join]    sys_join,
+<<<<<<< HEAD
 [SYS_listproc] sys_listproc,
 //[SYS_cvwait]  sys_cvwait,
 //[SYS_cvsignal] sys_cvsignal,
+=======
+[SYS_cvwait]  sys_cvwait,
+[SYS_cvsignal] sys_cvsignal,
+>>>>>>> c78075218f76b73a88960cd69d0308590f26a2ba
 };
 
 // Called on a syscall trap. Checks that the syscall number (passed via eax)

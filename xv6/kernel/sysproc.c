@@ -111,7 +111,6 @@ sys_join(void)
     return -1;
   return join(pid);
 }
-/*
 int
 sys_cvwait(void)
 {
@@ -122,14 +121,12 @@ sys_cvwait(void)
   if(argptr(1, (void *)&temp, sizeof(void *)) < 0)
     return -1;
 
-  lock_t *lock = (lock_t *)temp;
+  struct lock_t *lock = (struct lock_t*)temp;
         
   cvwait(cv, lock);
         
   return 0;
 }
-*/
-/*
 int
 sys_cvsignal(void)
 {
@@ -142,9 +139,12 @@ sys_cvsignal(void)
 
   return 0;
 }
+<<<<<<< HEAD
 */
 int sys_listproc(void)
 {
   listproc();
   return 0;
 }
+=======
+>>>>>>> c78075218f76b73a88960cd69d0308590f26a2ba

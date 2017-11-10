@@ -31,6 +31,11 @@ SYSCALL(sleep)
 SYSCALL(uptime)
 SYSCALL(clone)
 SYSCALL(join)
+<<<<<<< HEAD
 SYSCALL(listproc)
 //SYSCALL(cvwait)
 //SYSCALL(cvsignal)
+=======
+SYSCALL(cvwait)
+SYSCALL(cvsignal)
+>>>>>>> c78075218f76b73a88960cd69d0308590f26a2ba

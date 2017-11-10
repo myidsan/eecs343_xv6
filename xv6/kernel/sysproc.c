@@ -111,3 +111,40 @@ sys_join(void)
     return -1;
   return join(pid);
 }
+/*
+int
+sys_cvwait(void)
+{
+  void *cv, *temp;
+
+  if(argptr(0, (void *)&cv, sizeof(void *)) < 0)
+    return -1;
+  if(argptr(1, (void *)&temp, sizeof(void *)) < 0)
+    return -1;
+
+  lock_t *lock = (lock_t *)temp;
+        
+  cvwait(cv, lock);
+        
+  return 0;
+}
+*/
+/*
+int
+sys_cvsignal(void)
+{
+  void *cv;
+    
+  if(argptr(0, (void *)&cv, sizeof(void *)) < 0)
+    return -1;
+
+  cvsignal(cv);
+
+  return 0;
+}
+*/
+int sys_listproc(void)
+{
+  listproc();
+  return 0;
+}

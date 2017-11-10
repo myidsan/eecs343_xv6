@@ -1,4 +1,5 @@
-/* Call clone to create a new thread.  Call join to wait for that new thread to complete.  join should return the pid of the completed thread and the changes made by the thread should now be seen by the original process. */
+/**/
+
 #include "types.h"
 #include "user.h"
 
@@ -24,6 +25,8 @@ int
 main(int argc, char *argv[])
 {
    ppid = getpid();
+   int main_join_pid = join(ppid);
+   assert(main_join_pid == -1);
 
    void *stack = malloc(PGSIZE*2);
    assert(stack != NULL);
@@ -33,18 +36,19 @@ main(int argc, char *argv[])
    int arg = 42;
    int new_thread_pid = clone(worker, &arg, stack);
    assert(new_thread_pid > 0);
-   printf(1, "join_pid should be %d\n.", new_thread_pid);
+   printf(1, "new_thread_pid: %d\n", new_thread_pid);
 
-   int new_thread_pid2 = clone(worker, &arg, stack);
-   assert(new_thread_pid2 > 0);
-
-   int join_pid2 = join(new_thread_pid2);
-   assert(join_pid2 == new_thread_pid2);
+   int non_new_thread_pid = new_thread_pid + 6; 
+   assert(new_thread_pid != non_new_thread_pid);
+   printf(1, "non_new_thread_pid: %d\n", non_new_thread_pid);
+   int wrong_join_pid = join(non_new_thread_pid);
+   printf(1, "wrong_join_pid:  %d\n", wrong_join_pid);
+   assert(wrong_join_pid == -1);
+   
 
    int join_pid = join(new_thread_pid);
    assert(join_pid == new_thread_pid);
-
-   assert(global == 3);
+   assert(global == 2);
 
    printf(1, "TEST PASSED\n");
    exit();
@@ -54,7 +58,7 @@ void
 worker(void *arg_ptr) {
    int arg = *(int*)arg_ptr;
    assert(arg == 42);
-   assert(global > 0);
+   assert(global == 1);
    global++;
    exit();
 }

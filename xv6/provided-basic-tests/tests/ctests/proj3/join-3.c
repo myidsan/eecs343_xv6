@@ -24,6 +24,7 @@ int
 main(int argc, char *argv[])
 {
    ppid = getpid();
+   printf(1, "parent pid is: %d\n", ppid);
 
    void *stack = malloc(PGSIZE*2);
    assert(stack != NULL);
@@ -35,18 +36,17 @@ main(int argc, char *argv[])
    assert(new_thread_pid > 0);
    printf(1, "join_pid should be %d\n.", new_thread_pid);
 
-   int new_thread_pid2 = clone(worker, &arg, stack);
-   assert(new_thread_pid2 > 0);
+   int fork_pid = fork();
+   if(fork_pid == 0) {
+     printf(1, "child pid is: %d\n", fork_pid);
 
-   int join_pid2 = join(new_thread_pid2);
-   assert(join_pid2 == new_thread_pid2);
-
-   int join_pid = join(new_thread_pid);
-   assert(join_pid == new_thread_pid);
-
-   assert(global == 3);
-
-   printf(1, "TEST PASSED\n");
+     int join_pid = join(new_thread_pid);
+     assert(join_pid == -1);
+     printf(1, "TEST PASSED\n");
+     exit();
+   }
+   assert(fork_pid > 0);
+   wait();
    exit();
 }
 

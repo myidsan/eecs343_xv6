@@ -16,11 +16,15 @@ def get_description(name):
   return desc.strip()
 
 test_values = [
+  #{'name': 'raceclone'},
+  {'name': 'killclone'},
   #{'name': 'clone'},
   #{'name': 'badclone'},
   #{'name': 'join'},
-  {'name': 'raceclone'},
-  {'name': 'killclone'},
+  #{'name': 'join-2'},
+  #{'name': 'join-3'},
+  #{'name': 'threadtest'},
+  #{'name': 'locktest'}
 ]
 
 all_tests = []

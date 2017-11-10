@@ -1,6 +1,8 @@
-/* When passing a non page-aligned stack to clone, clone should return -1. */
+/* when a thread exits it should not affect other thread. If it does it should return -1.*/
 #include "types.h"
 #include "user.h"
+#include "user.h"
+//#include "proc.h"
 
 #undef NULL
 #define NULL ((void*)0)
@@ -27,25 +29,24 @@ void worker(void *arg_ptr);
 int
 main(int argc, char *argv[])
 {
-   struct proc *p;
+   //struct proc *p;
 
    stackinit();
    ppid = getpid();
+
    assert(stack != NULL);
    block = malloc(32); 
    int clone_pid_one = clone(worker, 0 , stack);
-   p = ptable.proc[clone_pid_one];
-   printf(1, "p_name: %s\n", p);
-   int clone_pid_two = clone(worker, 0 ,stack);
-   kill(clone_pid_one);
-   while ((int)block != 32648) {
-     ;
-   }
-   printf(1, "parent: %d, clone_one: %d, clone_two: %d\n", ppid, clone_pid_one, clone_pid_two); 
-   assert((int)block == 32648);
-   // sbrk assigns additional memory to the user program
-   // here it is pointing the stack to be at the beginning of this user program memeory
-   // at this point the stack is page alligned but no memory is allocated yet
+   //p = ptable.proc[clone_pid_one];
+   //printf(1, "p_name: %s\n", p);
+   printf(1, "before procdump\n");
+   listproc();
+   printf(1, "initial procdump\n");
+   //int clone_pid_two = clone(worker, 0 ,stack);
+   //kill(clone_pid_one);
+   listproc();
+   printf(1, "parent: %d, clone_one: %d,", ppid, clone_pid_one); 
+   //printf(1, "parent: %d, clone_one: %d, clone_two: %d\n", ppid, clone_pid_one, clone_pid_two); 
 
    printf(1, "TEST PASSED\n");
    exit();
@@ -53,7 +54,6 @@ main(int argc, char *argv[])
 
 void
 worker(void *arg_ptr) {
-   //assert(stack == 40);
    block = malloc(32);
    exit();
 }

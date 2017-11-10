@@ -61,7 +61,7 @@ found:
     return 0;
   }
   sp = p->kstack + KSTACKSIZE;
-  cprintf("kalloc success\n");
+  //cprintf("kalloc success\n");
 
   // Leave room for trap frame.
   sp -= sizeof *p->tf;
@@ -77,7 +77,7 @@ found:
   memset(p->context, 0, sizeof *p->context);
   p->context->eip = (uint)forkret;
 
-  cprintf("before return success\n");
+  //cprintf("before return success\n");
   return p;
 }
 
@@ -526,11 +526,6 @@ clone(void(*fcn)(void*), void*arg, void* stack){
   }
 
   // check page allignment
-  /*
-  if (!((uint)stack % PGSIZE) ) {
-	  return -1;
-  }
-  */
   if((uint)stack%PGSIZE != 0){
     return -1;
   }

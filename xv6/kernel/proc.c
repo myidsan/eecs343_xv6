@@ -637,3 +637,33 @@ join(int pid)
     sleep(proc, &ptable.lock);
   }
 }
+/*
+void
+cvwait(void *chan, lock_t *lock)
+{
+  acquire(&ptable.lock);  
+  xchg(&lock->lock, 0); //unlock
+     
+  proc->lock = lock;//store the user lock
+  proc->chan = chan;
+  proc->state = SLEEPING;
+  sched();
+  proc->chan = 0;
+  release(&ptable.lock);
+  while(xchg(&lock->lock, 1)!=0);//lock
+}
+*/
+
+/*
+void
+cvsignal(void *chan)
+{
+  struct proc *p;
+
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++)
+    if(p->state == SLEEPING && p->chan == chan) {
+      p->state = RUNNABLE;
+      break;
+    }
+}
+*/

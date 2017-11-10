@@ -2,6 +2,15 @@
 #define _USER_H_
 
 struct stat;
+struct lock_t {
+  uint locked;
+};
+
+/*
+typedef struct {
+  lock_t *lock;
+} cond_t;
+*/
 
 // system calls
 int fork(void);
@@ -27,7 +36,6 @@ int sleep(int);
 int uptime(void);
 int clone(void*, void*, void*);
 int join(int);
-// clone comes here
 
 // user library functions (ulib.c)
 int stat(char*, struct stat*);
@@ -42,6 +50,15 @@ void* memset(void*, int, uint);
 void* malloc(uint);
 void free(void*);
 int atoi(const char*);
+
+// uthreadlib.c
+int thread_create(void(*start_routine) (void*), void *arg);
+int thread_join(int);
+void lock_init(struct lock_t*);
+void lock_acquire(struct lock_t*); 
+void lock_release(struct lock_t*);
+//void cvwait(struct cond_t*, struct lock_t*);
+//void cvsignal(struct cond_t*);
 
 #endif // _USER_H_
 

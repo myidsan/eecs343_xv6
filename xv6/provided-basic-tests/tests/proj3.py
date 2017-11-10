@@ -21,6 +21,8 @@ test_values = [
   {'name': 'join'},
   {'name': 'join-2'},
   {'name': 'join-3'},
+  {'name': 'threadtest'},
+  {'name': 'locktest'}
 ]
 
 all_tests = []

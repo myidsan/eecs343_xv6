@@ -42,11 +42,11 @@ main(int argc, char *argv[])
 
      int join_pid = join(new_thread_pid);
      assert(join_pid == -1);
-
-     printf(1, "TEST PASSED");
+     printf(1, "TEST PASSED\n");
      exit();
    }
    assert(fork_pid > 0);
+   wait();
    exit();
 }
 

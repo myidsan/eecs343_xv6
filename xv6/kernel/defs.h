@@ -112,14 +112,10 @@ int             wait(void);
 void            wakeup(void*);
 void            yield(void);
 int   	        clone(void(*fcn)(void*), void *, void*);
-<<<<<<< HEAD
 int     		join(int);
 int 			listproc(void);
-=======
-int     		   	join(int);
 void            cvwait(void *, struct lock_t*); 
 void            cvsignal(void*); 
->>>>>>> c78075218f76b73a88960cd69d0308590f26a2ba
 
 // swtch.S
 void            swtch(struct context**, struct context*);

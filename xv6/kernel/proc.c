@@ -402,7 +402,7 @@ forkret(void)
 // Reacquires lock when awakened.
 void
 sleep(void *chan, struct spinlock *lk)
-k
+{
   if(proc == 0)
     panic("sleep");
 
@@ -534,35 +534,33 @@ clone(void(*fcn)(void*), void*arg, void* stack){
     return -1;
   }
 
-<<<<<<< HEAD
   // check page allignment
   if((uint)stack%PGSIZE != 0){
     return -1;
   }
 
-=======
   if((uint)stack%PGSIZE != 0){
     return -1;
   }
->>>>>>> c78075218f76b73a88960cd69d0308590f26a2ba
   if((proc->sz - (uint)stack) < PGSIZE){
     return -1;
   }
-
-  thread->isThread = 1; // requirement 11;
-  thread->pgdir = proc->pgdir; // requirement 2
-  thread->sz = proc->sz;
-  thread->parent = proc;
-  thread->killed = 0; // non-zero have been killed
-  thread->ustack = (char*)stack; // requirement 5
-  *(thread->tf) = *(proc->tf); // trap frame holds register values
-
-  // find the top parent 
-  // requirement 9
+  
   p = proc;
   while (p->isThread == 1) {
     p = p->parent;
   }
+
+  thread->isThread = 1; // requirement 11;
+  thread->pgdir = p->pgdir; // requirement 2
+  thread->sz = p->sz;
+  thread->parent = p;
+  thread->killed = 0; // non-zero have been killed
+  thread->ustack = (char*)stack; // requirement 5
+  *(thread->tf) = *(p->tf); // trap frame holds register values
+
+  // find the top parent 
+  // requirement 9
   load[0] = 0xffffffff;
   load[1] = (uint)arg;
   
@@ -585,9 +583,9 @@ clone(void(*fcn)(void*), void*arg, void* stack){
   // requirement 3
   // taken from fork, nofile == number of files
   for(i = 0; i < NOFILE; i++)
-    if(proc->ofile[i])
-      thread->ofile[i] = filedup(proc->ofile[i]);
-  thread->cwd = idup(proc->cwd);
+    if(p->ofile[i])
+      thread->ofile[i] = filedup(p->ofile[i]);
+  thread->cwd = idup(p->cwd);
 
 
   tid = thread->pid;
@@ -595,7 +593,7 @@ clone(void(*fcn)(void*), void*arg, void* stack){
   acquire(&ptable.lock);
   thread->state = RUNNABLE;
   release(&ptable.lock);
-  safestrcpy(proc->name, thread->name, sizeof(proc->name));
+  safestrcpy(p->name, thread->name, sizeof(p->name));
  
   return tid;
 }

@@ -5,9 +5,65 @@ build xv6 using make
 
 Trying to clean project using make clean
 make clean
-<<<<<<< HEAD
+Makefile:151: kernel/bio.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: kernel/console.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: kernel/exec.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: kernel/file.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: kernel/fs.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: kernel/ide.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: kernel/ioapic.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: kernel/kalloc.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: kernel/kbd.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: kernel/lapic.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: kernel/main.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: kernel/mp.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: kernel/picirq.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: kernel/pipe.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: kernel/proc.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: kernel/spinlock.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: kernel/string.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: kernel/swtch.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: kernel/syscall.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: kernel/sysfile.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: kernel/sysproc.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: kernel/timer.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: kernel/trapasm.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: kernel/trap.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: kernel/uart.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: kernel/vectors.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: kernel/vm.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: kernel/bootmain.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: kernel/bootasm.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: kernel/multiboot.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: kernel/data.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: kernel/bootother.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: kernel/initcode.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: user/cat.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: user/echo.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: user/forktest.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: user/grep.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: user/init.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: user/kill.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: user/ln.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: user/ls.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: user/mkdir.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: user/rm.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: user/sh.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: user/stressfs.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: user/tester.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: user/usertests.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: user/wc.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: user/zombie.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: user/clone.d: 그런 파일이나 디렉터리가 없습니다
 Makefile:151: user/threadtest.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: user/ulib.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: user/usys.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: user/printf.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: user/umalloc.d: 그런 파일이나 디렉터리가 없습니다
 Makefile:151: user/uthreadlib.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: tools/mkfs.d: 그런 파일이나 디렉터리가 없습니다
+gcc  -iquote include -Wall -Werror -ggdb  \
+	  -M -MG tools/mkfs.c -MF tools/mkfs.d -MT tools/mkfs.d -MT tools/mkfs.o
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
 		-M -MG user/uthreadlib.c -MF user/uthreadlib.d -MT user/uthreadlib.d -MT user/uthreadlib.o
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
@@ -57,11 +113,26 @@ gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
 		-M -MG kernel/initcode.S -MF kernel/initcode.d -MT kernel/initcode.d -MT kernel/initcode.o
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG kernel/bootother.S -MF kernel/bootother.d -MT kernel/bootother.d -MT kernel/bootother.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG kernel/data.S -MF kernel/data.d -MT kernel/data.d -MT kernel/data.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG kernel/multiboot.S -MF kernel/multiboot.d -MT kernel/multiboot.d -MT kernel/multiboot.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG kernel/bootasm.S -MF kernel/bootasm.d -MT kernel/bootasm.d -MT kernel/bootasm.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG kernel/bootmain.c -MF kernel/bootmain.d -MT kernel/bootmain.d -MT kernel/bootmain.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
 		-M -MG kernel/vm.c -MF kernel/vm.d -MT kernel/vm.d -MT kernel/vm.o
+perl kernel/vectors.pl > kernel/vectors.S
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG kernel/vectors.S -MF kernel/vectors.d -MT kernel/vectors.d -MT kernel/vectors.o
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
 		-M -MG kernel/uart.c -MF kernel/uart.d -MT kernel/uart.d -MT kernel/uart.o
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
 		-M -MG kernel/trap.c -MF kernel/trap.d -MT kernel/trap.d -MT kernel/trap.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG kernel/trapasm.S -MF kernel/trapasm.d -MT kernel/trapasm.d -MT kernel/trapasm.o
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
 		-M -MG kernel/timer.c -MF kernel/timer.d -MT kernel/timer.d -MT kernel/timer.o
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
@@ -71,11 +142,17 @@ gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
 		-M -MG kernel/syscall.c -MF kernel/syscall.d -MT kernel/syscall.d -MT kernel/syscall.o
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG kernel/swtch.S -MF kernel/swtch.d -MT kernel/swtch.d -MT kernel/swtch.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG kernel/string.c -MF kernel/string.d -MT kernel/string.d -MT kernel/string.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
 		-M -MG kernel/spinlock.c -MF kernel/spinlock.d -MT kernel/spinlock.d -MT kernel/spinlock.o
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
 		-M -MG kernel/proc.c -MF kernel/proc.d -MT kernel/proc.d -MT kernel/proc.o
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
 		-M -MG kernel/pipe.c -MF kernel/pipe.d -MT kernel/pipe.d -MT kernel/pipe.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG kernel/picirq.c -MF kernel/picirq.d -MT kernel/picirq.d -MT kernel/picirq.o
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
 		-M -MG kernel/mp.c -MF kernel/mp.d -MT kernel/mp.d -MT kernel/mp.o
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
@@ -100,8 +177,6 @@ gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-
 		-M -MG kernel/console.c -MF kernel/console.d -MT kernel/console.d -MT kernel/console.o
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
 		-M -MG kernel/bio.c -MF kernel/bio.d -MT kernel/bio.d -MT kernel/bio.o
-=======
->>>>>>> c78075218f76b73a88960cd69d0308590f26a2ba
 rm -rf kernel/bio.o kernel/console.o kernel/exec.o kernel/file.o kernel/fs.o kernel/ide.o kernel/ioapic.o kernel/kalloc.o kernel/kbd.o kernel/lapic.o kernel/main.o kernel/mp.o kernel/picirq.o kernel/pipe.o kernel/proc.o kernel/spinlock.o kernel/string.o kernel/swtch.o kernel/syscall.o kernel/sysfile.o kernel/sysproc.o kernel/timer.o kernel/trapasm.o kernel/trap.o kernel/uart.o kernel/vectors.o kernel/vm.o kernel/bootmain.o kernel/bootasm.o kernel/multiboot.o kernel/data.o kernel/bootother.o kernel/initcode.o kernel/bio.d kernel/console.d kernel/exec.d kernel/file.d kernel/fs.d kernel/ide.d kernel/ioapic.d kernel/kalloc.d kernel/kbd.d kernel/lapic.d kernel/main.d kernel/mp.d kernel/picirq.d kernel/pipe.d kernel/proc.d kernel/spinlock.d kernel/string.d kernel/swtch.d kernel/syscall.d kernel/sysfile.d kernel/sysproc.d kernel/timer.d kernel/trapasm.d kernel/trap.d kernel/uart.d kernel/vectors.d kernel/vm.d kernel/bootmain.d kernel/bootasm.d kernel/multiboot.d kernel/data.d kernel/bootother.d kernel/initcode.d kernel/vectors.S kernel/bootblock kernel/bootblock.out kernel/bootother.out kernel/initcode.out kernel/kernel bootother initcode xv6.img user/bin user/cat user/echo user/forktest user/grep user/init user/kill user/ln user/ls user/mkdir user/rm user/sh user/stressfs user/tester user/usertests user/wc user/zombie user/clone user/threadtest user/cat.o user/echo.o user/forktest.o user/grep.o user/init.o user/kill.o user/ln.o user/ls.o user/mkdir.o user/rm.o user/sh.o user/stressfs.o user/tester.o user/usertests.o user/wc.o user/zombie.o user/clone.o user/threadtest.o user/ulib.o user/usys.o user/printf.o user/umalloc.o user/uthreadlib.o user/cat.d user/echo.d user/forktest.d user/grep.d user/init.d user/kill.d user/ln.d user/ls.d user/mkdir.d user/rm.d user/sh.d user/stressfs.d user/tester.d user/usertests.d user/wc.d user/zombie.d user/clone.d user/threadtest.d user/ulib.d user/usys.d user/printf.d user/umalloc.d user/uthreadlib.d tools/mkfs tools/mkfs.o tools/mkfs.d fs fs.img .gdbinit .bochsrc dist
 find . -type f | xargs touch
 rm -rf 
@@ -334,27 +409,15 @@ ld  -m    elf_i386 -nostdlib --omagic \
 dd if=/dev/zero of=xv6.img count=10000
 10000+0 records in
 10000+0 records out
-<<<<<<< HEAD
-5120000 bytes (5.1 MB) copied, 0.0121307 s, 422 MB/s
+5120000 bytes (5.1 MB) copied, 0.0162246 s, 316 MB/s
 dd if=kernel/bootblock of=xv6.img conv=notrunc
 1+0 records in
 1+0 records out
-512 bytes (512 B) copied, 7.2432e-05 s, 7.1 MB/s
-dd if=kernel/kernel of=xv6.img seek=1 conv=notrunc
-267+1 records in
-267+1 records out
-137004 bytes (137 kB) copied, 0.000290425 s, 472 MB/s
-=======
-5120000 bytes (5.1 MB) copied, 0.0121559 s, 421 MB/s
-dd if=kernel/bootblock of=xv6.img conv=notrunc
-1+0 records in
-1+0 records out
-512 bytes (512 B) copied, 6.9328e-05 s, 7.4 MB/s
+512 bytes (512 B) copied, 7.2172e-05 s, 7.1 MB/s
 dd if=kernel/kernel of=xv6.img seek=1 conv=notrunc
 266+1 records in
 266+1 records out
-136395 bytes (136 kB) copied, 0.000290811 s, 469 MB/s
->>>>>>> c78075218f76b73a88960cd69d0308590f26a2ba
+136629 bytes (137 kB) copied, 0.000295195 s, 463 MB/s
 gcc -c  -iquote include -Wall -Werror -ggdb  -o tools/mkfs.o tools/mkfs.c
 gcc  tools/mkfs.o -o tools/mkfs
 mkdir -p fs
@@ -440,11 +503,7 @@ forktest
 kill
 ls
 threadtest
-<<<<<<< HEAD
-balloc: first 527 blocks have been allocated
-=======
-balloc: first 538 blocks have been allocated
->>>>>>> c78075218f76b73a88960cd69d0308590f26a2ba
+balloc: first 540 blocks have been allocated
 balloc: write bitmap block at sector 28
 rm user/bin/stressfs user/bin/grep user/bin/tester user/bin/kill user/bin/cat user/bin/mkdir user/bin/init user/bin/rm user/bin/threadtest user/bin/echo user/bin/ls user/bin/ln user/bin/usertests user/bin/sh user/bin/wc user/bin/zombie user/bin/clone
 
@@ -456,17 +515,10 @@ Finished running test build
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 **********************************************************************
-<<<<<<< HEAD
-Start running test killclone
-Description: when a thread exits it should not affect other thread. If it does it should return -1.
+Start running test raceclone
+Description: When passing a non page-aligned stack to clone, clone should return -1.
 
-Running xv6 user progam /home/slw579/eecs343/eecs343-ps/xv6/provided-basic-tests/tests/ctests/proj3/killclone.c
-=======
-Start running test clone
-Description: Call clone and spin until child thread has changed global variable.  Verifies that address space is shared.
-
-Running xv6 user progam /home/ghj1452/343-ps/xv6/provided-basic-tests/tests/ctests/proj3/clone.c
->>>>>>> c78075218f76b73a88960cd69d0308590f26a2ba
+Running xv6 user progam /home/slw579/eecs343/eecs343-ps/xv6/provided-basic-tests/tests/ctests/proj3/raceclone.c
 Trying to build project using make
 make
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
@@ -495,11 +547,7 @@ forktest
 kill
 ls
 threadtest
-<<<<<<< HEAD
-balloc: first 529 blocks have been allocated
-=======
-balloc: first 540 blocks have been allocated
->>>>>>> c78075218f76b73a88960cd69d0308590f26a2ba
+balloc: first 543 blocks have been allocated
 balloc: write bitmap block at sector 28
 rm user/bin/tester
 make qemu-nox 
@@ -515,20 +563,101 @@ xv6...
 lapicinit: 1 0xfee00000
 cpu1: starting
 cpu0: starting
-<<<<<<< HEAD
 init: starting sh
 $ tester
 tester
-before procdump
-1 sleep  init 0 1044d1 1042c9 105fba 105217 106471 106265
-2 sleep  sh 0 1044d1 1042c9 105fba 105217 106471 106265
-3 run     0
-4 zombie  0
-initial procdump
-1 sleep  init 0 1044d1 1042c9 105fba 105217 106471 106265
-2 sleep  sh 0 1044d1 1042c9 105fba 105217 106471 106265
-3 run     0
-4 zombie  0
+before stack: 32768
+before block: 0
+after block: 32728
+first clone block: 32728
+second clone block: 32648
+after block: 32768
+after block: 32648
+TEST PASSED
+
+
+test raceclone PASSED
+Description: When passing a non page-aligned stack to clone, clone should return -1.
+
+Finished running test raceclone
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**********************************************************************
+Start running test killclone
+Description: when a thread exits it should not affect other thread. If it does it should return -1.
+
+Running xv6 user progam /home/slw579/eecs343/eecs343-ps/xv6/provided-basic-tests/tests/ctests/proj3/killclone.c
+Trying to build project using make
+make
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG user/tester.c -MF user/tester.d -MT user/tester.d -MT user/tester.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 -c -o user/tester.o user/tester.c
+ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/tester user/tester.o user/ulib.o user/usys.o user/printf.o user/umalloc.o user/uthreadlib.o
+cp user/bin/tester fs/tester
+./tools/mkfs fs.img fs
+used 29 (bit 1 ninode 26) free 29 total 1024
+README
+echo
+cat
+clone
+init
+ln
+zombie
+tester
+sh
+grep
+stressfs
+usertests
+rm
+mkdir
+wc
+forktest
+kill
+ls
+threadtest
+balloc: first 544 blocks have been allocated
+balloc: write bitmap block at sector 28
+rm user/bin/tester
+make qemu-nox 
+Ctrl+a h for help
+/home/software/qemu/bin/qemu-system-i386 -nographic -hdb fs.img xv6.img -smp 2
+WARNING: Image format was not specified for 'fs.img' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+WARNING: Image format was not specified for 'xv6.img' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+xv6...
+lapicinit: 1 0xfee00000
+cpu1: starting
+cpu0: starting
+init: starting sh
+$ tester
+tester
+trying to find 4 in process 3.
+thread's pid is(in kernel): 4 while finding 4
+thread 4 parent pid is 3
+state of thread pid 4 is 4
+0 is whether it found a thread or not
+entered worker1
+finished worker1
+entered worker2
+thread's pid is(in kernel): 4 while finding 4
+thread 4 parent pid is 3
+state of thread pid 4 is 5
+releasing pid 4
+trying to find 5 in process 3.
+thread's pid is(in kernel): 5 while finding 5
+thread 5 parent pid is 3
+state of thread pid 5 is 4
+0 is whether it found a thread or not
+starting work for worker2
+finished work for worker2
+thread's pid is(in kernel): 5 while finding 5
+thread 5 parent pid is 3
+state of thread pid 5 is 5
+releasing pid 5
+1
 parent: 3, clone_one: 4,TEST PASSED
 
 
@@ -538,120 +667,11 @@ Description: when a thread exits it should not affect other thread. If it does i
 Finished running test killclone
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-
 **********************************************************************
-**********************************************************************
-**                            SUMMARY                               **
-**********************************************************************
-**********************************************************************
-
-test build PASSED (5 of 5)
-build xv6 using make
-
-test killclone PASSED
-Description: when a thread exits it should not affect other thread. If it does it should return -1.
-
-Passed 2 of 2 tests.
-Overall 2 of 2
-Points 5 of 5
-=======
-kalloc success
-before return success
-init: starting sh
-kalloc success
-before return success
-$ tester
-tester
-kalloc success
-before return success
-kalloc success
-before return success
-global: 5
-TEST PASSED
-
-
-test clone PASSED
+Start running test clone
 Description: Call clone and spin until child thread has changed global variable.  Verifies that address space is shared.
 
-Finished running test clone
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-**********************************************************************
-Start running test badclone
-Description: When passing a non page-aligned stack to clone, clone should return -1.
-
-Running xv6 user progam /home/ghj1452/343-ps/xv6/provided-basic-tests/tests/ctests/proj3/badclone.c
-Trying to build project using make
-make
-gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
-		-M -MG user/tester.c -MF user/tester.d -MT user/tester.d -MT user/tester.o
-gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 -c -o user/tester.o user/tester.c
-ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/tester user/tester.o user/ulib.o user/usys.o user/printf.o user/umalloc.o user/uthreadlib.o
-cp user/bin/tester fs/tester
-./tools/mkfs fs.img fs
-used 29 (bit 1 ninode 26) free 29 total 1024
-README
-echo
-cat
-clone
-init
-ln
-zombie
-tester
-sh
-grep
-stressfs
-usertests
-rm
-mkdir
-wc
-forktest
-kill
-ls
-threadtest
-balloc: first 541 blocks have been allocated
-balloc: write bitmap block at sector 28
-rm user/bin/tester
-make qemu-nox 
-Ctrl+a h for help
-/home/software/qemu/bin/qemu-system-i386 -nographic -hdb fs.img xv6.img -smp 2
-WARNING: Image format was not specified for 'fs.img' and probing guessed raw.
-         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
-         Specify the 'raw' format explicitly to remove the restrictions.
-WARNING: Image format was not specified for 'xv6.img' and probing guessed raw.
-         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
-         Specify the 'raw' format explicitly to remove the restrictions.
-xv6...
-lapicinit: 1 0xfee00000
-cpu1: starting
-cpu0: starting
-kalloc success
-before return success
-init: starting sh
-kalloc success
-before return success
-$ tester
-tester
-kalloc success
-before return success
-kalloc success
-before return success
-kalloc success
-before return success
-TEST PASSED
-
-
-test badclone PASSED
-Description: When passing a non page-aligned stack to clone, clone should return -1.
-
-Finished running test badclone
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-**********************************************************************
-Start running test join
-Description: Call clone to create a new thread.  Call join to wait for that new thread to complete.  join should return the pid of the completed thread and the changes made by the thread should now be seen by the original process.
-
-Running xv6 user progam /home/ghj1452/343-ps/xv6/provided-basic-tests/tests/ctests/proj3/join.c
+Running xv6 user progam /home/slw579/eecs343/eecs343-ps/xv6/provided-basic-tests/tests/ctests/proj3/clone.c
 Trying to build project using make
 make
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
@@ -696,21 +716,133 @@ xv6...
 lapicinit: 1 0xfee00000
 cpu1: starting
 cpu0: starting
-kalloc success
-before return success
 init: starting sh
-kalloc success
-before return success
 $ tester
 tester
-kalloc success
-before return success
-kalloc success
-before return success
+global: 5
+TEST PASSED
+
+
+test clone PASSED
+Description: Call clone and spin until child thread has changed global variable.  Verifies that address space is shared.
+
+Finished running test clone
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**********************************************************************
+Start running test badclone
+Description: When passing a non page-aligned stack to clone, clone should return -1.
+
+Running xv6 user progam /home/slw579/eecs343/eecs343-ps/xv6/provided-basic-tests/tests/ctests/proj3/badclone.c
+Trying to build project using make
+make
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG user/tester.c -MF user/tester.d -MT user/tester.d -MT user/tester.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 -c -o user/tester.o user/tester.c
+ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/tester user/tester.o user/ulib.o user/usys.o user/printf.o user/umalloc.o user/uthreadlib.o
+cp user/bin/tester fs/tester
+./tools/mkfs fs.img fs
+used 29 (bit 1 ninode 26) free 29 total 1024
+README
+echo
+cat
+clone
+init
+ln
+zombie
+tester
+sh
+grep
+stressfs
+usertests
+rm
+mkdir
+wc
+forktest
+kill
+ls
+threadtest
+balloc: first 543 blocks have been allocated
+balloc: write bitmap block at sector 28
+rm user/bin/tester
+make qemu-nox 
+Ctrl+a h for help
+/home/software/qemu/bin/qemu-system-i386 -nographic -hdb fs.img xv6.img -smp 2
+WARNING: Image format was not specified for 'fs.img' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+WARNING: Image format was not specified for 'xv6.img' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+xv6...
+lapicinit: 1 0xfee00000
+cpu1: starting
+cpu0: starting
+init: starting sh
+$ tester
+tester
+TEST PASSED
+
+test badclone PASSED
+Description: When passing a non page-aligned stack to clone, clone should return -1.
+
+Finished running test badclone
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**********************************************************************
+Start running test join
+Description: Call clone to create a new thread.  Call join to wait for that new thread to complete.  join should return the pid of the completed thread and the changes made by the thread should now be seen by the original process.
+
+Running xv6 user progam /home/slw579/eecs343/eecs343-ps/xv6/provided-basic-tests/tests/ctests/proj3/join.c
+Trying to build project using make
+make
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG user/tester.c -MF user/tester.d -MT user/tester.d -MT user/tester.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 -c -o user/tester.o user/tester.c
+ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/tester user/tester.o user/ulib.o user/usys.o user/printf.o user/umalloc.o user/uthreadlib.o
+cp user/bin/tester fs/tester
+./tools/mkfs fs.img fs
+used 29 (bit 1 ninode 26) free 29 total 1024
+README
+echo
+cat
+clone
+init
+ln
+zombie
+tester
+sh
+grep
+stressfs
+usertests
+rm
+mkdir
+wc
+forktest
+kill
+ls
+threadtest
+balloc: first 544 blocks have been allocated
+balloc: write bitmap block at sector 28
+rm user/bin/tester
+make qemu-nox 
+Ctrl+a h for help
+/home/software/qemu/bin/qemu-system-i386 -nographic -hdb fs.img xv6.img -smp 2
+WARNING: Image format was not specified for 'fs.img' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+WARNING: Image format was not specified for 'xv6.img' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+xv6...
+lapicinit: 1 0xfee00000
+cpu1: starting
+cpu0: starting
+init: starting sh
+$ tester
+tester
 join_pid should be 4
-.kalloc success
-before return success
-trying to find 5 in process 3.
+.trying to find 5 in process 3.
 thread's pid is(in kernel): 4 while finding 5
 thread 4 parent pid is 3
 state of thread pid 4 is 5
@@ -718,15 +850,560 @@ thread's pid is(in kernel): 5 while finding 5
 thread 5 parent pid is 3
 state of thread pid 5 is 5
 releasing pid 5
-cpu1: panic: kfree
+trying to find 4 in process 3.
+thread's pid is(in kernel): 4 while finding 4
+thread 4 parent pid is 3
+state of thread pid 4 is 5
+releasing pid 4
+TEST PASSED
 
 
-test join FAILED
+test join PASSED
 Description: Call clone to create a new thread.  Call join to wait for that new thread to complete.  join should return the pid of the completed thread and the changes made by the thread should now be seen by the original process.
- xv6 kernel panic
 
 Finished running test join
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Skipped 4 tests.
-To keep testing after failing a test, use flag '-c' or '--continue'
->>>>>>> c78075218f76b73a88960cd69d0308590f26a2ba
+
+**********************************************************************
+Start running test join-2
+Description:
+
+Running xv6 user progam /home/slw579/eecs343/eecs343-ps/xv6/provided-basic-tests/tests/ctests/proj3/join-2.c
+Trying to build project using make
+make
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG user/tester.c -MF user/tester.d -MT user/tester.d -MT user/tester.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 -c -o user/tester.o user/tester.c
+ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/tester user/tester.o user/ulib.o user/usys.o user/printf.o user/umalloc.o user/uthreadlib.o
+cp user/bin/tester fs/tester
+./tools/mkfs fs.img fs
+used 29 (bit 1 ninode 26) free 29 total 1024
+README
+echo
+cat
+clone
+init
+ln
+zombie
+tester
+sh
+grep
+stressfs
+usertests
+rm
+mkdir
+wc
+forktest
+kill
+ls
+threadtest
+balloc: first 544 blocks have been allocated
+balloc: write bitmap block at sector 28
+rm user/bin/tester
+make qemu-nox 
+Ctrl+a h for help
+/home/software/qemu/bin/qemu-system-i386 -nographic -hdb fs.img xv6.img -smp 2
+WARNING: Image format was not specified for 'fs.img' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+WARNING: Image format was not specified for 'xv6.img' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+xv6...
+lapicinit: 1 0xfee00000
+cpu1: starting
+cpu0: starting
+init: starting sh
+$ tester
+tester
+new_thread_pid: 4
+non_new_thread_pid: 10
+trying to find 10 in process 3.
+thread's pid is(in kernel): 4 while finding 10
+thread 4 parent pid is 3
+state of thread pid 4 is 5
+0 is whether it found a thread or not
+couldn't find 10. exiting with -1
+wrong_join_pid:  -1
+trying to find 4 in process 3.
+thread's pid is(in kernel): 4 while finding 4
+thread 4 parent pid is 3
+state of thread pid 4 is 5
+releasing pid 4
+TEST PASSED
+
+
+test join-2 PASSED
+Description:
+
+Finished running test join-2
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**********************************************************************
+Start running test join-3
+Description: Call clone to create a new thread.  Call join to wait for that new thread to complete.  join should return the pid of the completed thread and the changes made by the thread should now be seen by the original process.
+
+Running xv6 user progam /home/slw579/eecs343/eecs343-ps/xv6/provided-basic-tests/tests/ctests/proj3/join-3.c
+Trying to build project using make
+make
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG user/tester.c -MF user/tester.d -MT user/tester.d -MT user/tester.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 -c -o user/tester.o user/tester.c
+ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/tester user/tester.o user/ulib.o user/usys.o user/printf.o user/umalloc.o user/uthreadlib.o
+cp user/bin/tester fs/tester
+./tools/mkfs fs.img fs
+used 29 (bit 1 ninode 26) free 29 total 1024
+README
+echo
+cat
+clone
+init
+ln
+zombie
+tester
+sh
+grep
+stressfs
+usertests
+rm
+mkdir
+wc
+forktest
+kill
+ls
+threadtest
+balloc: first 543 blocks have been allocated
+balloc: write bitmap block at sector 28
+rm user/bin/tester
+make qemu-nox 
+Ctrl+a h for help
+/home/software/qemu/bin/qemu-system-i386 -nographic -hdb fs.img xv6.img -smp 2
+WARNING: Image format was not specified for 'fs.img' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+WARNING: Image format was not specified for 'xv6.img' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+xv6...
+lapicinit: 1 0xfee00000
+cpu1: starting
+cpu0: starting
+init: starting sh
+$ tester
+tester
+parent pid is: 3
+join_pid should be 4
+.child pid is: 0
+trying to find 4 in process 5.
+0 is whether it found a thread or not
+couldn't find 4. exiting with -1
+TEST PASSED
+
+
+test join-3 PASSED
+Description: Call clone to create a new thread.  Call join to wait for that new thread to complete.  join should return the pid of the completed thread and the changes made by the thread should now be seen by the original process.
+
+Finished running test join-3
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**********************************************************************
+Start running test threadtest
+Description: thread user library functions, testing thread functions
+
+Running xv6 user progam /home/slw579/eecs343/eecs343-ps/xv6/provided-basic-tests/tests/ctests/proj3/threadtest.c
+Trying to build project using make
+make
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG user/tester.c -MF user/tester.d -MT user/tester.d -MT user/tester.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 -c -o user/tester.o user/tester.c
+ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/tester user/tester.o user/ulib.o user/usys.o user/printf.o user/umalloc.o user/uthreadlib.o
+cp user/bin/tester fs/tester
+./tools/mkfs fs.img fs
+used 29 (bit 1 ninode 26) free 29 total 1024
+README
+echo
+cat
+clone
+init
+ln
+zombie
+tester
+sh
+grep
+stressfs
+usertests
+rm
+mkdir
+wc
+forktest
+kill
+ls
+threadtest
+balloc: first 543 blocks have been allocated
+balloc: write bitmap block at sector 28
+rm user/bin/tester
+make qemu-nox 
+Ctrl+a h for help
+/home/software/qemu/bin/qemu-system-i386 -nographic -hdb fs.img xv6.img -smp 2
+WARNING: Image format was not specified for 'fs.img' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+WARNING: Image format was not specified for 'xv6.img' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+xv6...
+lapicinit: 1 0xfee00000
+cpu1: starting
+cpu0: starting
+init: starting sh
+$ tester
+tester
+pid = 4
+trying to find 4 in process 3.
+thread's pid is(in kernel): 4 while finding 4
+thread 4 parent pid is 3
+state of thread pid 4 is 5
+releasing pid 4
+TEST PASSED
+
+
+test threadtest PASSED
+Description: thread user library functions, testing thread functions
+
+Finished running test threadtest
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**********************************************************************
+Start running test locktest
+Description: thread user library functions, testing lock
+
+Running xv6 user progam /home/slw579/eecs343/eecs343-ps/xv6/provided-basic-tests/tests/ctests/proj3/locktest.c
+Trying to build project using make
+make
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG user/tester.c -MF user/tester.d -MT user/tester.d -MT user/tester.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 -c -o user/tester.o user/tester.c
+ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/tester user/tester.o user/ulib.o user/usys.o user/printf.o user/umalloc.o user/uthreadlib.o
+cp user/bin/tester fs/tester
+./tools/mkfs fs.img fs
+used 29 (bit 1 ninode 26) free 29 total 1024
+README
+echo
+cat
+clone
+init
+ln
+zombie
+tester
+sh
+grep
+stressfs
+usertests
+rm
+mkdir
+wc
+forktest
+kill
+ls
+threadtest
+balloc: first 543 blocks have been allocated
+balloc: write bitmap block at sector 28
+rm user/bin/tester
+make qemu-nox 
+Ctrl+a h for help
+/home/software/qemu/bin/qemu-system-i386 -nographic -hdb fs.img xv6.img -smp 2
+WARNING: Image format was not specified for 'fs.img' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+WARNING: Image format was not specified for 'xv6.img' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+xv6...
+lapicinit: 1 0xfee00000
+cpu1: starting
+cpu0: starting
+init: starting sh
+$ tester
+tester
+trying to find 4 in process 3.
+thread's pid is(in kernel): 4 while finding 4
+thread 4 parent pid is 3
+state of thread pid 4 is 3
+thread's pid is(in kernel): 5 while finding 4
+thread 5 parent pid is 3
+state of thread pid 5 is 3
+thread's pid is(in kernel): 6 while finding 4
+thread 6 parent pid is 3
+state of thread pid 6 is 3
+thread's pid is(in kernel): 7 while finding 4
+thread 7 parent pid is 3
+state of thread pid 7 is 3
+thread's pid is(in kernel): 8 while finding 4
+thread 8 parent pid is 3
+state of thread pid 8 is 3
+thread's pid is(in kernel): 9 while finding 4
+thread 9 parent pid is 3
+state of thread pid 9 is 3
+thread's pid is(in kernel): 10 while finding 4
+thread 10 parent pid is 3
+state of thread pid 10 is 3
+thread's pid is(in kernel): 11 while finding 4
+thread 11 parent pid is 3
+state of thread pid 11 is 3
+thread's pid is(in kernel): 12 while finding 4
+thread 12 parent pid is 3
+state of thread pid 12 is 3
+thread's pid is(in kernel): 13 while finding 4
+thread 13 parent pid is 3
+state of thread pid 13 is 3
+thread's pid is(in kernel): 14 while finding 4
+thread 14 parent pid is 3
+state of thread pid 14 is 3
+thread's pid is(in kernel): 15 while finding 4
+thread 15 parent pid is 3
+state of thread pid 15 is 3
+thread's pid is(in kernel): 16 while finding 4
+thread 16 parent pid is 3
+state of thread pid 16 is 3
+thread's pid is(in kernel): 17 while finding 4
+thread 17 parent pid is 3
+state of thread pid 17 is 3
+thread's pid is(in kernel): 18 while finding 4
+thread 18 parent pid is 3
+state of thread pid 18 is 3
+thread's pid is(in kernel): 19 while finding 4
+thread 19 parent pid is 3
+state of thread pid 19 is 3
+thread's pid is(in kernel): 20 while finding 4
+thread 20 parent pid is 3
+state of thread pid 20 is 3
+thread's pid is(in kernel): 21 while finding 4
+thread 21 parent pid is 3
+state of thread pid 21 is 3
+thread's pid is(in kernel): 22 while finding 4
+thread 22 parent pid is 3
+state of thread pid 22 is 3
+thread's pid is(in kernel): 23 while finding 4
+thread 23 parent pid is 3
+state of thread pid 23 is 3
+thread's pid is(in kernel): 24 while finding 4
+thread 24 parent pid is 3
+state of thread pid 24 is 3
+0 is whether it found a thread or not
+thread's pid is(in kernel): 4 while finding 4
+thread 4 parent pid is 3
+state of thread pid 4 is 3
+thread's pid is(in kernel): 5 while finding 4
+thread 5 parent pid is 3
+state of thread pid 5 is 5
+thread's pid is(in kernel): 6 while finding 4
+thread 6 parent pid is 3
+state of thread pid 6 is 5
+thread's pid is(in kernel): 7 while finding 4
+thread 7 parent pid is 3
+state of thread pid 7 is 5
+thread's pid is(in kernel): 8 while finding 4
+thread 8 parent pid is 3
+state of thread pid 8 is 5
+thread's pid is(in kernel): 9 while finding 4
+thread 9 parent pid is 3
+state of thread pid 9 is 5
+thread's pid is(in kernel): 10 while finding 4
+thread 10 parent pid is 3
+state of thread pid 10 is 5
+thread's pid is(in kernel): 11 while finding 4
+thread 11 parent pid is 3
+state of thread pid 11 is 5
+thread's pid is(in kernel): 12 while finding 4
+thread 12 parent pid is 3
+state of thread pid 12 is 5
+thread's pid is(in kernel): 13 while finding 4
+thread 13 parent pid is 3
+state of thread pid 13 is 5
+thread's pid is(in kernel): 14 while finding 4
+thread 14 parent pid is 3
+state of thread pid 14 is 5
+thread's pid is(in kernel): 15 while finding 4
+thread 15 parent pid is 3
+state of thread pid 15 is 5
+thread's pid is(in kernel): 16 while finding 4
+thread 16 parent pid is 3
+state of thread pid 16 is 5
+thread's pid is(in kernel): 17 while finding 4
+thread 17 parent pid is 3
+state of thread pid 17 is 5
+thread's pid is(in kernel): 18 while finding 4
+thread 18 parent pid is 3
+state of thread pid 18 is 5
+thread's pid is(in kernel): 19 while finding 4
+thread 19 parent pid is 3
+state of thread pid 19 is 5
+thread's pid is(in kernel): 20 while finding 4
+thread 20 parent pid is 3
+state of thread pid 20 is 5
+thread's pid is(in kernel): 21 while finding 4
+thread 21 parent pid is 3
+state of thread pid 21 is 5
+thread's pid is(in kernel): 22 while finding 4
+thread 22 parent pid is 3
+state of thread pid 22 is 5
+thread's pid is(in kernel): 23 while finding 4
+thread 23 parent pid is 3
+state of thread pid 23 is 5
+thread's pid is(in kernel): 24 while finding 4
+thread 24 parent pid is 3
+state of thread pid 24 is 5
+0 is whether it found a thread or not
+thread's pid is(in kernel): 4 while finding 4
+thread 4 parent pid is 3
+state of thread pid 4 is 5
+releasing pid 4
+trying to find 5 in process 3.
+thread's pid is(in kernel): 5 while finding 5
+thread 5 parent pid is 3
+state of thread pid 5 is 5
+releasing pid 5
+trying to find 6 in process 3.
+thread's pid is(in kernel): 6 while finding 6
+thread 6 parent pid is 3
+state of thread pid 6 is 5
+releasing pid 6
+trying to find 7 in process 3.
+thread's pid is(in kernel): 7 while finding 7
+thread 7 parent pid is 3
+state of thread pid 7 is 5
+releasing pid 7
+trying to find 8 in process 3.
+thread's pid is(in kernel): 8 while finding 8
+thread 8 parent pid is 3
+state of thread pid 8 is 5
+releasing pid 8
+trying to find 9 in process 3.
+thread's pid is(in kernel): 9 while finding 9
+thread 9 parent pid is 3
+state of thread pid 9 is 5
+releasing pid 9
+trying to find 10 in process 3.
+thread's pid is(in kernel): 10 while finding 10
+thread 10 parent pid is 3
+state of thread pid 10 is 5
+releasing pid 10
+trying to find 11 in process 3.
+thread's pid is(in kernel): 11 while finding 11
+thread 11 parent pid is 3
+state of thread pid 11 is 5
+releasing pid 11
+trying to find 12 in process 3.
+thread's pid is(in kernel): 12 while finding 12
+thread 12 parent pid is 3
+state of thread pid 12 is 5
+releasing pid 12
+trying to find 13 in process 3.
+thread's pid is(in kernel): 13 while finding 13
+thread 13 parent pid is 3
+state of thread pid 13 is 5
+releasing pid 13
+trying to find 14 in process 3.
+thread's pid is(in kernel): 14 while finding 14
+thread 14 parent pid is 3
+state of thread pid 14 is 5
+releasing pid 14
+trying to find 15 in process 3.
+thread's pid is(in kernel): 15 while finding 15
+thread 15 parent pid is 3
+state of thread pid 15 is 5
+releasing pid 15
+trying to find 16 in process 3.
+thread's pid is(in kernel): 16 while finding 16
+thread 16 parent pid is 3
+state of thread pid 16 is 5
+releasing pid 16
+trying to find 17 in process 3.
+thread's pid is(in kernel): 17 while finding 17
+thread 17 parent pid is 3
+state of thread pid 17 is 5
+releasing pid 17
+trying to find 18 in process 3.
+thread's pid is(in kernel): 18 while finding 18
+thread 18 parent pid is 3
+state of thread pid 18 is 5
+releasing pid 18
+trying to find 19 in process 3.
+thread's pid is(in kernel): 19 while finding 19
+thread 19 parent pid is 3
+state of thread pid 19 is 5
+releasing pid 19
+trying to find 20 in process 3.
+thread's pid is(in kernel): 20 while finding 20
+thread 20 parent pid is 3
+state of thread pid 20 is 5
+releasing pid 20
+trying to find 21 in process 3.
+thread's pid is(in kernel): 21 while finding 21
+thread 21 parent pid is 3
+state of thread pid 21 is 5
+releasing pid 21
+trying to find 22 in process 3.
+thread's pid is(in kernel): 22 while finding 22
+thread 22 parent pid is 3
+state of thread pid 22 is 5
+releasing pid 22
+trying to find 23 in process 3.
+thread's pid is(in kernel): 23 while finding 23
+thread 23 parent pid is 3
+state of thread pid 23 is 5
+releasing pid 23
+trying to find 24 in process 3.
+thread's pid is(in kernel): 24 while finding 24
+thread 24 parent pid is 3
+state of thread pid 24 is 5
+releasing pid 24
+TEST PASSED
+
+
+test locktest PASSED
+Description: thread user library functions, testing lock
+
+Finished running test locktest
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+**********************************************************************
+**********************************************************************
+**                            SUMMARY                               **
+**********************************************************************
+**********************************************************************
+
+test build PASSED (5 of 5)
+build xv6 using make
+
+test raceclone PASSED
+Description: When passing a non page-aligned stack to clone, clone should return -1.
+
+test killclone PASSED
+Description: when a thread exits it should not affect other thread. If it does it should return -1.
+
+test clone PASSED
+Description: Call clone and spin until child thread has changed global variable.  Verifies that address space is shared.
+
+test badclone PASSED
+Description: When passing a non page-aligned stack to clone, clone should return -1.
+
+test join PASSED
+Description: Call clone to create a new thread.  Call join to wait for that new thread to complete.  join should return the pid of the completed thread and the changes made by the thread should now be seen by the original process.
+
+test join-2 PASSED
+Description:
+
+test join-3 PASSED
+Description: Call clone to create a new thread.  Call join to wait for that new thread to complete.  join should return the pid of the completed thread and the changes made by the thread should now be seen by the original process.
+
+test threadtest PASSED
+Description: thread user library functions, testing thread functions
+
+test locktest PASSED
+Description: thread user library functions, testing lock
+
+Passed 10 of 10 tests.
+Overall 10 of 10
+Points 5 of 5

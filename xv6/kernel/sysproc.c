@@ -139,12 +139,9 @@ sys_cvsignal(void)
 
   return 0;
 }
-<<<<<<< HEAD
-*/
+
 int sys_listproc(void)
 {
   listproc();
   return 0;
 }
-=======
->>>>>>> c78075218f76b73a88960cd69d0308590f26a2ba

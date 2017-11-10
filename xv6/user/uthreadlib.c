@@ -37,17 +37,15 @@ lock_init(struct lock_t *lock)
   lock->locked = 0;
 }
 
-/*
 void 
-cv_wait(cond_t* conditionVariable, lock_t *cv_lock) {
+cv_wait(struct cond_t* conditionVariable, struct lock_t *cv_lock) {
   cvwait(conditionVariable, cv_lock);
   return;
 }
 
 
 void 
-cv_signal(cond_t *conditionVariable) {
+cv_signal(struct cond_t *conditionVariable) {
   cvsignal(conditionVariable);
   return;
 }
-*/

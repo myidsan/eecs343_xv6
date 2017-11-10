@@ -61,9 +61,6 @@ struct context {
 
 enum procstate { UNUSED, EMBRYO, SLEEPING, RUNNABLE, RUNNING, ZOMBIE };
 
-struct {
-  uint locked;
-} lock_t;
 
 // Per-process state
 struct proc {

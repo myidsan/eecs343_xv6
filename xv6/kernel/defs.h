@@ -9,6 +9,8 @@ struct pipe;
 struct proc;
 struct spinlock;
 struct stat;
+struct lock_t;
+struct cond_t;
 
 // bio.c
 void            binit(void);
@@ -111,6 +113,8 @@ void            wakeup(void*);
 void            yield(void);
 int   	        clone(void(*fcn)(void*), void *, void*);
 int     		   	join(int);
+void            cvwait(void *, struct lock_t*); 
+void            cvsignal(void*); 
 
 // swtch.S
 void            swtch(struct context**, struct context*);

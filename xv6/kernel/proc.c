@@ -401,7 +401,7 @@ forkret(void)
 // Reacquires lock when awakened.
 void
 sleep(void *chan, struct spinlock *lk)
-{
+k
   if(proc == 0)
     panic("sleep");
 
@@ -526,18 +526,12 @@ clone(void(*fcn)(void*), void*arg, void* stack){
     return -1;
   }
 
-  // check page allignment
-  /*
-  if (!((uint)stack % PGSIZE) ) {
-	  return -1;
+  if((uint)stack%PGSIZE != 0){
+    return -1;
   }
-  */
-    if((uint)stack%PGSIZE != 0){
-      return -1;
-    }
-    if((proc->sz - (uint)stack) < PGSIZE){
-      return -1;
-    }
+  if((proc->sz - (uint)stack) < PGSIZE){
+    return -1;
+  }
 
   thread->isThread = 1; // requirement 11;
   thread->pgdir = proc->pgdir; // requirement 2
@@ -637,33 +631,31 @@ join(int pid)
     sleep(proc, &ptable.lock);
   }
 }
-/*
+
 void
-cvwait(void *chan, lock_t *lock)
+cvwait(void *chan, struct lock_t *lock)
 {
   acquire(&ptable.lock);  
-  xchg(&lock->lock, 0); //unlock
+  xchg(&lock->locked, 0); //unlock
      
-  proc->lock = lock;//store the user lock
+  //proc->lock = lock;//store the user lock
   proc->chan = chan;
   proc->state = SLEEPING;
   sched();
   proc->chan = 0;
   release(&ptable.lock);
-  while(xchg(&lock->lock, 1)!=0);//lock
+  while(xchg(&lock->locked, 1)!=0);//lock
 }
-*/
 
-/*
 void
 cvsignal(void *chan)
 {
   struct proc *p;
-
   for(p = ptable.proc; p < &ptable.proc[NPROC]; p++)
     if(p->state == SLEEPING && p->chan == chan) {
+      acquire(&ptable.lock);
       p->state = RUNNABLE;
+      release(&ptable.lock);
       break;
     }
 }
-*/

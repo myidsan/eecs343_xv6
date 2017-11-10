@@ -2,15 +2,10 @@
 #define _USER_H_
 
 struct stat;
-struct lock_t {
-  uint locked;
-};
 
-/*
-typedef struct {
-  lock_t *lock;
-} cond_t;
-*/
+typedef struct cond_t {
+  struct lock_t *lock;
+}cond_t;
 
 // system calls
 int fork(void);
@@ -57,8 +52,8 @@ int thread_join(int);
 void lock_init(struct lock_t*);
 void lock_acquire(struct lock_t*); 
 void lock_release(struct lock_t*);
-//void cvwait(struct cond_t*, struct lock_t*);
-//void cvsignal(struct cond_t*);
+void cvwait(struct cond_t*, struct lock_t*);
+void cvsignal(struct cond_t*);
 
 #endif // _USER_H_
 

@@ -5,63 +5,63 @@ build xv6 using make
 
 Trying to clean project using make clean
 make clean
-Makefile:151: kernel/bio.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/console.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/exec.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/file.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/fs.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/ide.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/ioapic.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/kalloc.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/kbd.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/lapic.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/main.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/mp.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/picirq.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/pipe.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/proc.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/spinlock.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/string.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/swtch.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/syscall.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/sysfile.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/sysproc.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/timer.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/trapasm.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/trap.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/uart.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/vectors.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/vm.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/bootmain.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/bootasm.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/multiboot.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/data.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/bootother.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/initcode.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: user/cat.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: user/echo.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: user/forktest.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: user/grep.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: user/init.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: user/kill.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: user/ln.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: user/ls.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: user/mkdir.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: user/rm.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: user/sh.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: user/stressfs.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: user/tester.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: user/usertests.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: user/wc.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: user/zombie.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: user/clone.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: user/threadtest.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: user/ulib.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: user/usys.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: user/printf.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: user/umalloc.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: user/uthreadlib.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: tools/mkfs.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: kernel/bio.d: No such file or directory
+Makefile:151: kernel/console.d: No such file or directory
+Makefile:151: kernel/exec.d: No such file or directory
+Makefile:151: kernel/file.d: No such file or directory
+Makefile:151: kernel/fs.d: No such file or directory
+Makefile:151: kernel/ide.d: No such file or directory
+Makefile:151: kernel/ioapic.d: No such file or directory
+Makefile:151: kernel/kalloc.d: No such file or directory
+Makefile:151: kernel/kbd.d: No such file or directory
+Makefile:151: kernel/lapic.d: No such file or directory
+Makefile:151: kernel/main.d: No such file or directory
+Makefile:151: kernel/mp.d: No such file or directory
+Makefile:151: kernel/picirq.d: No such file or directory
+Makefile:151: kernel/pipe.d: No such file or directory
+Makefile:151: kernel/proc.d: No such file or directory
+Makefile:151: kernel/spinlock.d: No such file or directory
+Makefile:151: kernel/string.d: No such file or directory
+Makefile:151: kernel/swtch.d: No such file or directory
+Makefile:151: kernel/syscall.d: No such file or directory
+Makefile:151: kernel/sysfile.d: No such file or directory
+Makefile:151: kernel/sysproc.d: No such file or directory
+Makefile:151: kernel/timer.d: No such file or directory
+Makefile:151: kernel/trapasm.d: No such file or directory
+Makefile:151: kernel/trap.d: No such file or directory
+Makefile:151: kernel/uart.d: No such file or directory
+Makefile:151: kernel/vectors.d: No such file or directory
+Makefile:151: kernel/vm.d: No such file or directory
+Makefile:151: kernel/bootmain.d: No such file or directory
+Makefile:151: kernel/bootasm.d: No such file or directory
+Makefile:151: kernel/multiboot.d: No such file or directory
+Makefile:151: kernel/data.d: No such file or directory
+Makefile:151: kernel/bootother.d: No such file or directory
+Makefile:151: kernel/initcode.d: No such file or directory
+Makefile:151: user/cat.d: No such file or directory
+Makefile:151: user/echo.d: No such file or directory
+Makefile:151: user/forktest.d: No such file or directory
+Makefile:151: user/grep.d: No such file or directory
+Makefile:151: user/init.d: No such file or directory
+Makefile:151: user/kill.d: No such file or directory
+Makefile:151: user/ln.d: No such file or directory
+Makefile:151: user/ls.d: No such file or directory
+Makefile:151: user/mkdir.d: No such file or directory
+Makefile:151: user/rm.d: No such file or directory
+Makefile:151: user/sh.d: No such file or directory
+Makefile:151: user/stressfs.d: No such file or directory
+Makefile:151: user/tester.d: No such file or directory
+Makefile:151: user/usertests.d: No such file or directory
+Makefile:151: user/wc.d: No such file or directory
+Makefile:151: user/zombie.d: No such file or directory
+Makefile:151: user/clone.d: No such file or directory
+Makefile:151: user/threadtest.d: No such file or directory
+Makefile:151: user/ulib.d: No such file or directory
+Makefile:151: user/usys.d: No such file or directory
+Makefile:151: user/printf.d: No such file or directory
+Makefile:151: user/umalloc.d: No such file or directory
+Makefile:151: user/uthreadlib.d: No such file or directory
+Makefile:151: tools/mkfs.d: No such file or directory
 gcc  -iquote include -Wall -Werror -ggdb  \
 	  -M -MG tools/mkfs.c -MF tools/mkfs.d -MT tools/mkfs.d -MT tools/mkfs.o
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
@@ -182,63 +182,63 @@ find . -type f | xargs touch
 rm -rf 
 Trying to build project using make
 make
-Makefile:151: kernel/bio.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/console.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/exec.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/file.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/fs.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/ide.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/ioapic.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/kalloc.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/kbd.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/lapic.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/main.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/mp.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/picirq.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/pipe.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/proc.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/spinlock.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/string.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/swtch.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/syscall.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/sysfile.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/sysproc.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/timer.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/trapasm.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/trap.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/uart.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/vectors.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/vm.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/bootmain.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/bootasm.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/multiboot.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/data.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/bootother.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: kernel/initcode.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: user/cat.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: user/echo.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: user/forktest.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: user/grep.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: user/init.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: user/kill.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: user/ln.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: user/ls.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: user/mkdir.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: user/rm.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: user/sh.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: user/stressfs.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: user/tester.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: user/usertests.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: user/wc.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: user/zombie.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: user/clone.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: user/threadtest.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: user/ulib.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: user/usys.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: user/printf.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: user/umalloc.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: user/uthreadlib.d: 그런 파일이나 디렉터리가 없습니다
-Makefile:151: tools/mkfs.d: 그런 파일이나 디렉터리가 없습니다
+Makefile:151: kernel/bio.d: No such file or directory
+Makefile:151: kernel/console.d: No such file or directory
+Makefile:151: kernel/exec.d: No such file or directory
+Makefile:151: kernel/file.d: No such file or directory
+Makefile:151: kernel/fs.d: No such file or directory
+Makefile:151: kernel/ide.d: No such file or directory
+Makefile:151: kernel/ioapic.d: No such file or directory
+Makefile:151: kernel/kalloc.d: No such file or directory
+Makefile:151: kernel/kbd.d: No such file or directory
+Makefile:151: kernel/lapic.d: No such file or directory
+Makefile:151: kernel/main.d: No such file or directory
+Makefile:151: kernel/mp.d: No such file or directory
+Makefile:151: kernel/picirq.d: No such file or directory
+Makefile:151: kernel/pipe.d: No such file or directory
+Makefile:151: kernel/proc.d: No such file or directory
+Makefile:151: kernel/spinlock.d: No such file or directory
+Makefile:151: kernel/string.d: No such file or directory
+Makefile:151: kernel/swtch.d: No such file or directory
+Makefile:151: kernel/syscall.d: No such file or directory
+Makefile:151: kernel/sysfile.d: No such file or directory
+Makefile:151: kernel/sysproc.d: No such file or directory
+Makefile:151: kernel/timer.d: No such file or directory
+Makefile:151: kernel/trapasm.d: No such file or directory
+Makefile:151: kernel/trap.d: No such file or directory
+Makefile:151: kernel/uart.d: No such file or directory
+Makefile:151: kernel/vectors.d: No such file or directory
+Makefile:151: kernel/vm.d: No such file or directory
+Makefile:151: kernel/bootmain.d: No such file or directory
+Makefile:151: kernel/bootasm.d: No such file or directory
+Makefile:151: kernel/multiboot.d: No such file or directory
+Makefile:151: kernel/data.d: No such file or directory
+Makefile:151: kernel/bootother.d: No such file or directory
+Makefile:151: kernel/initcode.d: No such file or directory
+Makefile:151: user/cat.d: No such file or directory
+Makefile:151: user/echo.d: No such file or directory
+Makefile:151: user/forktest.d: No such file or directory
+Makefile:151: user/grep.d: No such file or directory
+Makefile:151: user/init.d: No such file or directory
+Makefile:151: user/kill.d: No such file or directory
+Makefile:151: user/ln.d: No such file or directory
+Makefile:151: user/ls.d: No such file or directory
+Makefile:151: user/mkdir.d: No such file or directory
+Makefile:151: user/rm.d: No such file or directory
+Makefile:151: user/sh.d: No such file or directory
+Makefile:151: user/stressfs.d: No such file or directory
+Makefile:151: user/tester.d: No such file or directory
+Makefile:151: user/usertests.d: No such file or directory
+Makefile:151: user/wc.d: No such file or directory
+Makefile:151: user/zombie.d: No such file or directory
+Makefile:151: user/clone.d: No such file or directory
+Makefile:151: user/threadtest.d: No such file or directory
+Makefile:151: user/ulib.d: No such file or directory
+Makefile:151: user/usys.d: No such file or directory
+Makefile:151: user/printf.d: No such file or directory
+Makefile:151: user/umalloc.d: No such file or directory
+Makefile:151: user/uthreadlib.d: No such file or directory
+Makefile:151: tools/mkfs.d: No such file or directory
 gcc  -iquote include -Wall -Werror -ggdb  \
 	  -M -MG tools/mkfs.c -MF tools/mkfs.d -MT tools/mkfs.d -MT tools/mkfs.o
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
@@ -409,15 +409,15 @@ ld  -m    elf_i386 -nostdlib --omagic \
 dd if=/dev/zero of=xv6.img count=10000
 10000+0 records in
 10000+0 records out
-5120000 bytes (5.1 MB) copied, 0.0162246 s, 316 MB/s
+5120000 bytes (5.1 MB) copied, 0.0123129 s, 416 MB/s
 dd if=kernel/bootblock of=xv6.img conv=notrunc
 1+0 records in
 1+0 records out
-512 bytes (512 B) copied, 7.2172e-05 s, 7.1 MB/s
+512 bytes (512 B) copied, 6.9722e-05 s, 7.3 MB/s
 dd if=kernel/kernel of=xv6.img seek=1 conv=notrunc
-266+1 records in
-266+1 records out
-136629 bytes (137 kB) copied, 0.000295195 s, 463 MB/s
+269+1 records in
+269+1 records out
+138183 bytes (138 kB) copied, 0.000313867 s, 440 MB/s
 gcc -c  -iquote include -Wall -Werror -ggdb  -o tools/mkfs.o tools/mkfs.c
 gcc  tools/mkfs.o -o tools/mkfs
 mkdir -p fs
@@ -503,7 +503,7 @@ forktest
 kill
 ls
 threadtest
-balloc: first 540 blocks have been allocated
+balloc: first 554 blocks have been allocated
 balloc: write bitmap block at sector 28
 rm user/bin/stressfs user/bin/grep user/bin/tester user/bin/kill user/bin/cat user/bin/mkdir user/bin/init user/bin/rm user/bin/threadtest user/bin/echo user/bin/ls user/bin/ln user/bin/usertests user/bin/sh user/bin/wc user/bin/zombie user/bin/clone
 
@@ -518,7 +518,7 @@ Finished running test build
 Start running test raceclone
 Description: When passing a non page-aligned stack to clone, clone should return -1.
 
-Running xv6 user progam /home/slw579/eecs343/eecs343-ps/xv6/provided-basic-tests/tests/ctests/proj3/raceclone.c
+Running xv6 user progam /home/ghj1452/343-ps/xv6/provided-basic-tests/tests/ctests/proj3/raceclone.c
 Trying to build project using make
 make
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
@@ -547,7 +547,7 @@ forktest
 kill
 ls
 threadtest
-balloc: first 543 blocks have been allocated
+balloc: first 557 blocks have been allocated
 balloc: write bitmap block at sector 28
 rm user/bin/tester
 make qemu-nox 
@@ -586,7 +586,7 @@ Finished running test raceclone
 Start running test killclone
 Description: when a thread exits it should not affect other thread. If it does it should return -1.
 
-Running xv6 user progam /home/slw579/eecs343/eecs343-ps/xv6/provided-basic-tests/tests/ctests/proj3/killclone.c
+Running xv6 user progam /home/ghj1452/343-ps/xv6/provided-basic-tests/tests/ctests/proj3/killclone.c
 Trying to build project using make
 make
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
@@ -615,7 +615,7 @@ forktest
 kill
 ls
 threadtest
-balloc: first 544 blocks have been allocated
+balloc: first 558 blocks have been allocated
 balloc: write bitmap block at sector 28
 rm user/bin/tester
 make qemu-nox 
@@ -638,8 +638,8 @@ trying to find 4 in process 3.
 thread's pid is(in kernel): 4 while finding 4
 thread 4 parent pid is 3
 state of thread pid 4 is 4
-0 is whether it found a thread or not
-entered worker1
+e0 is whether it found a thread or not
+ntered worker1
 finished worker1
 entered worker2
 thread's pid is(in kernel): 4 while finding 4
@@ -671,7 +671,7 @@ Finished running test killclone
 Start running test clone
 Description: Call clone and spin until child thread has changed global variable.  Verifies that address space is shared.
 
-Running xv6 user progam /home/slw579/eecs343/eecs343-ps/xv6/provided-basic-tests/tests/ctests/proj3/clone.c
+Running xv6 user progam /home/ghj1452/343-ps/xv6/provided-basic-tests/tests/ctests/proj3/clone.c
 Trying to build project using make
 make
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
@@ -700,7 +700,7 @@ forktest
 kill
 ls
 threadtest
-balloc: first 542 blocks have been allocated
+balloc: first 556 blocks have been allocated
 balloc: write bitmap block at sector 28
 rm user/bin/tester
 make qemu-nox 
@@ -733,7 +733,7 @@ Finished running test clone
 Start running test badclone
 Description: When passing a non page-aligned stack to clone, clone should return -1.
 
-Running xv6 user progam /home/slw579/eecs343/eecs343-ps/xv6/provided-basic-tests/tests/ctests/proj3/badclone.c
+Running xv6 user progam /home/ghj1452/343-ps/xv6/provided-basic-tests/tests/ctests/proj3/badclone.c
 Trying to build project using make
 make
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
@@ -762,7 +762,7 @@ forktest
 kill
 ls
 threadtest
-balloc: first 543 blocks have been allocated
+balloc: first 556 blocks have been allocated
 balloc: write bitmap block at sector 28
 rm user/bin/tester
 make qemu-nox 
@@ -783,6 +783,7 @@ $ tester
 tester
 TEST PASSED
 
+
 test badclone PASSED
 Description: When passing a non page-aligned stack to clone, clone should return -1.
 
@@ -793,7 +794,7 @@ Finished running test badclone
 Start running test join
 Description: Call clone to create a new thread.  Call join to wait for that new thread to complete.  join should return the pid of the completed thread and the changes made by the thread should now be seen by the original process.
 
-Running xv6 user progam /home/slw579/eecs343/eecs343-ps/xv6/provided-basic-tests/tests/ctests/proj3/join.c
+Running xv6 user progam /home/ghj1452/343-ps/xv6/provided-basic-tests/tests/ctests/proj3/join.c
 Trying to build project using make
 make
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
@@ -822,7 +823,7 @@ forktest
 kill
 ls
 threadtest
-balloc: first 544 blocks have been allocated
+balloc: first 558 blocks have been allocated
 balloc: write bitmap block at sector 28
 rm user/bin/tester
 make qemu-nox 
@@ -868,7 +869,7 @@ Finished running test join
 Start running test join-2
 Description:
 
-Running xv6 user progam /home/slw579/eecs343/eecs343-ps/xv6/provided-basic-tests/tests/ctests/proj3/join-2.c
+Running xv6 user progam /home/ghj1452/343-ps/xv6/provided-basic-tests/tests/ctests/proj3/join-2.c
 Trying to build project using make
 make
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
@@ -897,7 +898,7 @@ forktest
 kill
 ls
 threadtest
-balloc: first 544 blocks have been allocated
+balloc: first 558 blocks have been allocated
 balloc: write bitmap block at sector 28
 rm user/bin/tester
 make qemu-nox 
@@ -921,11 +922,15 @@ non_new_thread_pid: 10
 trying to find 10 in process 3.
 thread's pid is(in kernel): 4 while finding 10
 thread 4 parent pid is 3
-state of thread pid 4 is 5
+state of thread pid 4 is 3
 0 is whether it found a thread or not
 couldn't find 10. exiting with -1
 wrong_join_pid:  -1
 trying to find 4 in process 3.
+thread's pid is(in kernel): 4 while finding 4
+thread 4 parent pid is 3
+state of thread pid 4 is 3
+0 is whether it found a thread or not
 thread's pid is(in kernel): 4 while finding 4
 thread 4 parent pid is 3
 state of thread pid 4 is 5
@@ -943,7 +948,7 @@ Finished running test join-2
 Start running test join-3
 Description: Call clone to create a new thread.  Call join to wait for that new thread to complete.  join should return the pid of the completed thread and the changes made by the thread should now be seen by the original process.
 
-Running xv6 user progam /home/slw579/eecs343/eecs343-ps/xv6/provided-basic-tests/tests/ctests/proj3/join-3.c
+Running xv6 user progam /home/ghj1452/343-ps/xv6/provided-basic-tests/tests/ctests/proj3/join-3.c
 Trying to build project using make
 make
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
@@ -972,7 +977,7 @@ forktest
 kill
 ls
 threadtest
-balloc: first 543 blocks have been allocated
+balloc: first 557 blocks have been allocated
 balloc: write bitmap block at sector 28
 rm user/bin/tester
 make qemu-nox 
@@ -1010,7 +1015,7 @@ Finished running test join-3
 Start running test threadtest
 Description: thread user library functions, testing thread functions
 
-Running xv6 user progam /home/slw579/eecs343/eecs343-ps/xv6/provided-basic-tests/tests/ctests/proj3/threadtest.c
+Running xv6 user progam /home/ghj1452/343-ps/xv6/provided-basic-tests/tests/ctests/proj3/threadtest.c
 Trying to build project using make
 make
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
@@ -1039,7 +1044,7 @@ forktest
 kill
 ls
 threadtest
-balloc: first 543 blocks have been allocated
+balloc: first 556 blocks have been allocated
 balloc: write bitmap block at sector 28
 rm user/bin/tester
 make qemu-nox 
@@ -1066,7 +1071,6 @@ state of thread pid 4 is 5
 releasing pid 4
 TEST PASSED
 
-
 test threadtest PASSED
 Description: thread user library functions, testing thread functions
 
@@ -1077,7 +1081,7 @@ Finished running test threadtest
 Start running test locktest
 Description: thread user library functions, testing lock
 
-Running xv6 user progam /home/slw579/eecs343/eecs343-ps/xv6/provided-basic-tests/tests/ctests/proj3/locktest.c
+Running xv6 user progam /home/ghj1452/343-ps/xv6/provided-basic-tests/tests/ctests/proj3/locktest.c
 Trying to build project using make
 make
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
@@ -1106,7 +1110,7 @@ forktest
 kill
 ls
 threadtest
-balloc: first 543 blocks have been allocated
+balloc: first 557 blocks have been allocated
 balloc: write bitmap block at sector 28
 rm user/bin/tester
 make qemu-nox 
@@ -1126,134 +1130,6 @@ init: starting sh
 $ tester
 tester
 trying to find 4 in process 3.
-thread's pid is(in kernel): 4 while finding 4
-thread 4 parent pid is 3
-state of thread pid 4 is 3
-thread's pid is(in kernel): 5 while finding 4
-thread 5 parent pid is 3
-state of thread pid 5 is 3
-thread's pid is(in kernel): 6 while finding 4
-thread 6 parent pid is 3
-state of thread pid 6 is 3
-thread's pid is(in kernel): 7 while finding 4
-thread 7 parent pid is 3
-state of thread pid 7 is 3
-thread's pid is(in kernel): 8 while finding 4
-thread 8 parent pid is 3
-state of thread pid 8 is 3
-thread's pid is(in kernel): 9 while finding 4
-thread 9 parent pid is 3
-state of thread pid 9 is 3
-thread's pid is(in kernel): 10 while finding 4
-thread 10 parent pid is 3
-state of thread pid 10 is 3
-thread's pid is(in kernel): 11 while finding 4
-thread 11 parent pid is 3
-state of thread pid 11 is 3
-thread's pid is(in kernel): 12 while finding 4
-thread 12 parent pid is 3
-state of thread pid 12 is 3
-thread's pid is(in kernel): 13 while finding 4
-thread 13 parent pid is 3
-state of thread pid 13 is 3
-thread's pid is(in kernel): 14 while finding 4
-thread 14 parent pid is 3
-state of thread pid 14 is 3
-thread's pid is(in kernel): 15 while finding 4
-thread 15 parent pid is 3
-state of thread pid 15 is 3
-thread's pid is(in kernel): 16 while finding 4
-thread 16 parent pid is 3
-state of thread pid 16 is 3
-thread's pid is(in kernel): 17 while finding 4
-thread 17 parent pid is 3
-state of thread pid 17 is 3
-thread's pid is(in kernel): 18 while finding 4
-thread 18 parent pid is 3
-state of thread pid 18 is 3
-thread's pid is(in kernel): 19 while finding 4
-thread 19 parent pid is 3
-state of thread pid 19 is 3
-thread's pid is(in kernel): 20 while finding 4
-thread 20 parent pid is 3
-state of thread pid 20 is 3
-thread's pid is(in kernel): 21 while finding 4
-thread 21 parent pid is 3
-state of thread pid 21 is 3
-thread's pid is(in kernel): 22 while finding 4
-thread 22 parent pid is 3
-state of thread pid 22 is 3
-thread's pid is(in kernel): 23 while finding 4
-thread 23 parent pid is 3
-state of thread pid 23 is 3
-thread's pid is(in kernel): 24 while finding 4
-thread 24 parent pid is 3
-state of thread pid 24 is 3
-0 is whether it found a thread or not
-thread's pid is(in kernel): 4 while finding 4
-thread 4 parent pid is 3
-state of thread pid 4 is 3
-thread's pid is(in kernel): 5 while finding 4
-thread 5 parent pid is 3
-state of thread pid 5 is 5
-thread's pid is(in kernel): 6 while finding 4
-thread 6 parent pid is 3
-state of thread pid 6 is 5
-thread's pid is(in kernel): 7 while finding 4
-thread 7 parent pid is 3
-state of thread pid 7 is 5
-thread's pid is(in kernel): 8 while finding 4
-thread 8 parent pid is 3
-state of thread pid 8 is 5
-thread's pid is(in kernel): 9 while finding 4
-thread 9 parent pid is 3
-state of thread pid 9 is 5
-thread's pid is(in kernel): 10 while finding 4
-thread 10 parent pid is 3
-state of thread pid 10 is 5
-thread's pid is(in kernel): 11 while finding 4
-thread 11 parent pid is 3
-state of thread pid 11 is 5
-thread's pid is(in kernel): 12 while finding 4
-thread 12 parent pid is 3
-state of thread pid 12 is 5
-thread's pid is(in kernel): 13 while finding 4
-thread 13 parent pid is 3
-state of thread pid 13 is 5
-thread's pid is(in kernel): 14 while finding 4
-thread 14 parent pid is 3
-state of thread pid 14 is 5
-thread's pid is(in kernel): 15 while finding 4
-thread 15 parent pid is 3
-state of thread pid 15 is 5
-thread's pid is(in kernel): 16 while finding 4
-thread 16 parent pid is 3
-state of thread pid 16 is 5
-thread's pid is(in kernel): 17 while finding 4
-thread 17 parent pid is 3
-state of thread pid 17 is 5
-thread's pid is(in kernel): 18 while finding 4
-thread 18 parent pid is 3
-state of thread pid 18 is 5
-thread's pid is(in kernel): 19 while finding 4
-thread 19 parent pid is 3
-state of thread pid 19 is 5
-thread's pid is(in kernel): 20 while finding 4
-thread 20 parent pid is 3
-state of thread pid 20 is 5
-thread's pid is(in kernel): 21 while finding 4
-thread 21 parent pid is 3
-state of thread pid 21 is 5
-thread's pid is(in kernel): 22 while finding 4
-thread 22 parent pid is 3
-state of thread pid 22 is 5
-thread's pid is(in kernel): 23 while finding 4
-thread 23 parent pid is 3
-state of thread pid 23 is 5
-thread's pid is(in kernel): 24 while finding 4
-thread 24 parent pid is 3
-state of thread pid 24 is 5
-0 is whether it found a thread or not
 thread's pid is(in kernel): 4 while finding 4
 thread 4 parent pid is 3
 state of thread pid 4 is 5

@@ -539,9 +539,6 @@ clone(void(*fcn)(void*), void*arg, void* stack){
     return -1;
   }
 
-  if((uint)stack%PGSIZE != 0){
-    return -1;
-  }
   if((proc->sz - (uint)stack) < PGSIZE){
     return -1;
   }
@@ -666,11 +663,11 @@ void
 cvsignal(void *chan)
 {
   struct proc *p;
+  acquire(&ptable.lock);
   for(p = ptable.proc; p < &ptable.proc[NPROC]; p++)
-    if(p->state == SLEEPING && p->chan == chan) {
-      acquire(&ptable.lock);
+    if(p->state == SLEEPING && p->chan == chan && p->isThread == 1) {
       p->state = RUNNABLE;
-      release(&ptable.lock);
       break;
     }
+  release(&ptable.lock);
 }

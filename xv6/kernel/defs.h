@@ -112,8 +112,8 @@ int             wait(void);
 void            wakeup(void*);
 void            yield(void);
 int   	        clone(void(*fcn)(void*), void *, void*);
-int     		join(int);
-int 			listproc(void);
+int         		join(int);
+int       			listproc(void);
 void            cvwait(void *, struct lock_t*); 
 void            cvsignal(void*); 
 

@@ -32,6 +32,9 @@ int uptime(void);
 int clone(void*, void*, void*);
 int join(int);
 int listproc(void);
+void cvwait(struct cond_t*, struct lock_t*);
+void cvsignal(struct cond_t*);
+
 
 // user library functions (ulib.c)
 int stat(char*, struct stat*);
@@ -53,8 +56,8 @@ int thread_join(int);
 void lock_init(struct lock_t*);
 void lock_acquire(struct lock_t*); 
 void lock_release(struct lock_t*);
-void cvwait(struct cond_t*, struct lock_t*);
-void cvsignal(struct cond_t*);
+void cv_wait(struct cond_t*, struct lock_t*);
+void cv_signal(struct cond_t*);
 
 #endif // _USER_H_
 

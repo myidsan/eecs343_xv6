@@ -51,6 +51,7 @@ struct inode*   nameiparent(char*, char*);
 int             readi(struct inode*, char*, uint, uint);
 void            stati(struct inode*, struct stat*);
 int             writei(struct inode*, char*, uint, uint);
+int             tagFile(int, char*, char*, int);
 
 // ide.c
 void            ideinit(void);
@@ -135,8 +136,10 @@ char*           strncpy(char*, const char*, int);
 int             argint(int, int*);
 int             argptr(int, char**, int);
 int             argstr(int, char**);
+int             argstr_nonull(int, char**, int);
 int             fetchint(struct proc*, uint, int*);
 int             fetchstr(struct proc*, uint, char**);
+int             fetchweirdstr(struct proc*, uint, char**, int);
 void            syscall(void);
 
 // timer.c

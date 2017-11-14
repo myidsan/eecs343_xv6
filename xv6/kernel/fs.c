@@ -611,3 +611,33 @@ nameiparent(char *path, char *name)
 {
   return namex(path, 1, name);
 }
+
+int
+tagFile(int fileDescriptor, char* key, char* value, int valueLength)
+{
+  struct file *f;
+  // checks if fileDescriptor is valid and is open.
+  if(fileDescriptor < 0 || fileDescriptor >= NOFILE || (f = proc->ofile[fileDescriptor]) == 0) 
+    return -1;
+  // checks if file is inode, writeable, and has inode called ip
+  if(f->type != FD_INODE || !f->writable || !f->ip)
+    return -1;
+  // checks keyLength
+  int keyLength = strlen(key)
+  if(!key || keyLength < 1 || keyLength > 9)
+    return -1;
+  // checks value and value length
+  if(!value || valueLength < 0)
+    return -1;
+  // lock inode
+  //ilock(f->ip);
+  // 
+
+
+
+
+
+  //cprintf("fileDescriptor: %d\nkey: %s\nvalue: %s\nvalueLength: %d\n", fileDescriptor, key, value, valueLength);
+  return 1;
+}
+

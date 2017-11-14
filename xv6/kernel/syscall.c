@@ -41,6 +41,24 @@ fetchstr(struct proc *p, uint addr, char **pp)
   return -1;
 }
 
+// Fetch the non-nul-terminated string at addr from process p.
+// Doesn't actually copy the string - just sets *pp to point at it.
+// Returns length of string.
+int
+fetchweirdstr(struct proc *p, uint addr, char **pp, int len)
+{
+  char *ep;
+
+  if(addr >= p->sz)
+    return -1;
+  *pp = (char*)addr;
+  ep = (char*)p->sz;
+  if(len < 0){
+    return -1;
+  }
+  return len;
+}
+
 // Fetch the nth 32-bit system call argument.
 int
 argint(int n, int *ip)
@@ -75,6 +93,14 @@ argstr(int n, char **pp)
   if(argint(n, &addr) < 0)
     return -1;
   return fetchstr(proc, addr, pp);
+}
+int
+argstr_nonull(int n, char**pp, int len)
+{
+  int addr;
+  if(argint(n, &addr) < 0)
+    return -1;
+  return fetchweirdstr(proc, addr, pp, len);
 }
 
 // syscall function declarations moved to sysfunc.h so compiler

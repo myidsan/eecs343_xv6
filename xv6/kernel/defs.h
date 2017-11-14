@@ -33,6 +33,7 @@ void            fileinit(void);
 int             fileread(struct file*, char*, int n);
 int             filestat(struct file*, struct stat*);
 int             filewrite(struct file*, char*, int n);
+int             tagFile(int, char*, char*, int);
 
 // fs.c
 int             dirlink(struct inode*, char*, uint);
@@ -135,8 +136,10 @@ char*           strncpy(char*, const char*, int);
 int             argint(int, int*);
 int             argptr(int, char**, int);
 int             argstr(int, char**);
+int             argstr_nonull(int, char**, int);
 int             fetchint(struct proc*, uint, int*);
 int             fetchstr(struct proc*, uint, char**);
+int             fetchweirdstr(struct proc*, uint, char**, int);
 void            syscall(void);
 
 // timer.c

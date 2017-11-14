@@ -124,3 +124,13 @@ filewrite(struct file *f, char *addr, int n)
   panic("filewrite");
 }
 
+int
+tagFile(int fileDescriptor, char* key, char* value, int valueLength)
+{
+  //cprintf("fileDescriptor: %d\nkey: %s\nvalue: %s\nvalueLength: %d\n", fileDescriptor, key, value, valueLength);
+
+
+
+  return 1;
+}
+

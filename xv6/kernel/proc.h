@@ -10,8 +10,6 @@
 #define SEG_TSS   6  // this process's task state
 #define NSEGS     7
 
-#include "spinlock.h"
-
 // Per-CPU state
 struct cpu {
   uchar id;                    // Local APIC ID; index into cpus[] below
@@ -52,15 +50,14 @@ extern struct proc *proc asm("%gs:4");     // cpus[cpunum()].proc
 // at the "Switch stacks" comment. Switch doesn't save eip explicitly,
 // but it is on the stack and allocproc() manipulates it.
 struct context {
-	uint edi;
-	uint esi;
-	uint ebx;
-	uint ebp;
-	uint eip;
+  uint edi;
+  uint esi;
+  uint ebx;
+  uint ebp;
+  uint eip;
 };
 
 enum procstate { UNUSED, EMBRYO, SLEEPING, RUNNABLE, RUNNING, ZOMBIE };
-
 
 // Per-process state
 struct proc {
@@ -77,9 +74,6 @@ struct proc {
   struct file *ofile[NOFILE];  // Open files
   struct inode *cwd;           // Current directory
   char name[16];               // Process name (debugging)
-  int isThread;				   // 0 is process, 1 if thread
-  char *ustack;				   // User Stack? do u mean thread stack?
-  struct spinlock lock;        // Mutex
 };
 
 // Process memory is laid out contiguously, low addresses first:

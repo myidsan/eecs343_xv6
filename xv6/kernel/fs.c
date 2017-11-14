@@ -611,3 +611,23 @@ nameiparent(char *path, char *name)
 {
   return namex(path, 1, name);
 }
+
+int
+tagFile(int fileDescriptor, char* key, char* value, int valueLength)
+{
+  struct file *f;
+  // checks if fileDescriptor is valid and is open.
+  if(fileDescriptor < 0 || fileDescriptor >= NOFILE || (f = proc->ofile[fileDescriptor]) == 0) 
+    return -1;
+  if(f->type != FD_INODE
+  int keyLength = strlen(key)
+  if(keyLength < 1 || keyLength > 9)
+    return -1;
+
+
+
+
+  //cprintf("fileDescriptor: %d\nkey: %s\nvalue: %s\nvalueLength: %d\n", fileDescriptor, key, value, valueLength);
+  return 1;
+}
+

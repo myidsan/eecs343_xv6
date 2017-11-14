@@ -33,7 +33,6 @@ void            fileinit(void);
 int             fileread(struct file*, char*, int n);
 int             filestat(struct file*, struct stat*);
 int             filewrite(struct file*, char*, int n);
-int             tagFile(int, char*, char*, int);
 
 // fs.c
 int             dirlink(struct inode*, char*, uint);
@@ -52,6 +51,7 @@ struct inode*   nameiparent(char*, char*);
 int             readi(struct inode*, char*, uint, uint);
 void            stati(struct inode*, struct stat*);
 int             writei(struct inode*, char*, uint, uint);
+int             tagFile(int, char*, char*, int);
 
 // ide.c
 void            ideinit(void);

@@ -5,7 +5,6 @@
 #include "mmu.h"
 #include "proc.h"
 #include "elf.h"
-#include "spinlock.h"
 
 extern char data[];  // defined in data.S
 
@@ -319,7 +318,6 @@ copyuvm(pde_t *pgdir, uint sz)
     if(mappages(d, (void*)i, PGSIZE, PADDR(mem), PTE_W|PTE_U) < 0)
       goto bad;
   }
-  
   return d;
 
 bad:
@@ -366,4 +364,3 @@ copyout(pde_t *pgdir, uint va, void *p, uint len)
   }
   return 0;
 }
-

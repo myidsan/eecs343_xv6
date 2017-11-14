@@ -100,8 +100,6 @@ CLEAN := $(KERNEL_CLEAN) $(USER_CLEAN) $(TOOLS_CLEAN) \
 # remove all generated files
 clean:
 	rm -rf $(CLEAN)
-	find . -type f | xargs touch
-	rm -rf $(OBJS)
 
 run: qemu
 

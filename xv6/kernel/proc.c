@@ -19,8 +19,6 @@ extern void trapret(void);
 
 static void wakeup1(void *chan);
 
-struct spinlock growproclock;
-
 void
 pinit(void)
 {
@@ -48,12 +46,6 @@ found:
   p->state = EMBRYO;
   p->pid = nextpid++;
   release(&ptable.lock);
-  // init lock - requirement 12
-  // making a new process
-  p->isThread = 0;
-  p->parent = proc;
-  // trap happening here
-  initlock(&p->lock, "proc_lock");
 
   // Allocate kernel stack if possible.
   if((p->kstack = kalloc()) == 0){
@@ -61,8 +53,7 @@ found:
     return 0;
   }
   sp = p->kstack + KSTACKSIZE;
-  //cprintf("kalloc success\n");
-
+  
   // Leave room for trap frame.
   sp -= sizeof *p->tf;
   p->tf = (struct trapframe*)sp;
@@ -77,7 +68,6 @@ found:
   memset(p->context, 0, sizeof *p->context);
   p->context->eip = (uint)forkret;
 
-  //cprintf("before return success\n");
   return p;
 }
 
@@ -113,74 +103,22 @@ userinit(void)
 
 // Grow current process's memory by n bytes.
 // Return 0 on success, -1 on failure.
-// requirement 12
 int
 growproc(int n)
 {
-  /*
   uint sz;
-  // acquire(&ptable.lock);
-  struct proc *p;
-  if (proc->isThread == 0) {
-    acquire(&proc->lock);
-  } else {
-	p = proc;
-	while (p->isThread == 1) {
-	  p->parent = p;
-	}
-	proc->parent = p; 
-    //for(p = proc; p->isThread == 1; p->parent) {
-	//  proc->parent = p;
-	//} // finding the process as parent
-	acquire(&proc->parent->lock);
-  }
-
+  
   sz = proc->sz;
   if(n > 0){
-    if((sz = allocuvm(proc->pgdir, sz, sz + n)) == 0) {
-	  if(proc->isThread == 0) release(&proc->lock);
-	  else release(&proc->parent->lock);
-	  return -1;
-	}
-  } else if(n < 0){
-    if((sz = deallocuvm(proc->pgdir, sz, sz + n)) == 0) {
-	  if(proc->isThread == 0) release(&proc->lock);
-	  else release(&proc->parent->lock);
+    if((sz = allocuvm(proc->pgdir, sz, sz + n)) == 0)
       return -1;
-	}
+  } else if(n < 0){
+    if((sz = deallocuvm(proc->pgdir, sz, sz + n)) == 0)
+      return -1;
   }
   proc->sz = sz;
   switchuvm(proc);
-  if(proc->isThread == 0) release(&proc->lock);
-  else release(&proc->parent->lock);
   return 0;
-  */
-   uint sz;
-   struct proc *p;
-
-   pde_t* pgdirtemp = proc->pgdir;
-   sz = proc->sz;
-   if(n > 0){
-     if((sz = allocuvm(proc->pgdir, sz, sz + n)) == 0)
-       return -1;
-   } else if(n < 0){
-     if((sz = deallocuvm(proc->pgdir, sz, sz + n)) == 0)
-       return -1;
-   }
-   proc->sz = sz;
-   switchuvm(proc);
-
-   acquire(&ptable.lock);
-   for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
-     if(p->pgdir == pgdirtemp){
-       p->sz = sz;
-       acquire(&growproclock);
-       switchuvm(p);
-       release(&growproclock);
-     }
-   }
-   release(&ptable.lock);
-   return 0;
 }
 
 // Create a new process copying p as the parent.
@@ -221,7 +159,6 @@ fork(void)
   return pid;
 }
 
-
 // Exit the current process.  Does not return.
 // An exited process remains in the zombie state
 // until its parent calls wait() to find out it exited.
@@ -252,19 +189,10 @@ exit(void)
 
   // Pass abandoned children to init.
   for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
-	  if(p->parent == proc) { // check if it is a thread
-      if(p->isThread == 1) {
-        kfree(p->kstack);
-        p->kstack = 0;
-        p->ustack = UNUSED;
-        p->state = ZOMBIE;
-		p->killed = 3;
-      }
-      else {
-        p->parent = initproc;
-        if(p->state == ZOMBIE)
-          wakeup1(initproc);
-      }
+    if(p->parent == proc){
+      p->parent = initproc;
+      if(p->state == ZOMBIE)
+        wakeup1(initproc);
     }
   }
 
@@ -287,7 +215,7 @@ wait(void)
     // Scan through table looking for zombie children.
     havekids = 0;
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
-      if(p->isThread == 1 || p->parent != proc)
+      if(p->parent != proc)
         continue;
       havekids = 1;
       if(p->state == ZOMBIE){
@@ -505,7 +433,7 @@ procdump(void)
       state = states[p->state];
     else
       state = "???";
-    cprintf("%d %s %s %d", p->pid, state, p->name, p->killed);
+    cprintf("%d %s %s", p->pid, state, p->name);
     if(p->state == SLEEPING){
       getcallerpcs((uint*)p->context->ebp+2, pc);
       for(i=0; i<10 && pc[i] != 0; i++)
@@ -515,159 +443,4 @@ procdump(void)
   }
 }
 
-int 
-listproc(void)
-{
-  procdump();
-  return 0;
-}
 
-int
-clone(void(*fcn)(void*), void*arg, void* stack){
-  int i, tid;
-  struct proc *thread, *p;
-  void *retaddr, *myarg;
-  uint load[2];
-
-  // requirement 8
-  if ((thread = allocproc()) == 0) {
-    return -1;
-  }
-
-  // check page allignment
-  if((uint)stack%PGSIZE != 0){
-    return -1;
-  }
-
-  if((proc->sz - (uint)stack) < PGSIZE){
-    return -1;
-  }
-  
-  p = proc;
-  while (p->isThread == 1) {
-    p = p->parent;
-  }
-
-  thread->isThread = 1; // requirement 11;
-  thread->pgdir = p->pgdir; // requirement 2
-  thread->sz = p->sz;
-  thread->parent = p;
-  thread->killed = 0; // non-zero have been killed
-  thread->ustack = (char*)stack; // requirement 5
-  *(thread->tf) = *(p->tf); // trap frame holds register values
-
-  // find the top parent 
-  // requirement 9
-  load[0] = 0xffffffff;
-  load[1] = (uint)arg;
-  
-
-  // requirement 7
-  retaddr = stack + PGSIZE - 2 * sizeof(void*);
-  *(uint*)retaddr = 0xFFFFFFFF;
-
-  // requirement 6
-  myarg = stack + PGSIZE - sizeof(void*); 
-  *(uint*)myarg = (uint)arg;
-  // calling convention is to push esp to ebp, as mentioned in the wikipedia of calling conventions of os dev
-  thread->tf->esp = (uint)(stack);
-  memmove((void*)thread->tf->esp, stack, PGSIZE);
-  thread->tf->esp += PGSIZE - 2 * 4;
-  copyout(thread->pgdir, thread->tf->esp, load, 8);
-  thread->tf->ebp = thread->tf->esp;
-  thread->tf->eip = (uint)fcn; // requirement 4
-  thread->tf->eax = 0;
-  // requirement 3
-  // taken from fork, nofile == number of files
-  for(i = 0; i < NOFILE; i++)
-    if(p->ofile[i])
-      thread->ofile[i] = filedup(p->ofile[i]);
-  thread->cwd = idup(p->cwd);
-
-
-  tid = thread->pid;
-
-  acquire(&ptable.lock);
-  thread->state = RUNNABLE;
-  release(&ptable.lock);
-  safestrcpy(p->name, thread->name, sizeof(p->name));
- 
-  return tid;
-}
-
-int
-join(int pid)
-{
-  if (proc->pid == pid)
-    return -1;
- 
-  cprintf("trying to find %d in process %d.\n", pid, proc->pid);
-
-  int havekids;
-  int found = 0;
-  struct proc *p;
-  
-
-  acquire(&ptable.lock);
-  for(;;){
-    havekids = 0;
-    for(p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
-      if(p->parent->pid != proc->pid || p -> isThread != 1)
-        continue;
-      cprintf("thread's pid is(in kernel): %d while finding %d\n", p->pid, pid);
-      cprintf("thread %d parent pid is %d\n", p->pid, p->parent->pid);
-      cprintf("state of thread pid %d is %d\n", p->pid, p->state);
-      if(p->pid == pid) {
-        found = 1;
-      }
-
-      if(p->state == ZOMBIE && pid == p->pid) {
-        cprintf("releasing pid %d\n", pid);
-        havekids = 1;
-        kfree(p->kstack);
-        p -> state = UNUSED;
-        p -> pid = 0;
-        p -> parent = 0;
-        p -> name[0] = 0;
-        p -> killed = 0;
-        release(&ptable.lock);
-        return pid;
-      }
-    }
-    cprintf("%d is whether it found a thread or not\n", havekids);
-    if((havekids == 0 && found != 1) || proc -> killed) {
-      release(&ptable.lock);
-      cprintf("couldn't find %d. exiting with -1\n", pid);
-      return -1;
-    }
-    sleep(proc, &ptable.lock);
-  }
-}
-
-void
-cvwait(void *chan, struct lock_t *lock)
-{
-  acquire(&ptable.lock);  
-  xchg(&lock->locked, 0); //unlock
-     
-  //proc->lock = lock;//store the user lock
-  proc->chan = chan;
-  proc->state = SLEEPING;
-  sched();
-  proc->chan = 0;
-  release(&ptable.lock);
-  while(xchg(&lock->locked, 1)!=0);//lock
-}
-
-void
-cvsignal(void *chan)
-{
-  struct proc *p;
-  acquire(&ptable.lock);
-  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++)
-    if(p->state == SLEEPING && p->chan == chan && p->isThread == 1) {
-      p->state = RUNNABLE;
-      break;
-    }
-  release(&ptable.lock);
-}

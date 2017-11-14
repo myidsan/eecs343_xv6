@@ -3,10 +3,6 @@
 
 struct stat;
 
-typedef struct cond_t {
-  struct lock_t *lock;
-}cond_t;
-
 // system calls
 int fork(void);
 int exit(void) __attribute__((noreturn));
@@ -29,12 +25,6 @@ int getpid(void);
 char* sbrk(int);
 int sleep(int);
 int uptime(void);
-int clone(void*, void*, void*);
-int join(int);
-int listproc(void);
-void cvwait(struct cond_t*, struct lock_t*);
-void cvsignal(struct cond_t*);
-
 
 // user library functions (ulib.c)
 int stat(char*, struct stat*);
@@ -49,15 +39,6 @@ void* memset(void*, int, uint);
 void* malloc(uint);
 void free(void*);
 int atoi(const char*);
-
-// uthreadlib.c
-int thread_create(void(*start_routine) (void*), void *arg);
-int thread_join(int);
-void lock_init(struct lock_t*);
-void lock_acquire(struct lock_t*); 
-void lock_release(struct lock_t*);
-void cv_wait(struct cond_t*, struct lock_t*);
-void cv_signal(struct cond_t*);
 
 #endif // _USER_H_
 

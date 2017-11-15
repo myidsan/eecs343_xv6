@@ -611,3 +611,167 @@ nameiparent(char *path, char *name)
 {
   return namex(path, 1, name);
 }
+
+// search for the given key in data block
+// Enforcing maximun length on the tag value of 18 bytes
+// Therfore total 16 tag structs
+int 
+searchKey(uchar* key, uchar* str)
+{
+	int i = 0, j = 0;
+	int keyLength = strlen((char*)key);
+	for(i = 0; i < BSIZE; i += 32) {
+		for(j = 0; j < 10 && i + j < BSIZE && key[j] == str[i + j]; j++) {
+		  if(j == keyLength && !key[j])
+			 return 1;	
+		}
+	}
+	return -1;
+}
+
+// search for the end of tag block
+// if it exceeds block size (BSZIE) return -1
+int 
+searchEnd(uchar* str) 
+{
+	int i = 0, result = 0;
+	for(i = 0; str[i] && i < BSIZE; i += 32);
+	if (i == BSIZE) 
+		result = -1;
+  return result;
+}
+
+int
+tagFile(int fileDescriptor, char* key, char* value, int valueLength)
+{
+  struct file *f;
+  struct buf *buftag;
+  uchar *str;
+
+  // checks if fileDescriptor is valid and is open.
+  if(fileDescriptor < 0 || fileDescriptor >= NOFILE || (f = proc->ofile[fileDescriptor]) == 0) 
+    return -1;
+  // checks if file is inode, writeable, and has inode called ip
+  if(f->type != FD_INODE || !f->writable || !f->ip)
+    return -1;
+  // checks keyLength
+  int keyLength = strlen(key);
+  if(!key || keyLength < 1 || keyLength > 9)
+    return -1;
+  // checks value and value length
+  if(!value || valueLength < 0 || valueLength > 18)
+    return -1;
+  // lock inode
+  ilock(f->ip);
+  if (!f->ip->tags)
+    f->ip->tags = balloc(f->ip->dev); // allocate a disk block
+	  
+  buftag = bread(f->ip->dev, f->ip->tags); // To get a buffer for a particular disk block,call bread
+  str = (uchar*)buftag->data; // limited to 512 in buf.h
+	int keyPosition = searchKey((uchar*)key, (uchar*)str);
+	int endPosition = searchEnd((uchar*)str); 
+	
+	// key is not found
+  if(keyPosition < 0) {
+		// no more space to put tags
+		if(endPosition < 0) {
+			brelse(buftag);
+			iunlock(f->ip);
+			return -1;
+		}
+		// add new key and value to the allocated tag block
+		// memset clears indicated bytes of within the block
+		// memmove 
+	  memset((void*)((uint)str + (uint)endPosition), 0, 28); // 10(key) + 18(value)	
+	  memmove((void*)((uint)str + (uint)endPosition), (void*)key, (uint)keyLength); 	
+	  memmove((void*)((uint)str + (uint)endPosition + 10), (void*)value, (uint)valueLength);
+		bwrite(buftag);
+		brelse(buftag);
+		iunlock(f->ip);
+		return 1;	
+	} else {
+	// key is found. Modify value
+	  memset((void*)((uint)str + (uint)keyPosition + 10), 0, 18);
+    memmove((void*)((uint)str + (uint)keyPosition + 10), (void*)value, (uint)valueLength); 	
+    bwrite(buftag);
+   	brelse(buftag);
+  	iunlock(f->ip);
+    //cprintf("fileDescriptor: %d\nkey: %s\nvalue: %s\nvalueLength: %d\n", fileDescriptor, key, value, valueLength);
+	}
+	return 1;
+}
+
+int 
+removeFileTag(int fileDescriptor, char* key)
+{
+  struct file *f;
+  struct buf *buftag;
+  int keyLength = strlen(key);
+  uchar *str;
+  
+  // checks if fileDescriptor is valid and is open.
+  if(fileDescriptor < 0 || fileDescriptor >= NOFILE || (f = proc->ofile[fileDescriptor]) == 0) 
+    return -1;
+  // checks if file is inode, writeable, and has inode called ip
+  if(f->type != FD_INODE || !f->writable || !f->ip || !f->ip->tags)
+    return -1;
+  // checks keyLength
+  if(!key || keyLength < 1 || keyLength > 9)
+    return -1;
+  ilock(f->ip);
+  buftag = bread(f->ip->dev, f->ip->tags);
+  str = (uchar*)buftag->data;
+         
+	int keyPosition = searchKey((uchar*)key, (uchar*)str);
+  if (keyPosition < 0) {
+    brelse(buftag);
+    iunlock(f->ip);
+    return -1;
+  } else {
+    memset((void*)((uint)str + (uint)keyPosition), 0, 28);
+    bwrite(buftag);
+    brelse(buftag);
+    iunlock(f->ip);
+  }
+  return 1;
+}
+int
+getFileTag(int fileDescriptor, char* key, char* buffer, int length)
+{
+  struct file *f;
+  struct buf *buftag;
+  uchar *str;
+  // checks if fileDescriptor is valid and is open.
+  if(fileDescriptor < 0 || fileDescriptor >= NOFILE || (f = proc->ofile[fileDescriptor]) == 0) 
+    return -1;
+  if(f->type != FD_INODE || !f->writable || !f->ip)
+    return -1;
+  // checks keyLength
+  int keyLength = strlen(key);
+  if(!key || keyLength < 1 || keyLength > 9)
+    return -1;
+  ilock(f->ip);
+  if(!f->ip->tags)
+    return -1;
+  buftag = bread(f->ip->dev, f->ip->tags);
+  str = (uchar*)buftag->data;
+  int keyPosition = searchKey((uchar*)key, (uchar*)str);
+
+  if(keyPosition < 0) {
+    return -1;
+  } else {
+    int i;
+    uchar *found_key = (uchar *)((uint)str + (uint)keyPosition + 9);
+    for(i = 0; (i < 17) && ((i < length) || found_key[i]); i++);
+    if(i > length) {
+      cprintf("error\n");
+      return i;
+    }
+    memmove((void*)buffer, (void*)((uint)str + (uint)keyPosition + 9), i);
+    bwrite(buftag);
+    brelse(buftag);
+    iunlock(f->ip);
+    return i;
+  }
+}
+

@@ -24,5 +24,7 @@ int sys_wait(void);
 int sys_write(void);
 int sys_uptime(void);
 int sys_tagFile(void);
+int sys_removeFileTag(void);
+int sys_getFileTag(void);
 
 #endif // _SYSFUNC_H_

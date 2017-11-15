@@ -24,5 +24,7 @@
 #define SYS_sleep  20
 #define SYS_uptime 21
 #define SYS_tagFile 22
+#define SYS_removeFileTag 23
+#define SYS_getFileTag 24
 
 #endif // _SYSCALL_H_

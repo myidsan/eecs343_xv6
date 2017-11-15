@@ -635,7 +635,7 @@ int
 searchEnd(uchar* str) 
 {
 	int i = 0, result = 0;
-	for(i = 0; i < BSIZE && str[i]; i += 32);
+	for(i = 0; str[i] && i < BSIZE; i += 32);
 	if (i == BSIZE) 
 		result = -1;
   return result;
@@ -704,5 +704,34 @@ tagFile(int fileDescriptor, char* key, char* value, int valueLength)
 int 
 removeFileTag(int fileDescriptor, char* key)
 {
-  
+  struct file *f;
+  struct buf *buftag;
+  int keyLength = strlen(key);
+  uchar *str;
+
+  // checks if fileDescriptor is valid and is open.
+  if(fileDescriptor < 0 || fileDescriptor >= NOFILE || (f = proc->ofile[fileDescriptor]) == 0) 
+    return -1;
+  // checks if file is inode, writeable, and has inode called ip
+  if(f->type != FD_INODE || !f->writable || !f->ip || !f->ip->tags)
+    return -1;
+  // checks keyLength
+  if(!key || keyLength < 1 || keyLength > 9)
+    return -1;
+  ilock(f->ip);
+  buftag = bread(f->ip->dev, f->ip->tags);
+  str = (uchar*)buftag->data;
+         
+	int keyPosition = searchKey((uchar*)key, (uchar*)str);
+  if (keyPosition < 0) {
+    brelse(buftag);
+    iunlock(f->ip);
+    return -1;
+  } else {
+    memset((void*)((uint)str + (uint)keyPosition), 0, 28);
+    bwrite(buftag);
+    brelse(buftag);
+    iunlock(f->ip);
+  }
+  return 1;
 }

@@ -612,7 +612,7 @@ nameiparent(char *path, char *name)
   return namex(path, 1, name);
 }
 
-// serach for the given key in data block
+// search for the given key in data block
 // Enforcing maximun length on the tag value of 18 bytes
 // Therfore total 16 tag structs
 int 
@@ -629,7 +629,7 @@ searchKey(uchar* key, uchar* str)
 	return -1;
 }
 
-// serach for the end of tag block
+// search for the end of tag block
 // if it exceeds block size (BSZIE) return -1
 int 
 searchEnd(uchar* str) 
@@ -684,19 +684,25 @@ tagFile(int fileDescriptor, char* key, char* value, int valueLength)
 		// memmove 
 	  memset((void*)((uint)str + (uint)endPosition), 0, 28); // 10(key) + 18(value)	
 	  memmove((void*)((uint)str + (uint)endPosition), (void*)key, (uint)keyLength); 	
-	  memmove((void*)((uint)str + (uint)endPosition), (void*)value, (uint)valueLength);
+	  memmove((void*)((uint)str + (uint)endPosition + 10), (void*)value, (uint)valueLength);
 		bwrite(buftag);
 		brelse(buftag);
 		iunlock(f->ip);
 		return 1;	
-	}
+	} else {
 	// key is found. Modify value
-	memset((void*)((uint)str + (uint)keyPosition + 10), 0, 18);
-  memmove((void*)((uint)str + (uint)keyPosition + 10), (void*)value, (uint)valueLength); 	
-  bwrite(buftag);
-	brelse(buftag);
-	iunlock(f->ip);
-  //cprintf("fileDescriptor: %d\nkey: %s\nvalue: %s\nvalueLength: %d\n", fileDescriptor, key, value, valueLength);
+	  memset((void*)((uint)str + (uint)keyPosition + 10), 0, 18);
+    memmove((void*)((uint)str + (uint)keyPosition + 10), (void*)value, (uint)valueLength); 	
+    bwrite(buftag);
+   	brelse(buftag);
+  	iunlock(f->ip);
+    //cprintf("fileDescriptor: %d\nkey: %s\nvalue: %s\nvalueLength: %d\n", fileDescriptor, key, value, valueLength);
+	}
 	return 1;
 }
 
+int 
+removeFileTag(int fileDescriptor, char* key)
+{
+  
+}

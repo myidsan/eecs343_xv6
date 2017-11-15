@@ -659,14 +659,14 @@ tagFile(int fileDescriptor, char* key, char* value, int valueLength)
   if(!key || keyLength < 1 || keyLength > 9)
     return -1;
   // checks value and value length
-  if(!value || valueLength < 0)
+  if(!value || valueLength < 0 || valueLength > 18)
     return -1;
   // lock inode
   ilock(f->ip);
   if (!f->ip->tags)
     f->ip->tags = balloc(f->ip->dev); // allocate a disk block
 	  
-  buftag = bread(f->ip->dev, f->ip->tags); // To get a buffer for a particular disk block, call bread
+  buftag = bread(f->ip->dev, f->ip->tags); // To get a buffer for a particular disk block,call bread
   str = (uchar*)buftag->data; // limited to 512 in buf.h
 	int keyPosition = searchKey((uchar*)key, (uchar*)str);
 	int endPosition = searchEnd((uchar*)str); 

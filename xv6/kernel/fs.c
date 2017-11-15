@@ -761,12 +761,13 @@ getFileTag(int fileDescriptor, char* key, char* buffer, int length)
     return -1;
   } else {
     int i;
-    uchar *found_key = (uint)str + (uint)keyPosition + 10;
-    for(i = 0; (i < 17) && ((i < length) || !found_key[i]); i++);
-    if(i >= length) {
+    uchar *found_key = (uchar *)((uint)str + (uint)keyPosition + 9);
+    for(i = 0; (i < 17) && ((i < length) || found_key[i]); i++);
+    if(i > length) {
+      cprintf("error\n");
       return i;
     }
-    memmove((void*)buffer, (void*)((uint)str + (uint)keyPosition + 10), i);
+    memmove((void*)buffer, (void*)((uint)str + (uint)keyPosition + 9), i);
     bwrite(buftag);
     brelse(buftag);
     iunlock(f->ip);

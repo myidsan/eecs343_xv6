@@ -26,6 +26,8 @@ char* sbrk(int);
 int sleep(int);
 int uptime(void);
 int tagFile(int, char*, char*, int);
+int removeFileTag(int, char*);
+int getFileTag(int, char*, char*, int);
 
 // user library functions (ulib.c)
 int stat(char*, struct stat*);

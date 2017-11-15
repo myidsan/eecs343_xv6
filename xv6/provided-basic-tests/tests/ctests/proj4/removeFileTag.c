@@ -35,12 +35,14 @@ main(int argc, char *argv[])
 
    char buf[7];
    int valueLength = getFileTag(fd, key, buf, 7);
+   printf(1, "getFileTag output: %d \n\n", valueLength);
    assert(valueLength == len);
 
    int i;
    for(i = 0; i < len; i++){
       char v_actual = buf[i];
       char v_expected = val[i];
+      printf(1, "%c", v_actual);
       assert(v_actual == v_expected);
    }
 

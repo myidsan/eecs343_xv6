@@ -708,7 +708,7 @@ removeFileTag(int fileDescriptor, char* key)
   struct buf *buftag;
   int keyLength = strlen(key);
   uchar *str;
-
+  
   // checks if fileDescriptor is valid and is open.
   if(fileDescriptor < 0 || fileDescriptor >= NOFILE || (f = proc->ofile[fileDescriptor]) == 0) 
     return -1;
@@ -735,3 +735,42 @@ removeFileTag(int fileDescriptor, char* key)
   }
   return 1;
 }
+int
+getFileTag(int fileDescriptor, char* key, char* buffer, int length)
+{
+  struct file *f;
+  struct buf *buftag;
+  uchar *str;
+  // checks if fileDescriptor is valid and is open.
+  if(fileDescriptor < 0 || fileDescriptor >= NOFILE || (f = proc->ofile[fileDescriptor]) == 0) 
+    return -1;
+  if(f->type != FD_INODE || !f->writable || !f->ip)
+    return -1;
+  // checks keyLength
+  int keyLength = strlen(key);
+  if(!key || keyLength < 1 || keyLength > 9)
+    return -1;
+  ilock(f->ip);
+  if(!f->ip->tags)
+    return -1;
+  buftag = bread(f->ip->dev, f->ip->tags);
+  str = (uchar*)buftag->data;
+  int keyPosition = searchKey((uchar*)key, (uchar*)str);
+
+  if(keyPosition < 0) {
+    return -1;
+  } else {
+    int i;
+    uchar *found_key = (uint)str + (uint)keyPosition + 10;
+    for(i = 0; (i < 17) && ((i < length) || !found_key[i]); i++);
+    if(i >= length) {
+      return i;
+    }
+    memmove((void*)buffer, (void*)((uint)str + (uint)keyPosition + 10), i);
+    bwrite(buftag);
+    brelse(buftag);
+    iunlock(f->ip);
+    return i;
+  }
+}
+

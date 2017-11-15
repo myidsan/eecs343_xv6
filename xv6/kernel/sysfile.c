@@ -400,6 +400,7 @@ sys_tagFile(void)
     return -1;
   //cprintf("%d\n", fileDescriptor);
   cprintf("%d\n", valueLength);
+
   if(argstr_nonull(2, &value, valueLength) < 0)
     return -1;
 
@@ -417,3 +418,12 @@ int sys_removeFileTag(void)
   return removeFileTag(fileDescriptor, key);
 }
 
+int
+sys_getFileTag(void)
+{
+  int fileDescriptor, length;
+  char *key, *buffer;
+  if(argint(0, &fileDescriptor) < 0 || argstr(1, &key) < 0 || argint(2, &buffer) < 0 || argint(3, &length) < 0)
+    return -1;
+  return getFileTag(fileDescriptor, key, buffer, length);
+}

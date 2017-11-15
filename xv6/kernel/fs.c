@@ -612,10 +612,42 @@ nameiparent(char *path, char *name)
   return namex(path, 1, name);
 }
 
+// serach for the given key in data block
+// Enforcing maximun length on the tag value of 18 bytes
+// Therfore total 16 tag structs
+int 
+searchKey(uchar* key, uchar* str)
+{
+	int i = 0, j = 0;
+	int keyLength = strlen((char*)key);
+	for(i = 0; i < BSIZE; i += 32) {
+		for(j = 0; j < 10 && i + j < BSIZE && key[j] == stri[i + j]; j++) {
+		  if(j == keyLength && !key[j])
+			 return 1;	
+		}
+	}
+	return -1;
+}
+
+// serach for the end of tag block
+// if it exceeds block size (BSZIE) return -1
+int 
+searchEnd(uchar* str) 
+{
+	int i = 0, result = 0;
+	for(i = 0; i < BSIZE && str[i]; i += 32);
+	if (i == BSIZE) 
+		result = -1;
+  return result;
+}
+
 int
 tagFile(int fileDescriptor, char* key, char* value, int valueLength)
 {
   struct file *f;
+  struct buf *buftag;
+  uchar *str;
+
   // checks if fileDescriptor is valid and is open.
   if(fileDescriptor < 0 || fileDescriptor >= NOFILE || (f = proc->ofile[fileDescriptor]) == 0) 
     return -1;
@@ -630,12 +662,13 @@ tagFile(int fileDescriptor, char* key, char* value, int valueLength)
   if(!value || valueLength < 0)
     return -1;
   // lock inode
-  //ilock(f->ip);
-  // 
-
-
-
-
+  ilock(f->ip);
+  if (!f->ip->tag)
+    f->ip->tags = balloc(f->ip->dev); // allocate a disk block
+	  
+  buftag = bread(f->ip->dev, f->ip->tag); // To get a buffer for a particular disk block, call bread
+  str = (uchar*)buftag->data; // limited of 512 in buf.h
+  
 
   //cprintf("fileDescriptor: %d\nkey: %s\nvalue: %s\nvalueLength: %d\n", fileDescriptor, key, value, valueLength);
   return 1;

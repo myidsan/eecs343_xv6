@@ -778,13 +778,6 @@ getFileTag(int fileDescriptor, char* key, char* buffer, int length)
     if(i > length) {
       cprintf("%d\n", i);
       cprintf("error\n");
-      return i;
-    }
-    cprintf("outside else: %d\n", i);
-    memmove((void*)buffer, (void*)found_key, i);
-    //bwrite(buftag);
-      cprintf("%d  ", i);
-      cprintf("error, exceeding length limit of buffer\n");
       brelse(buftag);
       iunlock(f->ip);
       return i;
@@ -836,9 +829,10 @@ getAllTags(int fileDescriptor, struct Key keys[], int maxTag)
   return tagCount;
 }
 
+/*
 int
 getFilesByTag(char* key, char* value, int valueLength, char* results, int resultsLengths)
 {
   
 }
-
+*/

@@ -46,7 +46,6 @@ main(int argc, char *argv[])
      char v_expected = val[i];
      printf(1, "%c", buf[i]);
      assert(v_actual == v_expected);
->>>>>>> abd73efa328d009da8a51f7c24631a543d7c4ebf
    }
 
    printf(1, "TEST PASSED\n");

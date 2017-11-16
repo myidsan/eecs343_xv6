@@ -427,3 +427,15 @@ sys_getFileTag(void)
     return -1;
   return getFileTag(fileDescriptor, key, buffer, length);
 }
+
+int
+sys_getAllTags(void)
+{
+  int fileDescriptor, maxTags;
+  struct Key keys[16];
+  if(argint(0, &fileDescriptor) < 0 || argptr(1, (char**)&keys, 
+        sizeof(struct Key)*maxTags) < 0 || argint(2, &maxTags) < 0)
+   return -1; 
+  return getAllTags(fileDescriptor, keys, maxTags);
+}
+

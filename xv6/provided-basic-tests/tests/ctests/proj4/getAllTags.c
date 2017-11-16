@@ -14,11 +14,11 @@ int ppid;
 volatile int global = 1;
 
 #define assert(x) if (x) {} else { \
-     printf(1, "%s: %d ", __FILE__, __LINE__); \
-     printf(1, "assert failed (%s)\n", # x); \
-     printf(1, "TEST FAILED\n"); \
-     kill(ppid); \
-     exit(); \
+   printf(1, "%s: %d ", __FILE__, __LINE__); \
+   printf(1, "assert failed (%s)\n", # x); \
+   printf(1, "TEST FAILED\n"); \
+   kill(ppid); \
+   exit(); \
 }
 
 int
@@ -33,18 +33,20 @@ main(int argc, char *argv[])
    int res = tagFile(fd, key, val, len);
    assert(res > 0);
 
-   char buf[7];
-   int valueLength = getFileTag(fd, key, buf, 7);
-   assert(valueLength == len);
-   close(fd);
+   char* key2 = "number";
+   char* val2 = "five";
+   int len2 = 4;
+   res = tagFile(fd, key2, val2, len2);
+   assert(res > 0);
    
-   int i;
-   for(i = 0; i < len; i++){
-   char v_actual = buf[i];
-   char v_expected = val[i];
-   assert(v_actual == v_expected);
-   }
+
+   struct Key keys[16];
+   int number = getAllTags(fd, keys, 16);
+   printf(1, "number of tags: %d\n", number);
+   assert(number == 2);
+
+   close(fd);
 
    printf(1, "TEST PASSED\n");
    exit();
- }
+}

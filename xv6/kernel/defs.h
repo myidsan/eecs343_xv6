@@ -54,6 +54,7 @@ int             writei(struct inode*, char*, uint, uint);
 int             tagFile(int, char*, char*, int);
 int             removeFileTag(int, char*);
 int             getFileTag(int, char*, char*, int);
+int             getAllTags(int, struct Key*, int);
 
 // ide.c
 void            ideinit(void);

@@ -638,6 +638,7 @@ searchEnd(uchar* str)
 	for(i = 0; str[i] && i < BSIZE; i += 32);
 	if (i == BSIZE) 
 		result = -1;
+  result = i; 
   return result;
 }
 
@@ -752,7 +753,8 @@ getFileTag(int fileDescriptor, char* key, char* buffer, int length)
     return -1;
   ilock(f->ip);
   if(!f->ip->tags)
-    return -1;
+    f->ip->tags = balloc(f->ip->dev);
+    //return -1;
   buftag = bread(f->ip->dev, f->ip->tags);
   str = (uchar*)buftag->data;
   int keyPosition = searchKey((uchar*)key, (uchar*)str);
@@ -764,14 +766,55 @@ getFileTag(int fileDescriptor, char* key, char* buffer, int length)
     uchar *found_key = (uchar *)((uint)str + (uint)keyPosition + 9);
     for(i = 0; (i < 17) && ((i < length) || found_key[i]); i++);
     if(i > length) {
+      cprintf("%d\n", i);
       cprintf("error\n");
       return i;
     }
-    memmove((void*)buffer, (void*)((uint)str + (uint)keyPosition + 9), i);
-    bwrite(buftag);
+    cprintf("outside else: %d\n", i);
+    memmove((void*)buffer, (void*)found_key, i);
+    //bwrite(buftag);
     brelse(buftag);
     iunlock(f->ip);
     return i;
   }
 }
 
+int
+getAllTags(int fileDescriptor, struct Key keys[], int maxTag)
+{
+  struct file *f;
+  struct buf *buftag;
+  uchar str[BSIZE];
+  uint i = 0;
+  int tagCount = 0;  
+
+  // checks if fileDescriptor is valid and is open.
+  if(fileDescriptor < 0 || fileDescriptor >= NOFILE || (f = proc->ofile[fileDescriptor]) == 0) 
+    return -1;
+  // checks if file is inode, writeable, and has inode called ip
+  if(f->type != FD_INODE || !f->readable || !f->ip)
+    return -1;
+  // check if expected key list is empty 
+  if(!keys)
+    return -1;
+  // maxTag must be larger than one
+  if(maxTag < 0)
+    return -1;
+
+  ilock(f->ip);
+  if(!f->ip->tags)
+    f->ip->tags = balloc(f->ip->dev);
+  buftag = bread(f->ip->dev, f->ip->tags);
+  memmove((void*)str, (void*)buftag->data, (uint)BSIZE); 
+  brelse(buftag);
+  iunlock(f->ip);
+  for(i = 0; i < BSIZE; i += 32) {
+    if (str[i]) {
+      cprintf("what is str:%s\n", str);
+      cprintf("tagCounter enter\n");
+      memmove((void*)keys[tagCount].key, (void*)((uint)str + i), (uint)strlen((char*)((uint)str + i))); 
+      tagCount++;
+    }
+  }
+  return tagCount;
+}

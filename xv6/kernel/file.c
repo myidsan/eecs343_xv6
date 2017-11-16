@@ -124,3 +124,8 @@ filewrite(struct file *f, char *addr, int n)
   panic("filewrite");
 }
 
+int 
+getFilesByTag(char* key, char* value, int valueLength, char* results, int resultsLengths)
+{
+
+}

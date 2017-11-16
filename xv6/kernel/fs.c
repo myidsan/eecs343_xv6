@@ -623,7 +623,7 @@ searchKey(uchar* key, uchar* str)
 	for(i = 0; i < BSIZE; i += 32) {
 		for(j = 0; j < 10 && i + j < BSIZE && key[j] == str[i + j]; j++) {
 		  if(j == keyLength && !key[j])
-			 return 1;	
+			 return i + j - keyLength;	
 		}
 	}
 	return -1;
@@ -763,7 +763,7 @@ getFileTag(int fileDescriptor, char* key, char* buffer, int length)
     return -1;
   } else {
     int i;
-    uchar *found_key = (uchar *)((uint)str + (uint)keyPosition + 9);
+    uchar *found_key = (uchar *)((uint)str + (uint)keyPosition + 10);
     for(i = 0; (i < 17) && ((i < length) || found_key[i]); i++);
     if(i > length) {
       cprintf("%d\n", i);
@@ -818,3 +818,10 @@ getAllTags(int fileDescriptor, struct Key keys[], int maxTag)
   }
   return tagCount;
 }
+
+int
+getFilesByTag(char* key, char* value, int valueLength, char* results, int resultsLengths)
+{
+  
+}
+

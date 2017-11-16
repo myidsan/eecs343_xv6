@@ -21,7 +21,8 @@ test_values = [
   #{'name': 'tagFile'},
   #{'name': 'tagFile-bad-fd'},
   #{'name': 'removeFileTag'},
-  {'name': 'getAllTags'},
+  #{'name': 'getAllTags'},
+  {'name': 'getFilesByTag'},
 ]
 
 all_tests = []

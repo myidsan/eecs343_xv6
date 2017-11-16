@@ -26,7 +26,6 @@ main(int argc, char *argv[])
 {
    ppid = getpid();
    int fd = open("ls", O_RDWR);
-   printf(1, "fd of ls: %d\n", fd);
    char* key = "type";
    char* val = "utility";
    int len = 7;
@@ -39,13 +38,31 @@ main(int argc, char *argv[])
    res = tagFile(fd, key2, val2, len2);
    assert(res > 0);
    
-
+   key2 = "character";
+   val2 = "alphabet";
+   len2 = 8;
+   res = tagFile(fd, key2, val2, len2);
+   
    struct Key keys[16];
    int number = getAllTags(fd, keys, 16);
    printf(1, "number of tags: %d\n", number);
-   assert(number == 2);
+   assert(number == 3);
 
    close(fd);
+
+   int fd2 = open("ps", O_RDWR);
+   res = tagFile(fd2, key, val, lens);     
+   assert(res > 0);
+   close(fd);
+
+   char result[10];
+   int files = getFilesByTag(key, val, 8, result, 20);     
+   assert(files == 2); 
+   assert(result[0] == 'l');
+   assert(result[1] == 's');
+   assert(result[2] == NULL);
+   assert(result[3] == 'p');
+   assert(result[4] == 's');
 
    printf(1, "TEST PASSED\n");
    exit();

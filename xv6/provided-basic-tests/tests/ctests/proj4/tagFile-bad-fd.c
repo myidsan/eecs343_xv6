@@ -28,6 +28,7 @@ main(int argc, char *argv[])
    int fd = open("ls", O_RDWR);
    printf(1, "fd of ls: %d\n", fd);
    char* key = "type";
+   char* bad_key = "one to nine";
    char* val = "utility";
    int len = 7;
    int res = tagFile(-1, key, val, len);
@@ -35,6 +36,10 @@ main(int argc, char *argv[])
 
    res = tagFile(1000, key, val, len);
    assert(res == -1);
+   res = tagFile(fd, bad_key, val, len);
+   assert(res == -1);
+
+
 
    close(fd);
    res = tagFile(fd, key, val, len);

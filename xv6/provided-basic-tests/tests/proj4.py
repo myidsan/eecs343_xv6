@@ -21,6 +21,8 @@ test_values = [
   {'name': 'tagFile'},
   {'name': 'tagFile-bad-fd'},
   {'name': 'removeFileTag'},
+  {'name': 'updateFileTag'},
+  {'name': 'tagFileLimit'},
 ]
 
 all_tests = []

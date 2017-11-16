@@ -678,6 +678,7 @@ tagFile(int fileDescriptor, char* key, char* value, int valueLength)
 		if(endPosition < 0) {
 			brelse(buftag);
 			iunlock(f->ip);
+      //cprintf("1\n");
 			return -1;
 		}
 		// add new key and value to the allocated tag block
@@ -686,20 +687,15 @@ tagFile(int fileDescriptor, char* key, char* value, int valueLength)
 	  memset((void*)((uint)str + (uint)endPosition), 0, 28); // 10(key) + 18(value)	
 	  memmove((void*)((uint)str + (uint)endPosition), (void*)key, (uint)keyLength); 	
 	  memmove((void*)((uint)str + (uint)endPosition + 10), (void*)value, (uint)valueLength);
-		bwrite(buftag);
-		brelse(buftag);
-		iunlock(f->ip);
-		return 1;	
 	} else {
-	// key is found. Modify value
+	  // key is found. Update value
 	  memset((void*)((uint)str + (uint)keyPosition + 10), 0, 18);
     memmove((void*)((uint)str + (uint)keyPosition + 10), (void*)value, (uint)valueLength); 	
-    bwrite(buftag);
-   	brelse(buftag);
-  	iunlock(f->ip);
-    //cprintf("fileDescriptor: %d\nkey: %s\nvalue: %s\nvalueLength: %d\n", fileDescriptor, key, value, valueLength);
 	}
-	return 1;
+  bwrite(buftag);
+  brelse(buftag);
+	iunlock(f->ip);
+  return 1;	
 }
 
 int 
@@ -736,6 +732,7 @@ removeFileTag(int fileDescriptor, char* key)
   }
   return 1;
 }
+
 int
 getFileTag(int fileDescriptor, char* key, char* buffer, int length)
 {
@@ -743,23 +740,36 @@ getFileTag(int fileDescriptor, char* key, char* buffer, int length)
   struct buf *buftag;
   uchar *str;
   // checks if fileDescriptor is valid and is open.
-  if(fileDescriptor < 0 || fileDescriptor >= NOFILE || (f = proc->ofile[fileDescriptor]) == 0) 
+  if(fileDescriptor < 0 || fileDescriptor >= NOFILE || (f = proc->ofile[fileDescriptor]) == 0) {
+    cprintf("file descriptor is invalid\n");
     return -1;
-  if(f->type != FD_INODE || !f->writable || !f->ip)
+  }
+  if(f->type != FD_INODE || !f->writable || !f->ip) {
+    cprintf("file is invalid\n");
     return -1;
+  }
   // checks keyLength
   int keyLength = strlen(key);
-  if(!key || keyLength < 1 || keyLength > 9)
+  if(!key || keyLength < 1 || keyLength > 9) {
+    cprintf("key input invalid\n");
     return -1;
   ilock(f->ip);
   if(!f->ip->tags)
-    f->ip->tags = balloc(f->ip->dev);
-    //return -1;
+    return -1;
+  }
+  if(!f->ip->tags) {
+    cprintf("tag not allocated yet\n");
+    return -1;
+  }
+  ilock(f->ip);
   buftag = bread(f->ip->dev, f->ip->tags);
   str = (uchar*)buftag->data;
+  //cprintf("keyPosition: %d", keyPosition);
   int keyPosition = searchKey((uchar*)key, (uchar*)str);
-
   if(keyPosition < 0) {
+    cprintf("key not found\n");
+    brelse(buftag);
+    iunlock(f->ip);
     return -1;
   } else {
     int i;
@@ -773,6 +783,13 @@ getFileTag(int fileDescriptor, char* key, char* buffer, int length)
     cprintf("outside else: %d\n", i);
     memmove((void*)buffer, (void*)found_key, i);
     //bwrite(buftag);
+      cprintf("%d  ", i);
+      cprintf("error, exceeding length limit of buffer\n");
+      brelse(buftag);
+      iunlock(f->ip);
+      return i;
+    }
+    memmove((void*)buffer, (void*)((uint)str + (uint)keyPosition + 10), i);
     brelse(buftag);
     iunlock(f->ip);
     return i;

@@ -835,11 +835,13 @@ getAllTags(int fileDescriptor, struct Key keys[], int maxTag)
   memmove((void*)str, (void*)buftag->data, (uint)BSIZE); 
   brelse(buftag);
   iunlock(f->ip);
-  for(i = 0; i < BSIZE; i += 32) {
-    if (str[i]) {
-      cprintf("what is str:%s\n", str);
+  for(i = 0; i < BSIZE; i+=32) {
+    if(str[i]) {
+      cprintf("key is:%s\n", (char*)((uint)str+i));
       //cprintf("tagCounter enter\n");
-      memmove((void*)keys[tagCount].key, (void*)((uint)str + i), (uint)strlen((char*)((uint)str + i))); 
+      cprintf("key length:%x\n", (uint)strlen((char*)(uint)str+i));
+      memmove((void*)keys[tagCount].key, (void*)((uint)str + i), (uint)strlen((char*)((uint)str + (uint)i))); 
+      cprintf("copied key is: %s at keys[%d]\n", keys[tagCount].key, tagCount);
       tagCount++;
     }
   }

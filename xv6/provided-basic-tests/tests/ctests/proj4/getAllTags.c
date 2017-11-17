@@ -38,17 +38,16 @@ main(int argc, char *argv[])
    int len2 = 4;
    res = tagFile(fd, key2, val2, len2);
    assert(res > 0);
-   
 
    struct Key keys[16];
-   int number = getAllTags(fd, keys, 16);
+   int number = getAllTags(fd, keys, 2);
    printf(1, "number of tags: %d\n", number);
    assert(number == 2);
    //char buffer[18];
    int i;
    printf(1, "list of this file's tags:\n");
-   for(i = 0; i < number; i++){
-     printf(1, "%s\n", keys[i].key);  
+   for(i = 0; i < number; i++) {
+     printf(1, "%c\n", keys[i].key[i]);  
      /*
      int res = getFileTag(fd, keys[i].key, buffer, 18);
      printf(1, "%d\n", res);

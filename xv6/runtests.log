@@ -395,15 +395,15 @@ ld  -m    elf_i386 -nostdlib --omagic \
 dd if=/dev/zero of=xv6.img count=10000
 10000+0 records in
 10000+0 records out
-5120000 bytes (5.1 MB) copied, 0.0176365 s, 290 MB/s
+5120000 bytes (5.1 MB) copied, 0.0174679 s, 293 MB/s
 dd if=kernel/bootblock of=xv6.img conv=notrunc
 1+0 records in
 1+0 records out
-512 bytes (512 B) copied, 0.000101885 s, 5.0 MB/s
+512 bytes (512 B) copied, 9.9452e-05 s, 5.1 MB/s
 dd if=kernel/kernel of=xv6.img seek=1 conv=notrunc
 258+1 records in
 258+1 records out
-132460 bytes (132 kB) copied, 0.00038714 s, 342 MB/s
+132460 bytes (132 kB) copied, 0.000420297 s, 315 MB/s
 gcc -c  -iquote include -Wall -Werror -ggdb  -o tools/mkfs.o tools/mkfs.c
 gcc  tools/mkfs.o -o tools/mkfs
 mkdir -p fs

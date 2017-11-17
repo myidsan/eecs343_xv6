@@ -33,6 +33,7 @@ void            fileinit(void);
 int             fileread(struct file*, char*, int n);
 int             filestat(struct file*, struct stat*);
 int             filewrite(struct file*, char*, int n);
+int             getFilesByTag(char*, char*, int, char*, int);
 
 // fs.c
 int             dirlink(struct inode*, char*, uint);
@@ -55,7 +56,7 @@ int             tagFile(int, char*, char*, int);
 int             removeFileTag(int, char*);
 int             getFileTag(int, char*, char*, int);
 int             getAllTags(int, struct Key*, int);
-int             getFilesByTag(char*, char*, int, char*, int);
+int             getFilesByTag_back(struct* file, char*, char*, int, char*, int);
 
 // ide.c
 void            ideinit(void);

@@ -44,10 +44,11 @@ main(int argc, char *argv[])
    for(i = 0; i < len; i++){
      char v_actual = buf[i];
      char v_expected = val[i];
-     printf(1, "%c", buf[i]);
+     printf(1, "%c", v_actual);
      assert(v_actual == v_expected);
+     //printf(1, "%c", v_expected);
    }
 
    printf(1, "TEST PASSED\n");
    exit();
- }
+}

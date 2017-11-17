@@ -848,10 +848,46 @@ getAllTags(int fileDescriptor, struct Key keys[], int maxTag)
   return tagCount;
 }
 
-/*
 int
 getFilesByTag(char* key, char* value, int valueLength, char* results, int resultsLengths)
 {
-  
+  int fileDescriptor = 3;
+  struct file *f;
+  struct buf *buf_File;
+  uchar str[BSIZE];
+  int keyPosition = 0;
+  char* actualValue;
+  int actualValueLength = 0;
+  int j = 0;
+  int fileCount = 0;
+   
+  cprintf("does this even get called\n");
+  for (fileDescriptor = 3; fileDescriptor >= NOFILE; fileDescriptor++) {
+    cprintf("in for loop\n");
+    f = proc->ofile[fileDescriptor];
+    if (!f->ip->tags) 
+      return -1;
+    buf_File = bread(f->ip->dev, f->ip->tags);
+    memmove((void*)str, (void*)buf_File->data, (uint)BSIZE);
+    brelse(buf_File);
+    keyPosition = searchKey((uchar*)key, (uchar*)str);
+    cprintf("keyPos: %d\n", keyPosition);
+
+    if ((keyPosition = searchKey((uchar*)key, (uchar*)str)) >= 0) {
+      cprintf("keyPos: %d\n", keyPosition);
+      actualValueLength = 18;
+      actualValue = (char*)((uint)str + (uint)keyPosition + 10);
+      while (actualValueLength >= 0 && !actualValue[actualValueLength])
+        actualValueLength--;
+      if (actualValueLength == valueLength) {
+        // char by char comparision 
+        for (j = 0; j < valueLength && actualValue[j] == value[j]; j++);
+        if (j == valueLength) {
+          cprintf("about the update fileCount\n");
+          fileCount++;  
+        }
+      } 
+    }
+  }
+  return fileCount;
 }
-*/

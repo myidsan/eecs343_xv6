@@ -44,6 +44,26 @@ main(int argc, char *argv[])
    int number = getAllTags(fd, keys, 16);
    printf(1, "number of tags: %d\n", number);
    assert(number == 2);
+   //char buffer[18];
+   int i;
+   printf(1, "list of this file's tags:\n");
+   for(i = 0; i < number; i++){
+     printf(1, "%s\n", keys[i].key);  
+     /*
+     int res = getFileTag(fd, keys[i].key, buffer, 18);
+     printf(1, "%d\n", res);
+     if(res > 0){
+       printf(1, "%s\n", keys[i].key);
+     }
+     */
+   }
+   //only get 1 tag
+   /*
+   number = getAllTags(fd, keys, 1);
+   printf(1, "number of tags: %d\n", number);
+   assert(number == 2);
+   */
+
 
    close(fd);
 

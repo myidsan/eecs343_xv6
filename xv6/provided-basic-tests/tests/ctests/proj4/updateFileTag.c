@@ -33,7 +33,9 @@ main(int argc, char *argv[])
    char buf[7];
    int before_created = getFileTag(fd, key, buf, len);
    assert(before_created < 0);
+   printf(1, "stuck here?\n");
    int res = tagFile(fd, key, val, len);
+   printf(1, "stuck here? later\n");
    int i;
    assert(res > 0);
    for(i = 0; i < 7; i++){
@@ -43,7 +45,7 @@ main(int argc, char *argv[])
    // not large enough buffer length, return needed without write
    int valueLength = getFileTag(fd, key, buf, 5);
    assert(valueLength == 7);
-   for(i = 0; i < valueLength; i++){
+   for(i = 0; i < valueLength; i++) {
       char v_actual = buf[i];
       assert(v_actual == ' ');
    }

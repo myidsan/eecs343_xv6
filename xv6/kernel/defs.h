@@ -56,7 +56,7 @@ int             tagFile(int, char*, char*, int);
 int             removeFileTag(int, char*);
 int             getFileTag(int, char*, char*, int);
 int             getAllTags(int, struct Key*, int);
-int             getFilesByTag_back(struct* file, char*, char*, int, char*, int);
+int             getFilesByTag_back(struct file*, char*, char*, int, char*, int);
 
 // ide.c
 void            ideinit(void);

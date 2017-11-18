@@ -42,30 +42,36 @@ main(int argc, char *argv[])
    val2 = "alphabet";
    len2 = 8;
    res = tagFile(fd, key2, val2, len2);
-   
+   /*
    struct Key keys[16];
    int number = getAllTags(fd, keys, 16);
    printf(1, "number of tags: %d\n", number);
    assert(number == 3);
+   */
 
-   close(fd);
+   char result[10];
+   int files = getFilesByTag(key, val, 7, result, 10);     
+   printf(1, "files: %d\n", files);
+   assert(files == 1); 
 
    int fd2 = open("mkdir", O_RDWR);
    res = tagFile(fd2, key, val, len);     
    assert(res > 0);
-   close(fd);
 
-   char result[10];
-   int files = getFilesByTag(key, val, 7, result, 20);     
-   printf(1, "files: %d\n", files);
-   assert(files == 2); 
+   printf(1, "%s\n", result);
+
    /*
    assert(result[0] == 'l');
    assert(result[1] == 's');
-   assert(result[2] == NULL);
-   assert(result[3] == 'p');
-   assert(result[4] == 's');
+   assert(!result[2]);
    */
+
+   char results[10];
+   files = getFilesByTag(key, val, 7, results, 10);     
+   printf(1, "files for second call: %d\n", files);
+   assert(files == 2); 
+   close(fd);
+   close(fd2);
 
    printf(1, "TEST PASSED\n");
    exit();

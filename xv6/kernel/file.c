@@ -133,7 +133,9 @@ getFilesByTag(char* key, char* value, int valueLength, char* results, int result
   acquire(&ftable.lock);
   for(f = ftable.file; f < ftable.file + NFILE; f++) {
     if(f->ip) {
-      returning_check= getFilesByTag_back(f, key, value, valueLength, results, resultsLength);
+      cprintf("file has ip!\n");
+      returning_check = getFilesByTag_back(f, key, value, valueLength, results, resultsLength);
+      cprintf("getFilesByTag returned %d!\n", returning_check);
       if(returning_check < 0) {
         release(&ftable.lock);
         return -1;
@@ -143,5 +145,6 @@ getFilesByTag(char* key, char* value, int valueLength, char* results, int result
       // cprintf("getFilesByTag: strlen(results) = %d\n", strlen(results));
     }
   }
+  release(&ftable.lock);
   return total;
 }

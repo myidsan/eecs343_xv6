@@ -31,6 +31,7 @@ main(int argc, char *argv[])
    char* val = "utility";
    int len = 7;
    int res = tagFile(fd, key, val, len);
+   printf(1, "first res: %d\n", res);
    assert(res > 0);
 
    char* key2 = "number";
@@ -40,29 +41,30 @@ main(int argc, char *argv[])
    assert(res > 0);
 
    struct Key keys[16];
-   int number = getAllTags(fd, keys, 2);
+   int number = getAllTags(fd, keys, 16);
    printf(1, "number of tags: %d\n", number);
+   printf(1, "first key: %s\n", keys[0].key);
    assert(number == 2);
-   //char buffer[18];
-   int i;
+   
+   char buffer[18];
+   int i = 0;
    printf(1, "list of this file's tags:\n");
    for(i = 0; i < number; i++) {
-     printf(1, "%c\n", keys[i].key[i]);  
-     /*
-     int res = getFileTag(fd, keys[i].key, buffer, 18);
-     printf(1, "%d\n", res);
+     printf(1, "in loops num: %d\n", i);
+     printf(1, "key length: %d\n", strlen(keys[i].key));
+     printf(1, "%s\n", keys[i].key);  
+     int res = getFileTag(fd, (char*)keys[i].key, buffer, 18);
+     printf(1, "res: %d\n", res);
      if(res > 0){
        printf(1, "%s\n", keys[i].key);
      }
-     */
    }
    //only get 1 tag
    /*
-   number = getAllTags(fd, keys, 1);
-   printf(1, "number of tags: %d\n", number);
+   number = getAllTags(fd, keys, 16);
+   printf(1, "2nd round number of tags: %d\n", number);
    assert(number == 2);
    */
-
 
    close(fd);
 

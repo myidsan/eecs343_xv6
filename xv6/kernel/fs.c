@@ -766,8 +766,18 @@ getFileTag(int fileDescriptor, char* key, char* buffer, int length)
   }
   // checks keyLength
   int keyLength = strlen(key);
-  if(!key || keyLength < 1 || keyLength > 9) {
-    cprintf("key input invalid\n");
+  if (!key) {
+    cprintf("where is my fucking key\n");
+    return -1;
+  }
+
+  if(keyLength < 1) {
+    cprintf("key input short\n");
+    return -1;
+  }
+
+  if(keyLength > 9) {
+    cprintf("key input long\n");
     return -1;
   }
   ilock(f->ip);
@@ -827,27 +837,28 @@ getAllTags(int fileDescriptor, struct Key keys[], int maxTag)
   // maxTag must be larger than one
   if(maxTag < 0)
     return -1;
-
+  
+  //memset((void*)keys, 0, BSIZE);
   ilock(f->ip);
   if(!f->ip->tags)
     f->ip->tags = balloc(f->ip->dev);
   buftag = bread(f->ip->dev, f->ip->tags);
   memmove((void*)str, (void*)buftag->data, (uint)BSIZE); 
-  brelse(buftag);
-  iunlock(f->ip);
   for(i = 0; i < BSIZE; i+=32) {
     if(str[i]) {
       cprintf("key is:%s\n", (char*)((uint)str+i));
-      //cprintf("tagCounter enter\n");
       cprintf("key length:%x\n", (uint)strlen((char*)(uint)str+i));
       //memmove((void*)keys[tagCount].key, (void*)((uint)str + i), (uint)strlen((char*)((uint)str + (uint)i))); 
-      memmove((void*)keys[tagCount].key, (void*)((uint)str + i), (uint)strlen((char*)((uint)str + (uint)i))+1); 
+      memmove((void*)keys[tagCount].key, (void*)(char*)((uint)str + i), (uint)strlen((char*)(uint)str+i)+1); 
       cprintf("copied key is: %s at keys[%d]\n", keys[tagCount].key, tagCount);
       tagCount++;
     }
   }
+  brelse(buftag);
+  iunlock(f->ip);
   return tagCount;
 }
+
 int
 getFilesByTag_back(struct file* f, char* key, char* value, int valueLength, char* results, int resultsLength)
 {

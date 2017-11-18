@@ -136,6 +136,7 @@ getFilesByTag(char* key, char* value, int valueLength, char* results, int result
       cprintf("file has ip!\n");
       returning_check = getFilesByTag_back(f, key, value, valueLength, results, resultsLength);
       cprintf("getFilesByTag returned %d!\n", returning_check);
+      returning_check= getFilesByTag_back(f, key, value, valueLength, results, resultsLength);
       if(returning_check < 0) {
         release(&ftable.lock);
         return -1;

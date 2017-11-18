@@ -395,15 +395,15 @@ ld  -m    elf_i386 -nostdlib --omagic \
 dd if=/dev/zero of=xv6.img count=10000
 10000+0 records in
 10000+0 records out
-5120000 bytes (5.1 MB) copied, 0.032891 s, 156 MB/s
+5120000 bytes (5.1 MB) copied, 0.0356394 s, 144 MB/s
 dd if=kernel/bootblock of=xv6.img conv=notrunc
 1+0 records in
 1+0 records out
-512 bytes (512 B) copied, 0.000174762 s, 2.9 MB/s
+512 bytes (512 B) copied, 0.000182821 s, 2.8 MB/s
 dd if=kernel/kernel of=xv6.img seek=1 conv=notrunc
 260+1 records in
 260+1 records out
-133235 bytes (133 kB) copied, 0.000737143 s, 181 MB/s
+133235 bytes (133 kB) copied, 0.000765299 s, 174 MB/s
 gcc -c  -iquote include -Wall -Werror -ggdb  -o tools/mkfs.o tools/mkfs.c
 gcc  tools/mkfs.o -o tools/mkfs
 mkdir -p fs
@@ -581,7 +581,6 @@ position of start: 20
 res: 18
 number
 TEST PASSED
-
 
 test getAllTags PASSED
 Description: call tagFile to tag a file.  Call getFileTag to read the tag of that file.

@@ -5,72 +5,6 @@ build xv6 using make
 
 Trying to clean project using make clean
 make clean
-<<<<<<< HEAD
-gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
-		-M -MG kernel/sysfile.c -MF kernel/sysfile.d -MT kernel/sysfile.d -MT kernel/sysfile.o
-gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
-		-M -MG kernel/fs.c -MF kernel/fs.d -MT kernel/fs.d -MT kernel/fs.o
-gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
-		-M -MG kernel/file.c -MF kernel/file.d -MT kernel/file.d -MT kernel/file.o
-rm -rf kernel/bio.o kernel/console.o kernel/exec.o kernel/file.o kernel/fs.o kernel/ide.o kernel/ioapic.o kernel/kalloc.o kernel/kbd.o kernel/lapic.o kernel/main.o kernel/mp.o kernel/picirq.o kernel/pipe.o kernel/proc.o kernel/spinlock.o kernel/string.o kernel/swtch.o kernel/syscall.o kernel/sysfile.o kernel/sysproc.o kernel/timer.o kernel/trapasm.o kernel/trap.o kernel/uart.o kernel/vectors.o kernel/vm.o kernel/bootmain.o kernel/bootasm.o kernel/multiboot.o kernel/data.o kernel/bootother.o kernel/initcode.o kernel/bio.d kernel/console.d kernel/exec.d kernel/file.d kernel/fs.d kernel/ide.d kernel/ioapic.d kernel/kalloc.d kernel/kbd.d kernel/lapic.d kernel/main.d kernel/mp.d kernel/picirq.d kernel/pipe.d kernel/proc.d kernel/spinlock.d kernel/string.d kernel/swtch.d kernel/syscall.d kernel/sysfile.d kernel/sysproc.d kernel/timer.d kernel/trapasm.d kernel/trap.d kernel/uart.d kernel/vectors.d kernel/vm.d kernel/bootmain.d kernel/bootasm.d kernel/multiboot.d kernel/data.d kernel/bootother.d kernel/initcode.d kernel/vectors.S kernel/bootblock kernel/bootblock.out kernel/bootother.out kernel/initcode.out kernel/kernel bootother initcode xv6.img user/bin user/cat user/echo user/forktest user/grep user/init user/kill user/ln user/ls user/mkdir user/rm user/sh user/stressfs user/tester user/usertests user/wc user/zombie user/tagFile user/cat.o user/echo.o user/forktest.o user/grep.o user/init.o user/kill.o user/ln.o user/ls.o user/mkdir.o user/rm.o user/sh.o user/stressfs.o user/tester.o user/usertests.o user/wc.o user/zombie.o user/tagFile.o user/ulib.o user/usys.o user/printf.o user/umalloc.o user/cat.d user/echo.d user/forktest.d user/grep.d user/init.d user/kill.d user/ln.d user/ls.d user/mkdir.d user/rm.d user/sh.d user/stressfs.d user/tester.d user/usertests.d user/wc.d user/zombie.d user/tagFile.d user/ulib.d user/usys.d user/printf.d user/umalloc.d tools/mkfs tools/mkfs.o tools/mkfs.d fs fs.img .gdbinit .bochsrc dist
-Trying to build project using make
-make
-Makefile:149: kernel/bio.d: No such file or directory
-Makefile:149: kernel/console.d: No such file or directory
-Makefile:149: kernel/exec.d: No such file or directory
-Makefile:149: kernel/file.d: No such file or directory
-Makefile:149: kernel/fs.d: No such file or directory
-Makefile:149: kernel/ide.d: No such file or directory
-Makefile:149: kernel/ioapic.d: No such file or directory
-Makefile:149: kernel/kalloc.d: No such file or directory
-Makefile:149: kernel/kbd.d: No such file or directory
-Makefile:149: kernel/lapic.d: No such file or directory
-Makefile:149: kernel/main.d: No such file or directory
-Makefile:149: kernel/mp.d: No such file or directory
-Makefile:149: kernel/picirq.d: No such file or directory
-Makefile:149: kernel/pipe.d: No such file or directory
-Makefile:149: kernel/proc.d: No such file or directory
-Makefile:149: kernel/spinlock.d: No such file or directory
-Makefile:149: kernel/string.d: No such file or directory
-Makefile:149: kernel/swtch.d: No such file or directory
-Makefile:149: kernel/syscall.d: No such file or directory
-Makefile:149: kernel/sysfile.d: No such file or directory
-Makefile:149: kernel/sysproc.d: No such file or directory
-Makefile:149: kernel/timer.d: No such file or directory
-Makefile:149: kernel/trapasm.d: No such file or directory
-Makefile:149: kernel/trap.d: No such file or directory
-Makefile:149: kernel/uart.d: No such file or directory
-Makefile:149: kernel/vectors.d: No such file or directory
-Makefile:149: kernel/vm.d: No such file or directory
-Makefile:149: kernel/bootmain.d: No such file or directory
-Makefile:149: kernel/bootasm.d: No such file or directory
-Makefile:149: kernel/multiboot.d: No such file or directory
-Makefile:149: kernel/data.d: No such file or directory
-Makefile:149: kernel/bootother.d: No such file or directory
-Makefile:149: kernel/initcode.d: No such file or directory
-Makefile:149: user/cat.d: No such file or directory
-Makefile:149: user/echo.d: No such file or directory
-Makefile:149: user/forktest.d: No such file or directory
-Makefile:149: user/grep.d: No such file or directory
-Makefile:149: user/init.d: No such file or directory
-Makefile:149: user/kill.d: No such file or directory
-Makefile:149: user/ln.d: No such file or directory
-Makefile:149: user/ls.d: No such file or directory
-Makefile:149: user/mkdir.d: No such file or directory
-Makefile:149: user/rm.d: No such file or directory
-Makefile:149: user/sh.d: No such file or directory
-Makefile:149: user/stressfs.d: No such file or directory
-Makefile:149: user/tester.d: No such file or directory
-Makefile:149: user/usertests.d: No such file or directory
-Makefile:149: user/wc.d: No such file or directory
-Makefile:149: user/zombie.d: No such file or directory
-Makefile:149: user/tagFile.d: No such file or directory
-Makefile:149: user/ulib.d: No such file or directory
-Makefile:149: user/usys.d: No such file or directory
-Makefile:149: user/printf.d: No such file or directory
-Makefile:149: user/umalloc.d: No such file or directory
-Makefile:149: tools/mkfs.d: No such file or directory
-=======
 Makefile:149: kernel/bio.d: 그런 파일이나 디렉터리가 없습니다
 Makefile:149: kernel/console.d: 그런 파일이나 디렉터리가 없습니다
 Makefile:149: kernel/exec.d: 그런 파일이나 디렉터리가 없습니다
@@ -295,7 +229,6 @@ Makefile:149: user/usys.d: 그런 파일이나 디렉터리가 없습니다
 Makefile:149: user/printf.d: 그런 파일이나 디렉터리가 없습니다
 Makefile:149: user/umalloc.d: 그런 파일이나 디렉터리가 없습니다
 Makefile:149: tools/mkfs.d: 그런 파일이나 디렉터리가 없습니다
->>>>>>> san4
 gcc  -iquote include -Wall -Werror -ggdb  \
 	  -M -MG tools/mkfs.c -MF tools/mkfs.d -MT tools/mkfs.d -MT tools/mkfs.o
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
@@ -462,27 +395,15 @@ ld  -m    elf_i386 -nostdlib --omagic \
 dd if=/dev/zero of=xv6.img count=10000
 10000+0 records in
 10000+0 records out
-<<<<<<< HEAD
-5120000 bytes (5.1 MB) copied, 0.0331025 s, 155 MB/s
+5120000 bytes (5.1 MB) copied, 0.0178208 s, 287 MB/s
 dd if=kernel/bootblock of=xv6.img conv=notrunc
 1+0 records in
 1+0 records out
-512 bytes (512 B) copied, 6.4178e-05 s, 8.0 MB/s
+512 bytes (512 B) copied, 9.553e-05 s, 5.4 MB/s
 dd if=kernel/kernel of=xv6.img seek=1 conv=notrunc
 268+1 records in
 268+1 records out
-137635 bytes (138 kB) copied, 0.000735708 s, 187 MB/s
-=======
-5120000 bytes (5.1 MB) copied, 0.0356394 s, 144 MB/s
-dd if=kernel/bootblock of=xv6.img conv=notrunc
-1+0 records in
-1+0 records out
-512 bytes (512 B) copied, 0.000182821 s, 2.8 MB/s
-dd if=kernel/kernel of=xv6.img seek=1 conv=notrunc
-260+1 records in
-260+1 records out
-133235 bytes (133 kB) copied, 0.000765299 s, 174 MB/s
->>>>>>> san4
+137639 bytes (138 kB) copied, 0.000442666 s, 311 MB/s
 gcc -c  -iquote include -Wall -Werror -ggdb  -o tools/mkfs.o tools/mkfs.c
 gcc  tools/mkfs.o -o tools/mkfs
 mkdir -p fs
@@ -575,17 +496,10 @@ Finished running test build
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 **********************************************************************
-<<<<<<< HEAD
-Start running test getFilesByTag
+Start running test tagFile
 Description: call tagFile to tag a file.  Call getFileTag to read the tag of that file.
 
-Running xv6 user progam /home/ghj1452/343-ps/xv6/provided-basic-tests/tests/ctests/proj4/getFilesByTag.c
-=======
-Start running test getAllTags
-Description: call tagFile to tag a file.  Call getFileTag to read the tag of that file.
-
-Running xv6 user progam /home/slw579/eecs343/eecs343-ps/xv6/provided-basic-tests/tests/ctests/proj4/getAllTags.c
->>>>>>> san4
+Running xv6 user progam /home/slw579/eecs343/eecs343-ps/xv6/provided-basic-tests/tests/ctests/proj4/tagFile.c
 Trying to build project using make
 make
 gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
@@ -613,11 +527,7 @@ stressfs
 tester
 zombie
 grep
-<<<<<<< HEAD
-balloc: first 447 blocks have been allocated
-=======
-balloc: first 448 blocks have been allocated
->>>>>>> san4
+balloc: first 446 blocks have been allocated
 balloc: write bitmap block at sector 28
 rm user/bin/tester
 make qemu-nox 
@@ -633,43 +543,1204 @@ xv6...
 lapicinit: 1 0xfee00000
 cpu1: starting
 cpu0: starting
+inside readi for loop
+off: 0
+inside readi for loop
+off: 52
+inside readi for loop
+off: 116
+inside readi for loop
+off: 512
+inside readi for loop
+off: 1024
+inside readi for loop
+off: 1536
+inside readi for loop
+off: 2048
+inside readi for loop
+off: 84
+inside readi for loop
+off: 0
+inside readi for loop
+off: 16
+inside readi for loop
+off: 32
+inside readi for loop
+off: 48
+inside readi for loop
+off: 64
+inside readi for loop
+off: 80
+inside readi for loop
+off: 96
+inside readi for loop
+off: 112
+inside readi for loop
+off: 128
+inside readi for loop
+off: 144
+inside readi for loop
+off: 160
+inside readi for loop
+off: 176
+inside readi for loop
+off: 192
+inside readi for loop
+off: 208
+inside readi for loop
+off: 224
+inside readi for loop
+off: 240
+inside readi for loop
+off: 256
+inside readi for loop
+off: 272
+inside readi for loop
+off: 288
+inside readi for loop
+off: 304
+inside readi for loop
+off: 320
 init: starting sh
-$ tester
+inside readi for loop
+off: 0
+inside readi for loop
+off: 52
+inside readi for loop
+off: 128
+inside readi for loop
+off: 512
+inside readi for loop
+off: 1024
+inside readi for loop
+off: 1536
+inside readi for loop
+off: 2048
+inside readi for loop
+off: 2560
+inside readi for loop
+off: 3072
+inside readi for loop
+off: 3584
+inside readi for loop
+off: 4096
+inside readi for loop
+off: 4224
+inside readi for loop
+off: 4608
+inside readi for loop
+off: 5120
+inside readi for loop
+off: 5632
+inside readi for loop
+off: 84
+$ readi return success
 tester
-<<<<<<< HEAD
+tester
+readi return success
+readi return success
+readi return success
+readi return success
+readi return success
+readi return success
+inside readi for loop
+off: 0
+inside readi for loop
+off: 52
+inside readi for loop
+off: 116
+inside readi for loop
+off: 512
+inside readi for loop
+off: 1024
+inside readi for loop
+off: 1536
+inside readi for loop
+off: 2048
+inside readi for loop
+off: 2560
+inside readi for loop
+off: 84
+fd of ls: 3
 7
 allocating since first time
 endPosition for creating new: 0
-4
-endPosition for creating new: 20
-8
-endPosition for creating new: 40
-file has ip!
-tags not even theregetFilesByTag returned 0!
-file has ip!
-1
-2
-3
-4
 found key
 
-5
-6
-7
-8
-9
-cpu1: panic: sched locks
- 104fd8 
+keyPosition is: 0
+position of start: 0
+valueLength: 7
+utilityTEST PASSED
 
-test getFilesByTag FAILED
+
+test tagFile PASSED
 Description: call tagFile to tag a file.  Call getFileTag to read the tag of that file.
- xv6 kernel panic
 
-Finished running test getFilesByTag
+Finished running test tagFile
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Skipped 0 tests.
-To keep testing after failing a test, use flag '-c' or '--continue'
-=======
+
+**********************************************************************
+Start running test tagFile-bad-fd
+Description: call tagFile with bad fd argument.  tagFile should return -1.
+
+Running xv6 user progam /home/slw579/eecs343/eecs343-ps/xv6/provided-basic-tests/tests/ctests/proj4/tagFile-bad-fd.c
+Trying to build project using make
+make
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG user/tester.c -MF user/tester.d -MT user/tester.d -MT user/tester.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 -c -o user/tester.o user/tester.c
+ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/tester user/tester.o user/ulib.o user/usys.o user/printf.o user/umalloc.o
+cp user/bin/tester fs/tester
+./tools/mkfs fs.img fs
+used 29 (bit 1 ninode 26) free 29 total 1024
+README
+usertests
+sh
+mkdir
+kill
+rm
+cat
+ls
+wc
+tagFile
+echo
+init
+ln
+forktest
+stressfs
+tester
+zombie
+grep
+balloc: first 454 blocks have been allocated
+balloc: write bitmap block at sector 28
+rm user/bin/tester
+make qemu-nox 
+Ctrl+a h for help
+/home/software/qemu/bin/qemu-system-i386 -nographic -hdb fs.img xv6.img -smp 2
+WARNING: Image format was not specified for 'fs.img' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+WARNING: Image format was not specified for 'xv6.img' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+xv6...
+lapicinit: 1 0xfee00000
+cpu1: starting
+cpu0: starting
+inside readi for loop
+off: 0
+inside readi for loop
+off: 52
+inside readi for loop
+off: 116
+inside readi for loop
+off: 512
+inside readi for loop
+off: 1024
+inside readi for loop
+off: 1536
+inside readi for loop
+off: 2048
+inside readi for loop
+off: 84
+inside readi for loop
+off: 0
+inside readi for loop
+off: 16
+inside readi for loop
+off: 32
+inside readi for loop
+off: 48
+inside readi for loop
+off: 64
+inside readi for loop
+off: 80
+inside readi for loop
+off: 96
+inside readi for loop
+off: 112
+inside readi for loop
+off: 128
+inside readi for loop
+off: 144
+inside readi for loop
+off: 160
+inside readi for loop
+off: 176
+inside readi for loop
+off: 192
+inside readi for loop
+off: 208
+inside readi for loop
+off: 224
+inside readi for loop
+off: 240
+inside readi for loop
+off: 256
+inside readi for loop
+off: 272
+inside readi for loop
+off: 288
+inside readi for loop
+off: 304
+inside readi for loop
+off: 320
+init: starting sh
+inside readi for loop
+off: 0
+inside readi for loop
+off: 52
+inside readi for loop
+off: 128
+inside readi for loop
+off: 512
+inside readi for loop
+off: 1024
+inside readi for loop
+off: 1536
+inside readi for loop
+off: 2048
+inside readi for loop
+off: 2560
+inside readi for loop
+off: 3072
+inside readi for loop
+off: 3584
+inside readi for loop
+off: 4096
+inside readi for loop
+off: 4224
+inside readi for loop
+off: 4608
+inside readi for loop
+off: 5120
+inside readi for loop
+off: 5632
+inside readi for loop
+off: 84
+$ tester
+readi return success
+tester
+readi return success
+readi return success
+readi return success
+readi return success
+readi return success
+readi return success
+inside readi for loop
+off: 0
+inside readi for loop
+off: 52
+inside readi for loop
+off: 116
+inside readi for loop
+off: 512
+inside readi for loop
+off: 1024
+inside readi for loop
+off: 1536
+inside readi for loop
+off: 2048
+inside readi for loop
+off: 2560
+inside readi for loop
+off: 3072
+inside readi for loop
+off: 3584
+inside readi for loop
+off: 4096
+inside readi for loop
+off: 4212
+inside readi for loop
+off: 4608
+inside readi for loop
+off: 5120
+inside readi for loop
+off: 5632
+inside readi for loop
+off: 6144
+inside readi for loop
+off: 84
+fd of ls: 3
+7
+file descriptor is invalid
+7
+file descriptor is invalid
+7
+allocating since first time
+endPosition for creating new: 0
+found key
+
+keyPosition is: 0
+position of start: 0
+found key
+
+7
+endPosition for creating new: 0
+found key
+
+keyPosition is: 0
+position of start: 0
+found key
+
+18
+endPosition for creating new: 0
+found key
+
+keyPosition is: 0
+position of start: 0
+good_max_len: 18
+found key
+
+7
+key input long
+7
+key input short
+19
+keyPosition is: -1
+key not found
+7
+fd of ls: 3
+7
+TEST PASSED
+
+
+test tagFile-bad-fd PASSED
+Description: call tagFile with bad fd argument.  tagFile should return -1.
+
+Finished running test tagFile-bad-fd
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**********************************************************************
+Start running test removeFileTag
+Description: call tagFile to tag a file.  Call getFileTag to read the tag of that file. Call removeFileTag to remove the tag.  Call getFileTag again to verify that the tag is removed.
+
+Running xv6 user progam /home/slw579/eecs343/eecs343-ps/xv6/provided-basic-tests/tests/ctests/proj4/removeFileTag.c
+Trying to build project using make
+make
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG user/tester.c -MF user/tester.d -MT user/tester.d -MT user/tester.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 -c -o user/tester.o user/tester.c
+ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/tester user/tester.o user/ulib.o user/usys.o user/printf.o user/umalloc.o
+cp user/bin/tester fs/tester
+./tools/mkfs fs.img fs
+used 29 (bit 1 ninode 26) free 29 total 1024
+README
+usertests
+sh
+mkdir
+kill
+rm
+cat
+ls
+wc
+tagFile
+echo
+init
+ln
+forktest
+stressfs
+tester
+zombie
+grep
+balloc: first 447 blocks have been allocated
+balloc: write bitmap block at sector 28
+rm user/bin/tester
+make qemu-nox 
+Ctrl+a h for help
+/home/software/qemu/bin/qemu-system-i386 -nographic -hdb fs.img xv6.img -smp 2
+WARNING: Image format was not specified for 'fs.img' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+WARNING: Image format was not specified for 'xv6.img' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+xv6...
+lapicinit: 1 0xfee00000
+cpu1: starting
+cpu0: starting
+inside readi for loop
+off: 0
+inside readi for loop
+off: 52
+inside readi for loop
+off: 116
+inside readi for loop
+off: 512
+inside readi for loop
+off: 1024
+inside readi for loop
+off: 1536
+inside readi for loop
+off: 2048
+inside readi for loop
+off: 84
+inside readi for loop
+off: 0
+inside readi for loop
+off: 16
+inside readi for loop
+off: 32
+inside readi for loop
+off: 48
+inside readi for loop
+off: 64
+inside readi for loop
+off: 80
+inside readi for loop
+off: 96
+inside readi for loop
+off: 112
+inside readi for loop
+off: 128
+inside readi for loop
+off: 144
+inside readi for loop
+off: 160
+inside readi for loop
+off: 176
+inside readi for loop
+off: 192
+inside readi for loop
+off: 208
+inside readi for loop
+off: 224
+inside readi for loop
+off: 240
+inside readi for loop
+off: 256
+inside readi for loop
+off: 272
+inside readi for loop
+off: 288
+inside readi for loop
+off: 304
+inside readi for loop
+off: 320
+init: starting sh
+inside readi for loop
+off: 0
+inside readi for loop
+off: 52
+inside readi for loop
+off: 128
+inside readi for loop
+off: 512
+inside readi for loop
+off: 1024
+inside readi for loop
+off: 1536
+inside readi for loop
+off: 2048
+inside readi for loop
+off: 2560
+inside readi for loop
+off: 3072
+inside readi for loop
+off: 3584
+inside readi for loop
+off: 4096
+inside readi for loop
+off: 4224
+inside readi for loop
+off: 4608
+inside readi for loop
+off: 5120
+inside readi for loop
+off: 5632
+inside readi for loop
+off: 84
+$ tester
+readi return success
+tester
+readi return success
+readi return success
+readi return success
+readi return success
+readi return success
+readi return success
+inside readi for loop
+off: 0
+inside readi for loop
+off: 52
+inside readi for loop
+off: 116
+inside readi for loop
+off: 512
+inside readi for loop
+off: 1024
+inside readi for loop
+off: 1536
+inside readi for loop
+off: 2048
+inside readi for loop
+off: 2560
+inside readi for loop
+off: 3072
+inside readi for loop
+off: 84
+fd of ls: 3
+7
+allocating since first time
+endPosition for creating new: 0
+found key
+
+keyPosition is: 0
+position of start: 0
+getFileTag output: 7 
+
+utilityfound key
+
+keyPosition is: -1
+key not found
+TEST PASSED
+
+
+test removeFileTag PASSED
+Description: call tagFile to tag a file.  Call getFileTag to read the tag of that file. Call removeFileTag to remove the tag.  Call getFileTag again to verify that the tag is removed.
+
+Finished running test removeFileTag
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**********************************************************************
+Start running test updateFileTag
+Description:calls getFileTag before tagFile, should return -1. calls tagFile with valid input, should create and return 1. calls getFileTag with invalid length, should return correct length. calls removeFileTag to remove tag, should return 1. calls getFileTag, should return -1.
+
+Running xv6 user progam /home/slw579/eecs343/eecs343-ps/xv6/provided-basic-tests/tests/ctests/proj4/updateFileTag.c
+Trying to build project using make
+make
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG user/tester.c -MF user/tester.d -MT user/tester.d -MT user/tester.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 -c -o user/tester.o user/tester.c
+ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/tester user/tester.o user/ulib.o user/usys.o user/printf.o user/umalloc.o
+cp user/bin/tester fs/tester
+./tools/mkfs fs.img fs
+used 29 (bit 1 ninode 26) free 29 total 1024
+README
+usertests
+sh
+mkdir
+kill
+rm
+cat
+ls
+wc
+tagFile
+echo
+init
+ln
+forktest
+stressfs
+tester
+zombie
+grep
+balloc: first 450 blocks have been allocated
+balloc: write bitmap block at sector 28
+rm user/bin/tester
+make qemu-nox 
+Ctrl+a h for help
+/home/software/qemu/bin/qemu-system-i386 -nographic -hdb fs.img xv6.img -smp 2
+WARNING: Image format was not specified for 'fs.img' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+WARNING: Image format was not specified for 'xv6.img' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+xv6...
+lapicinit: 1 0xfee00000
+cpu1: starting
+cpu0: starting
+inside readi for loop
+off: 0
+inside readi for loop
+off: 52
+inside readi for loop
+off: 116
+inside readi for loop
+off: 512
+inside readi for loop
+off: 1024
+inside readi for loop
+off: 1536
+inside readi for loop
+off: 2048
+inside readi for loop
+off: 84
+inside readi for loop
+off: 0
+inside readi for loop
+off: 16
+inside readi for loop
+off: 32
+inside readi for loop
+off: 48
+inside readi for loop
+off: 64
+inside readi for loop
+off: 80
+inside readi for loop
+off: 96
+inside readi for loop
+off: 112
+inside readi for loop
+off: 128
+inside readi for loop
+off: 144
+inside readi for loop
+off: 160
+inside readi for loop
+off: 176
+inside readi for loop
+off: 192
+inside readi for loop
+off: 208
+inside readi for loop
+off: 224
+inside readi for loop
+off: 240
+inside readi for loop
+off: 256
+inside readi for loop
+off: 272
+inside readi for loop
+off: 288
+inside readi for loop
+off: 304
+inside readi for loop
+off: 320
+init: starting sh
+inside readi for loop
+off: 0
+inside readi for loop
+off: 52
+inside readi for loop
+off: 128
+inside readi for loop
+off: 512
+inside readi for loop
+off: 1024
+inside readi for loop
+off: 1536
+inside readi for loop
+off: 2048
+inside readi for loop
+off: 2560
+inside readi for loop
+off: 3072
+inside readi for loop
+off: 3584
+inside readi for loop
+off: 4096
+inside readi for loop
+off: 4224
+inside readi for loop
+off: 4608
+inside readi for loop
+off: 5120
+inside readi for loop
+off: 5632
+inside readi for loop
+off: 84
+$ tester
+readi return success
+tester
+readi return success
+readi return success
+readi return success
+readi return success
+readi return success
+readi return success
+inside readi for loop
+off: 0
+inside readi for loop
+off: 52
+inside readi for loop
+off: 116
+inside readi for loop
+off: 512
+inside readi for loop
+off: 1024
+inside readi for loop
+off: 1536
+inside readi for loop
+off: 2048
+inside readi for loop
+off: 2560
+inside readi for loop
+off: 3072
+inside readi for loop
+off: 3584
+inside readi for loop
+off: 4096
+inside readi for loop
+off: 4212
+inside readi for loop
+off: 84
+fd of ls: 3
+tag not allocated yet
+stuck here?
+7
+allocating since first time
+endPosition for creating new: 0
+stuck here? later
+found key
+
+keyPosition is: 0
+7
+error
+found key
+
+keyPosition is: 0
+position of start: 0
+fd is before tagFile extend: 3
+13
+found key
+
+keyPosition for updating: 20
+fd is after tagFile extend: 3
+fd is fucked: 3
+found key
+
+keyPosition is: 0
+position of start: 0
+new length: 13
+found key
+
+keyPosition is: -1
+key not found
+TEST PASSED
+
+
+test updateFileTag PASSED
+Description:calls getFileTag before tagFile, should return -1. calls tagFile with valid input, should create and return 1. calls getFileTag with invalid length, should return correct length. calls removeFileTag to remove tag, should return 1. calls getFileTag, should return -1.
+
+Finished running test updateFileTag
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**********************************************************************
+Start running test tagFileLimit
+Description:call tagFile 16 times to fill up the whole allocated block. tagFile should return -1 on 17th tag creation
+
+Running xv6 user progam /home/slw579/eecs343/eecs343-ps/xv6/provided-basic-tests/tests/ctests/proj4/tagFileLimit.c
+Trying to build project using make
+make
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG user/tester.c -MF user/tester.d -MT user/tester.d -MT user/tester.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 -c -o user/tester.o user/tester.c
+ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/tester user/tester.o user/ulib.o user/usys.o user/printf.o user/umalloc.o
+cp user/bin/tester fs/tester
+./tools/mkfs fs.img fs
+used 29 (bit 1 ninode 26) free 29 total 1024
+README
+usertests
+sh
+mkdir
+kill
+rm
+cat
+ls
+wc
+tagFile
+echo
+init
+ln
+forktest
+stressfs
+tester
+zombie
+grep
+balloc: first 454 blocks have been allocated
+balloc: write bitmap block at sector 28
+rm user/bin/tester
+make qemu-nox 
+Ctrl+a h for help
+/home/software/qemu/bin/qemu-system-i386 -nographic -hdb fs.img xv6.img -smp 2
+WARNING: Image format was not specified for 'fs.img' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+WARNING: Image format was not specified for 'xv6.img' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+xv6...
+lapicinit: 1 0xfee00000
+cpu1: starting
+cpu0: starting
+inside readi for loop
+off: 0
+inside readi for loop
+off: 52
+inside readi for loop
+off: 116
+inside readi for loop
+off: 512
+inside readi for loop
+off: 1024
+inside readi for loop
+off: 1536
+inside readi for loop
+off: 2048
+inside readi for loop
+off: 84
+inside readi for loop
+off: 0
+inside readi for loop
+off: 16
+inside readi for loop
+off: 32
+inside readi for loop
+off: 48
+inside readi for loop
+off: 64
+inside readi for loop
+off: 80
+inside readi for loop
+off: 96
+inside readi for loop
+off: 112
+inside readi for loop
+off: 128
+inside readi for loop
+off: 144
+inside readi for loop
+off: 160
+inside readi for loop
+off: 176
+inside readi for loop
+off: 192
+inside readi for loop
+off: 208
+inside readi for loop
+off: 224
+inside readi for loop
+off: 240
+inside readi for loop
+off: 256
+inside readi for loop
+off: 272
+inside readi for loop
+off: 288
+inside readi for loop
+off: 304
+inside readi for loop
+off: 320
+init: starting sh
+inside readi for loop
+off: 0
+inside readi for loop
+off: 52
+inside readi for loop
+off: 128
+inside readi for loop
+off: 512
+inside readi for loop
+off: 1024
+inside readi for loop
+off: 1536
+inside readi for loop
+off: 2048
+inside readi for loop
+off: 2560
+inside readi for loop
+off: 3072
+inside readi for loop
+off: 3584
+inside readi for loop
+off: 4096
+inside readi for loop
+off: 4224
+inside readi for loop
+off: 4608
+inside readi for loop
+off: 5120
+inside readi for loop
+off: 5632
+inside readi for loop
+off: 84
+$ tester
+readi return success
+tester
+readi return success
+readi return success
+readi return success
+readi return success
+readi return success
+readi return success
+inside readi for loop
+off: 0
+inside readi for loop
+off: 52
+inside readi for loop
+off: 116
+inside readi for loop
+off: 512
+inside readi for loop
+off: 1024
+inside readi for loop
+off: 1536
+inside readi for loop
+off: 2048
+inside readi for loop
+off: 2560
+inside readi for loop
+off: 3072
+inside readi for loop
+off: 3584
+inside readi for loop
+off: 4096
+inside readi for loop
+off: 4212
+inside readi for loop
+off: 4608
+inside readi for loop
+off: 5120
+inside readi for loop
+off: 5632
+inside readi for loop
+off: 6144
+inside readi for loop
+off: 84
+fd of ls: 3
+7
+allocating since first time
+endPosition for creating new: 0
+found key
+
+keyPosition is: 0
+position of start: 0
+7
+endPosition for creating new: 20
+found key
+
+keyPosition is: 32
+position of start: 20
+7
+endPosition for creating new: 40
+found key
+
+keyPosition is: 64
+position of start: 40
+7
+endPosition for creating new: 60
+found key
+
+keyPosition is: 96
+position of start: 60
+7
+endPosition for creating new: 80
+found key
+
+keyPosition is: 128
+position of start: 80
+7
+endPosition for creating new: a0
+found key
+
+keyPosition is: 160
+position of start: a0
+7
+endPosition for creating new: c0
+7
+endPosition for creating new: e0
+7
+endPosition for creating new: 100
+7
+endPosition for creating new: 120
+7
+endPosition for creating new: 140
+7
+endPosition for creating new: 160
+7
+endPosition for creating new: 180
+7
+endPosition for creating new: 1a0
+7
+endPosition for creating new: 1c0
+7
+endPosition for creating new: 1e0
+7
+found key
+
+keyPosition for updating: ffffffff
+7
+no more space
+error17: should be -1, but is: -1
+TEST PASSED
+
+
+test tagFileLimit PASSED
+Description:call tagFile 16 times to fill up the whole allocated block. tagFile should return -1 on 17th tag creation
+
+Finished running test tagFileLimit
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**********************************************************************
+Start running test getAllTags
+Description: call tagFile to tag a file.  Call getFileTag to read the tag of that file.
+
+Running xv6 user progam /home/slw579/eecs343/eecs343-ps/xv6/provided-basic-tests/tests/ctests/proj4/getAllTags.c
+Trying to build project using make
+make
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG user/tester.c -MF user/tester.d -MT user/tester.d -MT user/tester.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 -c -o user/tester.o user/tester.c
+ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/tester user/tester.o user/ulib.o user/usys.o user/printf.o user/umalloc.o
+cp user/bin/tester fs/tester
+./tools/mkfs fs.img fs
+used 29 (bit 1 ninode 26) free 29 total 1024
+README
+usertests
+sh
+mkdir
+kill
+rm
+cat
+ls
+wc
+tagFile
+echo
+init
+ln
+forktest
+stressfs
+tester
+zombie
+grep
+balloc: first 448 blocks have been allocated
+balloc: write bitmap block at sector 28
+rm user/bin/tester
+make qemu-nox 
+Ctrl+a h for help
+/home/software/qemu/bin/qemu-system-i386 -nographic -hdb fs.img xv6.img -smp 2
+WARNING: Image format was not specified for 'fs.img' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+WARNING: Image format was not specified for 'xv6.img' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+xv6...
+lapicinit: 1 0xfee00000
+cpu1: starting
+cpu0: starting
+inside readi for loop
+off: 0
+inside readi for loop
+off: 52
+inside readi for loop
+off: 116
+inside readi for loop
+off: 512
+inside readi for loop
+off: 1024
+inside readi for loop
+off: 1536
+inside readi for loop
+off: 2048
+inside readi for loop
+off: 84
+inside readi for loop
+off: 0
+inside readi for loop
+off: 16
+inside readi for loop
+off: 32
+inside readi for loop
+off: 48
+inside readi for loop
+off: 64
+inside readi for loop
+off: 80
+inside readi for loop
+off: 96
+inside readi for loop
+off: 112
+inside readi for loop
+off: 128
+inside readi for loop
+off: 144
+inside readi for loop
+off: 160
+inside readi for loop
+off: 176
+inside readi for loop
+off: 192
+inside readi for loop
+off: 208
+inside readi for loop
+off: 224
+inside readi for loop
+off: 240
+inside readi for loop
+off: 256
+inside readi for loop
+off: 272
+inside readi for loop
+off: 288
+inside readi for loop
+off: 304
+inside readi for loop
+off: 320
+init: starting sh
+inside readi for loop
+off: 0
+inside readi for loop
+off: 52
+inside readi for loop
+off: 128
+inside readi for loop
+off: 512
+inside readi for loop
+off: 1024
+inside readi for loop
+off: 1536
+inside readi for loop
+off: 2048
+inside readi for loop
+off: 2560
+inside readi for loop
+off: 3072
+inside readi for loop
+off: 3584
+inside readi for loop
+off: 4096
+inside readi for loop
+off: 4224
+inside readi for loop
+off: 4608
+inside readi for loop
+off: 5120
+inside readi for loop
+off: 5632
+inside readi for loop
+off: 84
+$ tester
+readi return success
+tester
+readi return success
+readi return success
+readi return success
+readi return success
+readi return success
+readi return success
+inside readi for loop
+off: 0
+inside readi for loop
+off: 52
+inside readi for loop
+off: 116
+inside readi for loop
+off: 512
+inside readi for loop
+off: 1024
+inside readi for loop
+off: 1536
+inside readi for loop
+off: 2048
+inside readi for loop
+off: 2560
+inside readi for loop
+off: 3072
+inside readi for loop
+off: 84
 fd of ls: 3
 7
 allocating since first time
@@ -706,6 +1777,7 @@ res: 18
 number
 TEST PASSED
 
+
 test getAllTags PASSED
 Description: call tagFile to tag a file.  Call getFileTag to read the tag of that file.
 
@@ -722,10 +1794,24 @@ Finished running test getAllTags
 test build PASSED (5 of 5)
 build xv6 using make
 
+test tagFile PASSED
+Description: call tagFile to tag a file.  Call getFileTag to read the tag of that file.
+
+test tagFile-bad-fd PASSED
+Description: call tagFile with bad fd argument.  tagFile should return -1.
+
+test removeFileTag PASSED
+Description: call tagFile to tag a file.  Call getFileTag to read the tag of that file. Call removeFileTag to remove the tag.  Call getFileTag again to verify that the tag is removed.
+
+test updateFileTag PASSED
+Description:calls getFileTag before tagFile, should return -1. calls tagFile with valid input, should create and return 1. calls getFileTag with invalid length, should return correct length. calls removeFileTag to remove tag, should return 1. calls getFileTag, should return -1.
+
+test tagFileLimit PASSED
+Description:call tagFile 16 times to fill up the whole allocated block. tagFile should return -1 on 17th tag creation
+
 test getAllTags PASSED
 Description: call tagFile to tag a file.  Call getFileTag to read the tag of that file.
 
-Passed 2 of 2 tests.
-Overall 2 of 2
+Passed 7 of 7 tests.
+Overall 7 of 7
 Points 5 of 5
->>>>>>> san4

@@ -18,11 +18,11 @@ def get_description(name):
   return desc.strip()
 
 test_values = [
-  #{'name': 'tagFile'},
-  #{'name': 'tagFile-bad-fd'},
-  #{'name': 'removeFileTag'},
-  #{'name': 'updateFileTag'},
-  #{'name': 'tagFileLimit'},
+  {'name': 'tagFile'},
+  {'name': 'tagFile-bad-fd'},
+  {'name': 'removeFileTag'},
+  {'name': 'updateFileTag'},
+  {'name': 'tagFileLimit'},
   {'name': 'getAllTags'},
   #{'name': 'getFilesByTag'},
 ]

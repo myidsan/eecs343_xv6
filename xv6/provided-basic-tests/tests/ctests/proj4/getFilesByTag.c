@@ -42,12 +42,11 @@ main(int argc, char *argv[])
    val2 = "alphabet";
    len2 = 8;
    res = tagFile(fd, key2, val2, len2);
-   /*
+   
    struct Key keys[16];
    int number = getAllTags(fd, keys, 16);
    printf(1, "number of tags: %d\n", number);
    assert(number == 3);
-   */
 
    char result[10];
    int files = getFilesByTag(key, val, 7, result, 10);     

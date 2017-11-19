@@ -27,6 +27,7 @@ int sys_tagFile(void);
 int sys_removeFileTag(void);
 int sys_getFileTag(void);
 int sys_getAllTags(void);
+//int sys_getFilesByTag_back(void);
 int sys_getFilesByTag(void);
 
 #endif // _SYSFUNC_H_

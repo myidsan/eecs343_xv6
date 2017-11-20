@@ -625,7 +625,23 @@ searchKey(uchar* key, uchar* str)
 	for(i = 0; i < BSIZE; i += 32) {
 		for(j = 0; j < 10 && i + j < BSIZE && key[j] == str[i + j]; ++j) {
 	    if(j == keyLength && !key[j] && !str[i+j]) {
-        cprintf("found key\n\n");
+        cprintf("found key\n");
+        return i + j - keyLength;	
+      }
+    }
+	}
+	return -1;
+}
+
+int 
+searchKey_ec(uchar* key, uchar* str)
+{
+	int i = 0, j = 0;
+	int keyLength = strlen((char*)key);
+	for(i = 0; i < BSIZE; i += keyLength) {
+		for(j = 0; j < keyLength && i + j < BSIZE && key[j] == str[i + j]; ++j) {
+	    if(j == keyLength && !key[j] && !str[i+j]) {
+        cprintf("found key\n");
         return i + j - keyLength;	
       }
     }
@@ -645,49 +661,61 @@ searchEnd(uchar* str)
   return i;
 }
 
+// search for the end of tag block
+// if it exceeds block size (BSZIE) return -1
+int 
+searchEnd_ec(uchar* str) 
+{
+	int i;
+	for(i = 0; str[i] && i < BSIZE; i++);
+	if (i == BSIZE) 
+		return -1;
+  return i;
+}
+
 int
 tagFile(int fileDescriptor, char* key, char* value, int valueLength)
 {
   struct file *f;
   struct buf *buftag;
   uchar *str;
-  //cprintf("1\n");
 
+  struct Tag addTag[1];
+  cprintf("size of key: %d, size of addTag after key: %d\n", sizeof(key), sizeof(addTag));
+  addTag[0].key = key;
+  cprintf("size of val: %d, size of addTag after val: %d\n", sizeof(value), sizeof(addTag));
+  addTag[0].val = value;
+  
   // checks if fileDescriptor is valid and is open.
   if(fileDescriptor < 0 || fileDescriptor >= NOFILE || (f = proc->ofile[fileDescriptor]) == 0) 
     return -1;
-  //cprintf("2\n");
   // checks if file is inode, writeable, and has inode called ip
   if(f->type != FD_INODE || !f->writable || !f->ip)
     return -1;
-  //cprintf("3\n");
   // checks keyLength
   int keyLength = strlen(key);
   if(!key || keyLength < 1 || keyLength > 9)
     return -1;
-  //cprintf("4\n");
   // checks value and value length
-  if(!value || valueLength < 0 || valueLength > 18)
+  // EC #3
+  // no upper restriction to valueLength
+  if(!value || valueLength < 0)
     return -1;
-  //cprintf("5\n");
   // lock inode
   ilock(f->ip);
-  //cprintf("6\n");
   if (!f->ip->tags){
     cprintf("allocating since first time\n");
     f->ip->tags = balloc(f->ip->dev); // allocate a disk block
   }
-  //cprintf("7\n");
 	  
   buftag = bread(f->ip->dev, f->ip->tags); // To get a buffer for a particular disk block,call bread
-  //cprintf("9\n");
   str = (uchar*)buftag->data; // limited to 512 in buf.h
   //cprintf("working till searchKey\n");
-	int keyPosition = searchKey((uchar*)key, (uchar*)str);
+	int keyPosition = searchKey_ec((uchar*)key, (uchar*)str);
   //cprintf("searchKey working\n");
-	int endPosition = searchEnd((uchar*)str); 
+	int endPosition = searchEnd_ec((uchar*)str); 
   //cprintf("searchEnd working\n");
-	
+ 
 	// key is not found
   if(keyPosition < 0) {
 		// no more space to put tags
@@ -701,9 +729,12 @@ tagFile(int fileDescriptor, char* key, char* value, int valueLength)
 		// memset clears indicated bytes of within the block
 		// memmove 
     cprintf("endPosition for creating new: %x\n", endPosition);
-	  memset((void*)((uint)str + (uint)endPosition), 0, 28); // 10(key) + 18(value)	
-	  memmove((void*)((uint)str + (uint)endPosition), (void*)key, (uint)keyLength); 	
-	  memmove((void*)((uint)str + (uint)endPosition + 10), (void*)value, (uint)valueLength);
+    cprintf("size of addTag: %d\n", sizeof(addTag));
+	  memset((void*)((uint)str + (uint)endPosition), 0, sizeof(addTag)); // 10(key) + 18(value)	
+    memmove((void*)(uint)str + (uint)endPosition, (void*)addTag, (uint)sizeof(addTag));
+    cprintf("used up data buffer: %d\n", searchEnd_ec(str));
+	  //memmove((void*)((uint)str + (uint)endPosition), (void*)key, (uint)keyLength); 	
+	  //memmove((void*)((uint)str + (uint)endPosition + 10), (void*)value, (uint)valueLength);
 	} else {
 	  // key is found. Update value
     cprintf("keyPosition for updating: %x\n", endPosition);

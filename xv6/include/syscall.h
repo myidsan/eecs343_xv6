@@ -26,5 +26,7 @@
 #define SYS_tagFile 22
 #define SYS_removeFileTag 23
 #define SYS_getFileTag 24
+#define SYS_getAllTags 25
+#define SYS_getFilesByTag 26
 
 #endif // _SYSCALL_H_

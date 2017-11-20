@@ -134,7 +134,9 @@ static int (*syscalls[])(void) = {
 [SYS_uptime]  sys_uptime,
 [SYS_tagFile] sys_tagFile,
 [SYS_removeFileTag] sys_removeFileTag,
-[SYS_getFileTag] sys_getFileTag
+[SYS_getFileTag] sys_getFileTag,
+[SYS_getAllTags] sys_getAllTags,
+[SYS_getFilesByTag] sys_getFilesByTag
 };
 
 // Called on a syscall trap. Checks that the syscall number (passed via eax)

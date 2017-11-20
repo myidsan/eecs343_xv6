@@ -26,5 +26,7 @@ int sys_uptime(void);
 int sys_tagFile(void);
 int sys_removeFileTag(void);
 int sys_getFileTag(void);
+int sys_getAllTags(void);
+int sys_getFilesByTag(void);
 
 #endif // _SYSFUNC_H_

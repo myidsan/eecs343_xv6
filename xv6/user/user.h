@@ -28,6 +28,8 @@ int uptime(void);
 int tagFile(int, char*, char*, int);
 int removeFileTag(int, char*);
 int getFileTag(int, char*, char*, int);
+int getAllTags(int, struct Key*, int);
+int getFilesByTag(char*, char*, int, char*, int);
 
 // user library functions (ulib.c)
 int stat(char*, struct stat*);

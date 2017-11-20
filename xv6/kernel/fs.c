@@ -621,10 +621,12 @@ searchKey(uchar* key, uchar* str)
 	int i = 0, j = 0;
 	int keyLength = strlen((char*)key);
 	for(i = 0; i < BSIZE; i += 32) {
-		for(j = 0; j < 10 && i + j < BSIZE && key[j] == str[i + j]; j++) {
-		  if(j == keyLength && !key[j])
-			 return 1;	
-		}
+		for(j = 0; j < 10 && i + j < BSIZE && key[j] == str[i + j]; ++j) {
+	    if(j == keyLength && !key[j] && !str[i+j]) {
+        cprintf("found key\n\n");
+        return i + j - keyLength;	
+      }
+    }
 	}
 	return -1;
 }
@@ -634,11 +636,11 @@ searchKey(uchar* key, uchar* str)
 int 
 searchEnd(uchar* str) 
 {
-	int i = 0, result = 0;
+	int i;
 	for(i = 0; str[i] && i < BSIZE; i += 32);
 	if (i == BSIZE) 
-		result = -1;
-  return result;
+		return -1;
+  return i;
 }
 
 int
@@ -647,29 +649,42 @@ tagFile(int fileDescriptor, char* key, char* value, int valueLength)
   struct file *f;
   struct buf *buftag;
   uchar *str;
+  //cprintf("1\n");
 
   // checks if fileDescriptor is valid and is open.
   if(fileDescriptor < 0 || fileDescriptor >= NOFILE || (f = proc->ofile[fileDescriptor]) == 0) 
     return -1;
+  //cprintf("2\n");
   // checks if file is inode, writeable, and has inode called ip
   if(f->type != FD_INODE || !f->writable || !f->ip)
     return -1;
+  //cprintf("3\n");
   // checks keyLength
   int keyLength = strlen(key);
   if(!key || keyLength < 1 || keyLength > 9)
     return -1;
+  //cprintf("4\n");
   // checks value and value length
   if(!value || valueLength < 0 || valueLength > 18)
     return -1;
+  //cprintf("5\n");
   // lock inode
   ilock(f->ip);
-  if (!f->ip->tags)
+  //cprintf("6\n");
+  if (!f->ip->tags){
+    cprintf("allocating since first time\n");
     f->ip->tags = balloc(f->ip->dev); // allocate a disk block
+  }
+  //cprintf("7\n");
 	  
   buftag = bread(f->ip->dev, f->ip->tags); // To get a buffer for a particular disk block,call bread
+  //cprintf("9\n");
   str = (uchar*)buftag->data; // limited to 512 in buf.h
+  //cprintf("working till searchKey\n");
 	int keyPosition = searchKey((uchar*)key, (uchar*)str);
+  //cprintf("searchKey working\n");
 	int endPosition = searchEnd((uchar*)str); 
+  //cprintf("searchEnd working\n");
 	
 	// key is not found
   if(keyPosition < 0) {
@@ -677,28 +692,26 @@ tagFile(int fileDescriptor, char* key, char* value, int valueLength)
 		if(endPosition < 0) {
 			brelse(buftag);
 			iunlock(f->ip);
+      cprintf("no more space\n");
 			return -1;
 		}
 		// add new key and value to the allocated tag block
 		// memset clears indicated bytes of within the block
 		// memmove 
+    cprintf("endPosition for creating new: %x\n", endPosition);
 	  memset((void*)((uint)str + (uint)endPosition), 0, 28); // 10(key) + 18(value)	
 	  memmove((void*)((uint)str + (uint)endPosition), (void*)key, (uint)keyLength); 	
 	  memmove((void*)((uint)str + (uint)endPosition + 10), (void*)value, (uint)valueLength);
-		bwrite(buftag);
-		brelse(buftag);
-		iunlock(f->ip);
-		return 1;	
 	} else {
-	// key is found. Modify value
+	  // key is found. Update value
+    cprintf("keyPosition for updating: %x\n", endPosition);
 	  memset((void*)((uint)str + (uint)keyPosition + 10), 0, 18);
     memmove((void*)((uint)str + (uint)keyPosition + 10), (void*)value, (uint)valueLength); 	
-    bwrite(buftag);
-   	brelse(buftag);
-  	iunlock(f->ip);
-    //cprintf("fileDescriptor: %d\nkey: %s\nvalue: %s\nvalueLength: %d\n", fileDescriptor, key, value, valueLength);
 	}
-	return 1;
+  bwrite(buftag);
+  brelse(buftag);
+	iunlock(f->ip);
+  return 1;	
 }
 
 int 
@@ -735,6 +748,7 @@ removeFileTag(int fileDescriptor, char* key)
   }
   return 1;
 }
+
 int
 getFileTag(int fileDescriptor, char* key, char* buffer, int length)
 {
@@ -742,36 +756,261 @@ getFileTag(int fileDescriptor, char* key, char* buffer, int length)
   struct buf *buftag;
   uchar *str;
   // checks if fileDescriptor is valid and is open.
-  if(fileDescriptor < 0 || fileDescriptor >= NOFILE || (f = proc->ofile[fileDescriptor]) == 0) 
+  if(fileDescriptor < 0 || fileDescriptor >= NOFILE || (f = proc->ofile[fileDescriptor]) == 0) {
+    cprintf("file descriptor is invalid\n");
     return -1;
-  if(f->type != FD_INODE || !f->writable || !f->ip)
+  }
+  if(f->type != FD_INODE || !f->writable || !f->ip) {
+    cprintf("file is invalid\n");
     return -1;
+  }
   // checks keyLength
   int keyLength = strlen(key);
-  if(!key || keyLength < 1 || keyLength > 9)
+  if (!key) {
+    cprintf("where is my fucking key\n");
     return -1;
+  }
+
+  if(keyLength < 1) {
+    cprintf("key input short\n");
+    return -1;
+  }
+
+  if(keyLength > 9) {
+    cprintf("key input long\n");
+    return -1;
+  }
   ilock(f->ip);
-  if(!f->ip->tags)
+  if(!f->ip->tags) {
+    cprintf("tag not allocated yet\n");
+    iunlock(f->ip);
     return -1;
+  }
   buftag = bread(f->ip->dev, f->ip->tags);
   str = (uchar*)buftag->data;
+  //cprintf("keyPosition: %d", keyPosition);
   int keyPosition = searchKey((uchar*)key, (uchar*)str);
-
+  cprintf("keyPosition is: %d\n", keyPosition);
   if(keyPosition < 0) {
+    cprintf("key not found\n");
+    brelse(buftag);
+    iunlock(f->ip);
     return -1;
   } else {
     int i;
-    uchar *found_key = (uchar *)((uint)str + (uint)keyPosition + 9);
-    for(i = 0; (i < 17) && ((i < length) || found_key[i]); i++);
+    uchar *found_key = (uchar *)((uint)str + (uint)keyPosition + 10);
+    for(i = 0; (i < 18) && ((i < length) || found_key[i]); i++);
     if(i > length) {
+      cprintf("%d\n", i);
       cprintf("error\n");
+      brelse(buftag);
+      iunlock(f->ip);
+      return i;
+    } else {
+      cprintf("position of start: %x\n", keyPosition);
+      memmove((void*)buffer, (void*)((uint)str + (uint)keyPosition + 10), i);
+      brelse(buftag);
+      iunlock(f->ip);
       return i;
     }
-    memmove((void*)buffer, (void*)((uint)str + (uint)keyPosition + 9), i);
-    bwrite(buftag);
-    brelse(buftag);
-    iunlock(f->ip);
-    return i;
   }
 }
 
+int
+getAllTags(int fileDescriptor, struct Key keys[], int maxTag)
+{
+  struct file *f;
+  struct buf *buftag;
+  uchar str[BSIZE];
+  uint i = 0;
+  int tagCount = 0;  
+
+  // checks if fileDescriptor is valid and is open.
+  if(fileDescriptor < 0 || fileDescriptor >= NOFILE || (f = proc->ofile[fileDescriptor]) == 0) 
+    return -1;
+  // checks if file is inode, writeable, and has inode called ip
+  if(f->type != FD_INODE || !f->readable || !f->ip)
+    return -1;
+  // check if expected key list is empty 
+  if(!keys)
+    return -1;
+  // maxTag must be larger than one
+  if(maxTag < 0)
+    return -1;
+  
+  //memset((void*)keys, 0, BSIZE);
+  ilock(f->ip);
+  if(!f->ip->tags)
+    f->ip->tags = balloc(f->ip->dev);
+  buftag = bread(f->ip->dev, f->ip->tags);
+  memmove((void*)str, (void*)buftag->data, (uint)BSIZE); 
+  for(i = 0; i < BSIZE; i+=32) {
+    if(str[i]) {
+      cprintf("key is:%s\n", (char*)((uint)str+i));
+      cprintf("key length:%x\n", (uint)strlen((char*)(uint)str+i));
+      //memmove((void*)keys[tagCount].key, (void*)((uint)str + i), (uint)strlen((char*)((uint)str + (uint)i))); 
+      memmove((void*)keys[tagCount].key, (void*)(char*)((uint)str + i), (uint)strlen((char*)(uint)str+i)+1); 
+      cprintf("copied key is: %s at keys[%d]\n", keys[tagCount].key, tagCount);
+      tagCount++;
+    }
+  }
+  brelse(buftag);
+  iunlock(f->ip);
+  return tagCount;
+}
+/*
+int
+getFilesByTag_back(struct file* f, char* key, char* value, int valueLength, char* results, int resultsLength)
+{
+  int j = 0;
+  int k = 0;
+  struct buf *bp;
+  uchar str[BSIZE];
+  int keyPos = 0;
+  int file_value_len = 0;
+  char *file_value;
+  struct dirent *d;
+  char *filename;
+  int filenameLength = 0;
+  //uint off;
+  //struct buf *bp_dir;
+  
+  if(!f->ip->tags) {
+    cprintf("tags not even there");
+    return 0;
+  }
+  bp = bread(f->ip->dev, f->ip->tags);
+  memmove((void*)str, (void*)bp->data, (uint)BSIZE);
+  brelse(bp);
+  if((keyPos = searchKey((uchar*)key, (uchar*)str)) >= 0) {
+    file_value_len = 17;
+    file_value = (char*)((uint)str + (uint)keyPos + 10);
+    while (file_value_len >= 0 && !file_value[file_value_len]) file_value_len--;
+    file_value_len++;
+    if(file_value_len == valueLength) {
+    for(j = 0; j < valueLength && file_value[j] == value[j]; j++);
+      if(j == valueLength) {
+        //
+        cprintf("1\n");
+        ilock(f->ip);
+        cprintf("2\n");
+        for(off = 0; off < f->ip->size; off += BSIZE){
+          bp_dir = bread(f->ip->dev, bmap(f->ip, off / BSIZE));
+          for(d = (struct dirent*)bp_dir->data;
+              d < (struct dirent*)(bp_dir->data + BSIZE);
+              d++){
+            if(d->inum == f->ip->inum) {
+              cprintf("found name\n");
+              filename = d->name;
+              break;
+            }
+         }
+       }
+       brelse(bp_dir);
+        iunlock(f->ip);
+        if(filename){
+          d = (struct dirent*)str;
+          if (d->inum) {
+            k = resultsLength - 1;
+             // go till non-empty
+            while (k >= 0 && !results[k]) k--;
+            // actual length
+            k++;
+            // go till empty
+            if (k) k++;
+            filename = d->name;
+            filenameLength = strlen(filename);
+            cprintf("file name is: %s\n", filename);
+           // enough room
+          if(resultsLength - k >= filenameLength) {
+            memmove((void*)((uint)results + (uint)k), (void*)filename, (uint)filenameLength);
+            cprintf("copied and is: %s\n", (char*)((uint)results + (uint)k)); 
+            results[filenameLength] = NULL;
+            return 1;
+          } else {
+              // not enough room
+            cprintf("not enough room\n");
+            return -1;
+          }
+        }
+      }
+    }
+  }
+  return -1;
+}
+*/
+int
+getFilesByTag(char* key, char* value, int valueLength, char* results, int resultsLength)
+{
+  struct inode *root_start;
+  struct inode *each_inode;
+  struct buf *bp;
+  struct buf *tagbf;
+  struct dirent *de;
+  uchar str[BSIZE];
+  uint off;
+  int file_value_len = 0;
+  int file_name_len;
+  int j, tag_pos, k;
+  int count = 0;
+  char *file_value;
+  char *file_name;
+  // get the root directory -from namex
+  root_start = iget(ROOTDEV, ROOTINO);
+  // lock inode
+  for(off = 0; off < root_start->size; off += BSIZE) {
+    bp = bread(root_start->dev, bmap(root_start, off / BSIZE));
+    for(de = (struct dirent*)bp->data;
+        de < (struct dirent*)(bp->data + BSIZE);
+        de++){
+      if(de->inum == 0)
+        continue;
+      each_inode = iget(root_start->dev, de->inum);
+      if(!each_inode->tags)
+        continue;
+      tagbf = bread(root_start->dev, each_inode->tags);
+      memmove((void*)str, (void*)tagbf->data, (uint)BSIZE);
+      brelse(tagbf);
+      tag_pos = searchKey((uchar*)key, (uchar*)str);
+      if(tag_pos >= 0) {
+        file_value_len = 17;
+        file_value = (char*)((uint)str + (uint)tag_pos + 10);
+        while (file_value_len >= 0 && !file_value[file_value_len]) file_value_len--;
+        file_value_len++;
+        if(file_value_len == valueLength) {
+          for(j = 0; j < valueLength && file_value[j] == value[j]; j++);
+          if(j == valueLength) {
+            count++;
+            file_name = de->name;
+            cprintf("found file name is: %s\n\n", file_name);
+            if(file_name){
+              k = resultsLength - 1;
+              while (k >= 0 && !results[k]) k--;
+              // actual length
+              k++;
+              // go till empty
+              if (k) k++;
+              file_name_len = strlen(file_name);
+              cprintf("file name length is: %d\n", file_name_len);
+              // enough room
+              if(resultsLength - k >= file_name_len) {
+                memmove((void*)((uint)results + (uint)k), (void*)file_name, (uint)file_name_len + 1);
+                cprintf("copied and is: %s\n", (char*)((uint)results + (uint)k)); 
+                results[k+file_name_len] = NULL;
+              } else {
+              // not enough room
+                cprintf("not enough room");
+                brelse(bp);
+                return -1;
+              }
+            }
+          }
+        }
+      } else {
+        continue;
+      }
+    }
+    brelse(bp);
+  }
+  return count;
+}

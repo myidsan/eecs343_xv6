@@ -858,7 +858,7 @@ getAllTags(int fileDescriptor, struct Key keys[], int maxTag)
   iunlock(f->ip);
   return tagCount;
 }
-
+/*
 int
 getFilesByTag_back(struct file* f, char* key, char* value, int valueLength, char* results, int resultsLength)
 {
@@ -872,70 +872,64 @@ getFilesByTag_back(struct file* f, char* key, char* value, int valueLength, char
   struct dirent *d;
   char *filename;
   int filenameLength = 0;
+  //uint off;
+  //struct buf *bp_dir;
   
-  if (!f->ip->tags) {
+  if(!f->ip->tags) {
     cprintf("tags not even there");
     return 0;
   }
-  cprintf("1\n");
   bp = bread(f->ip->dev, f->ip->tags);
-  cprintf("2\n");
   memmove((void*)str, (void*)bp->data, (uint)BSIZE);
-  cprintf("3\n");
   brelse(bp);
-  cprintf("4\n");
   if((keyPos = searchKey((uchar*)key, (uchar*)str)) >= 0) {
     file_value_len = 17;
     file_value = (char*)((uint)str + (uint)keyPos + 10);
-    cprintf("5\n");
     while (file_value_len >= 0 && !file_value[file_value_len]) file_value_len--;
-    cprintf("6\n");
     file_value_len++;
     if(file_value_len == valueLength) {
-    cprintf("7\n");
     for(j = 0; j < valueLength && file_value[j] == value[j]; j++);
-      cprintf("8\n");
       if(j == valueLength) {
-        cprintf("9\n");
+        //
+        cprintf("1\n");
         ilock(f->ip);
-        struct buf *bp_dir = bread(f->ip->dev, bmap(f->ip, f->off / BSIZE));
-        cprintf("after bread\n");
-        for(d = (struct dirent*)bp_dir->data;d<(struct dirent*)(bp_dir->data + BSIZE);d++){
-          cprintf("in for\n");
-          if(d->inum == f->ip->inum) {
-            cprintf("found name\n");
-            filename = d->name;
-            break;
-          }
-        }
-        brelse(bp_dir);
+        cprintf("2\n");
+        for(off = 0; off < f->ip->size; off += BSIZE){
+          bp_dir = bread(f->ip->dev, bmap(f->ip, off / BSIZE));
+          for(d = (struct dirent*)bp_dir->data;
+              d < (struct dirent*)(bp_dir->data + BSIZE);
+              d++){
+            if(d->inum == f->ip->inum) {
+              cprintf("found name\n");
+              filename = d->name;
+              break;
+            }
+         }
+       }
+       brelse(bp_dir);
         iunlock(f->ip);
         if(filename){
-          cprintf("11\n");
-          k = resultsLength - 1;
-           // go till non-empty
-          while (k >= 0 && !results[k]) k--;
-          cprintf("12\n");
+          d = (struct dirent*)str;
+          if (d->inum) {
+            k = resultsLength - 1;
+             // go till non-empty
+            while (k >= 0 && !results[k]) k--;
             // actual length
-          k++;
-          cprintf("13\n");
+            k++;
             // go till empty
-          if (k) k++;
-          cprintf("14\n");
-          filenameLength = strlen(filename);
-          cprintf("file name is: %s\n", filename);
-          cprintf("15\n");
+            if (k) k++;
+            filename = d->name;
+            filenameLength = strlen(filename);
+            cprintf("file name is: %s\n", filename);
            // enough room
           if(resultsLength - k >= filenameLength) {
             memmove((void*)((uint)results + (uint)k), (void*)filename, (uint)filenameLength);
             cprintf("copied and is: %s\n", (char*)((uint)results + (uint)k)); 
-            cprintf("16\n");
             results[filenameLength] = NULL;
-            cprintf("17\n");
             return 1;
           } else {
               // not enough room
-            cprintf("not enough room");
+            cprintf("not enough room\n");
             return -1;
           }
         }
@@ -944,4 +938,79 @@ getFilesByTag_back(struct file* f, char* key, char* value, int valueLength, char
   }
   return -1;
 }
-
+*/
+int
+getFilesByTag(char* key, char* value, int valueLength, char* results, int resultsLength)
+{
+  struct inode *root_start;
+  struct inode *each_inode;
+  struct buf *bp;
+  struct buf *tagbf;
+  struct dirent *de;
+  uchar str[BSIZE];
+  uint off;
+  int file_value_len = 0;
+  int file_name_len;
+  int j, tag_pos, k;
+  int count = 0;
+  char *file_value;
+  char *file_name;
+  // get the root directory -from namex
+  root_start = iget(ROOTDEV, ROOTINO);
+  // lock inode
+  for(off = 0; off < root_start->size; off += BSIZE) {
+    bp = bread(root_start->dev, bmap(root_start, off / BSIZE));
+    for(de = (struct dirent*)bp->data;
+        de < (struct dirent*)(bp->data + BSIZE);
+        de++){
+      if(de->inum == 0)
+        continue;
+      each_inode = iget(root_start->dev, de->inum);
+      if(!each_inode->tags)
+        continue;
+      tagbf = bread(root_start->dev, each_inode->tags);
+      memmove((void*)str, (void*)tagbf->data, (uint)BSIZE);
+      brelse(tagbf);
+      tag_pos = searchKey((uchar*)key, (uchar*)str);
+      if(tag_pos >= 0) {
+        file_value_len = 17;
+        file_value = (char*)((uint)str + (uint)tag_pos + 10);
+        while (file_value_len >= 0 && !file_value[file_value_len]) file_value_len--;
+        file_value_len++;
+        if(file_value_len == valueLength) {
+          for(j = 0; j < valueLength && file_value[j] == value[j]; j++);
+          if(j == valueLength) {
+            count++;
+            file_name = de->name;
+            cprintf("found file name is: %s\n\n", file_name);
+            if(file_name){
+              k = resultsLength - 1;
+              while (k >= 0 && !results[k]) k--;
+              // actual length
+              k++;
+              // go till empty
+              if (k) k++;
+              file_name_len = strlen(file_name);
+              cprintf("file name length is: %d\n", file_name_len);
+              // enough room
+              if(resultsLength - k >= file_name_len) {
+                memmove((void*)((uint)results + (uint)k), (void*)file_name, (uint)file_name_len + 1);
+                cprintf("copied and is: %s\n", (char*)((uint)results + (uint)k)); 
+                results[k+file_name_len] = NULL;
+              } else {
+              // not enough room
+                cprintf("not enough room");
+                brelse(bp);
+                return -1;
+              }
+            }
+          }
+        }
+      } else {
+        continue;
+      }
+    }
+    brelse(bp);
+  }
+  return count;
+}

@@ -123,6 +123,7 @@ filewrite(struct file *f, char *addr, int n)
   }
   panic("filewrite");
 }
+/*
 
 int 
 getFilesByTag(char* key, char* value, int valueLength, char* results, int resultsLength)
@@ -130,13 +131,13 @@ getFilesByTag(char* key, char* value, int valueLength, char* results, int result
   int total = 0;
   int returning_check;
   struct file *f;
+  fileinit();
   acquire(&ftable.lock);
   for(f = ftable.file; f < ftable.file + NFILE; f++) {
     if(f->ip) {
       cprintf("file has ip!\n");
       returning_check = getFilesByTag_back(f, key, value, valueLength, results, resultsLength);
       cprintf("getFilesByTag returned %d!\n", returning_check);
-      returning_check= getFilesByTag_back(f, key, value, valueLength, results, resultsLength);
       if(returning_check < 0) {
         release(&ftable.lock);
         return -1;
@@ -149,3 +150,4 @@ getFilesByTag(char* key, char* value, int valueLength, char* results, int result
   release(&ftable.lock);
   return total;
 }
+*/

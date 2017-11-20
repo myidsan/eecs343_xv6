@@ -893,77 +893,77 @@ getAllTags(int fileDescriptor, struct Key keys[], int maxTag)
 }
 
 int
-getFilesByTag_back(struct file* f, char* key, char* value, int valueLength, char* results, int resultsLength)
+getFilesByTag(char* key, char* value, int valueLength, char* results, int resultsLength)
 {
-  int j = 0;
-  int k = 0;
+  struct inode *root_start;
+  struct inode *each_inode;
   struct buf *bp;
+  struct buf *tagbf;
+  struct dirent *de;
   uchar str[BSIZE];
-  int keyPos = 0;
+  uint off;
   int file_value_len = 0;
+  int file_name_len;
+  int j, tag_pos, k;
+  int count = 0;
   char *file_value;
-  struct dirent *d;
-  char *filename;
-  int filenameLength = 0;
-  uint off = 0;
-  struct buf *bp_dir;
-  
-  ilock(f->ip);
-  if (!f->ip->tags) {
-    f->ip->tags = balloc(f->ip->dev); // allocate a disk block
-    cprintf("tags not even there\n");
-    //return 0;
-  }
-  
-  cprintf("1\n");
-  bp = bread(f->ip->dev, f->ip->tags);
-  cprintf("2\n");
-  memmove((void*)str, (void*)bp->data, (uint)BSIZE);
-  cprintf("3\n");
-  brelse(bp);
-  cprintf("4\n");
-  if((keyPos = searchKey((uchar*)key, (uchar*)str)) >= 0) {
-    file_value_len = 17;
-    file_value = (char*)((uint)str + (uint)keyPos + 10);
-    cprintf("5\n");
-    while (file_value_len >= 0 && !file_value[file_value_len]) file_value_len--;
-    cprintf("6\n");
-    file_value_len++;
-    if(file_value_len == valueLength) {
-    cprintf("7\n");
-    // check if the actual value is same with given value
-    for(j = 0; j < valueLength && file_value[j] == value[j]; j++);
-      cprintf("8\n");
-      if(j == valueLength) {
-        cprintf("9\n");
-        for (off = sizeof(d); off < f->ip->size; off += sizeof(d)) {
-          //bp_dir = bread(f->ip->dev, bmap(f->ip, off / BSIZE));
-          cprintf("9-1\n");
-          //ilock(f->ip);
-          readi(f->ip, (char*)d, off, sizeof(d));
-          cprintf("10\n");
-          for (d = (struct dirent*)bp_dir->data; d < (struct dirent*)(bp->data + BSIZE); d++) { 
-            if (d->inum) {
-              filename = d->name;
-              filenameLength = strlen(filename);
+  char *file_name;
+  // get the root directory -from namex
+  root_start = iget(ROOTDEV, ROOTINO);
+  // lock inode
+  for(off = 0; off < root_start->size; off += BSIZE) {
+    bp = bread(root_start->dev, bmap(root_start, off / BSIZE));
+    for(de = (struct dirent*)bp->data;
+        de < (struct dirent*)(bp->data + BSIZE);
+        de++){
+      if(de->inum == 0)
+        continue;
+      each_inode = iget(root_start->dev, de->inum);
+      if(!each_inode->tags)
+        continue;
+      tagbf = bread(root_start->dev, each_inode->tags);
+      memmove((void*)str, (void*)tagbf->data, (uint)BSIZE);
+      brelse(tagbf);
+      tag_pos = searchKey((uchar*)key, (uchar*)str);
+      if(tag_pos >= 0) {
+        file_value_len = 17;
+        file_value = (char*)((uint)str + (uint)tag_pos + 10);
+        while (file_value_len >= 0 && !file_value[file_value_len]) file_value_len--;
+        file_value_len++;
+        if(file_value_len == valueLength) {
+          for(j = 0; j < valueLength && file_value[j] == value[j]; j++);
+          if(j == valueLength) {
+            count++;
+            file_name = de->name;
+            cprintf("found file name is: %s\n\n", file_name);
+            if(file_name){
               k = resultsLength - 1;
               while (k >= 0 && !results[k]) k--;
+              // actual length
               k++;
-              if (k) k--;
-              cprintf("filename: %s\n", filename);
-              if (resultsLength - k >= filenameLength) {
-                memmove((void*)(uint)results + (uint)k, (void*)filename, (uint)filenameLength);
-                results[filenameLength] = 0;
-                //brelse(bp_dir);
-                return 1;
+              // go till empty
+              if (k) k++;
+              file_name_len = strlen(file_name);
+              cprintf("file name length is: %d\n", file_name_len);
+              // enough room
+              if(resultsLength - k >= file_name_len) {
+                memmove((void*)((uint)results + (uint)k), (void*)file_name, (uint)file_name_len + 1);
+                cprintf("copied and is: %s\n", (char*)((uint)results + (uint)k)); 
+                results[k+file_name_len] = NULL;
+              } else {
+              // not enough room
+                cprintf("not enough room");
+                brelse(bp);
+                return -1;
               }
-            } 
+            }
           }
         }
-        //iunlock(f->ip);
+      } else {
+        continue;
       }
     }
+    brelse(bp);
   }
- iunlock(f->ip);
- return -1;
+  return count;
 }

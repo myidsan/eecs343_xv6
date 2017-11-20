@@ -95,10 +95,14 @@ main(int argc, char *argv[])
    
    close(fd);
    close(fd2);
-   char results2[20];
+   char results2[10];
+   char not_enough[6];
+   files = getFilesByTag(key, val, 7, not_enough, 6);     
+   assert(files == -1);
    files = getFilesByTag(key, val, 7, results2, 10);     
    printf(1, "files for second call: %d\n", files);
    assert(files == 2); 
+   /*
    assert(results[0] == 'm');
    assert(results[1] == 'k');
    assert(results[2] == 'd');
@@ -108,6 +112,7 @@ main(int argc, char *argv[])
    assert(results[6] == 'l');
    assert(results[7] == 's');
    assert(!results[8]);
+   */
 
    printf(1, "TEST PASSED\n");
    exit();

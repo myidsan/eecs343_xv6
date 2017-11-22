@@ -880,8 +880,13 @@ getAllTags(int fileDescriptor, struct Key keys[], int maxTag)
     f->ip->tags = balloc(f->ip->dev);
   buftag = bread(f->ip->dev, f->ip->tags);
   memmove((void*)str, (void*)buftag->data, (uint)BSIZE); 
+  brelse(buftag);
+  iunlock(f->ip);
   for(i = 0; i < BSIZE; i+=32) {
     if(str[i]) {
+      if(maxTag <= tagCount) {
+        return -1;
+      }
       cprintf("key is:%s\n", (char*)((uint)str+i));
       cprintf("key length:%x\n", (uint)strlen((char*)(uint)str+i));
       //memmove((void*)keys[tagCount].key, (void*)((uint)str + i), (uint)strlen((char*)((uint)str + (uint)i))); 
@@ -890,8 +895,6 @@ getAllTags(int fileDescriptor, struct Key keys[], int maxTag)
       tagCount++;
     }
   }
-  brelse(buftag);
-  iunlock(f->ip);
   return tagCount;
 }
 

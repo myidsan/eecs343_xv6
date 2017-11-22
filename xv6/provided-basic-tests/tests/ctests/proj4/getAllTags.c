@@ -41,7 +41,9 @@ main(int argc, char *argv[])
    assert(res > 0);
 
    struct Key keys[16];
-   int number = getAllTags(fd, keys, 16);
+   int number = getAllTags(fd, keys, 1);
+   assert(number == -1);
+   number = getAllTags(fd, keys, 16);
    //printf(1, "number of tags: %d\n", number);
    //printf(1, "first key: %s\n", keys[0].key);
    assert(number == 2);

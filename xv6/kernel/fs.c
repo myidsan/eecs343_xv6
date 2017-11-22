@@ -680,11 +680,13 @@ tagFile(int fileDescriptor, char* key, char* value, int valueLength)
   struct buf *buftag;
   uchar *str;
 
+  /*
   struct Tag addTag[1];
   cprintf("size of key: %d, size of addTag after key: %d\n", sizeof(key), sizeof(addTag));
   addTag[0].key = key;
   cprintf("size of val: %d, size of addTag after val: %d\n", sizeof(value), sizeof(addTag));
   addTag[0].val = value;
+  */
   
   // checks if fileDescriptor is valid and is open.
   if(fileDescriptor < 0 || fileDescriptor >= NOFILE || (f = proc->ofile[fileDescriptor]) == 0) 
@@ -699,7 +701,7 @@ tagFile(int fileDescriptor, char* key, char* value, int valueLength)
   // checks value and value length
   // EC #3
   // no upper restriction to valueLength
-  if(!value || valueLength < 0)
+  if(!value || valueLength < 0 || valueLength > 18)
     return -1;
   // lock inode
   ilock(f->ip);
@@ -711,9 +713,9 @@ tagFile(int fileDescriptor, char* key, char* value, int valueLength)
   buftag = bread(f->ip->dev, f->ip->tags); // To get a buffer for a particular disk block,call bread
   str = (uchar*)buftag->data; // limited to 512 in buf.h
   //cprintf("working till searchKey\n");
-	int keyPosition = searchKey_ec((uchar*)key, (uchar*)str);
+	int keyPosition = searchKey((uchar*)key, (uchar*)str);
   //cprintf("searchKey working\n");
-	int endPosition = searchEnd_ec((uchar*)str); 
+	int endPosition = searchEnd((uchar*)str); 
   //cprintf("searchEnd working\n");
  
 	// key is not found
@@ -728,10 +730,11 @@ tagFile(int fileDescriptor, char* key, char* value, int valueLength)
 		// add new key and value to the allocated tag block
 		// memset clears indicated bytes of within the block
 		// memmove 
-    cprintf("endPosition for creating new: %x\n", endPosition);
-    cprintf("size of addTag: %d\n", sizeof(addTag));
-	  memset((void*)((uint)str + (uint)endPosition), 0, sizeof(addTag)); // 10(key) + 18(value)	
-    memmove((void*)(uint)str + (uint)endPosition, (void*)addTag, (uint)sizeof(addTag));
+    //cprintf("endPosition for creating new: %x\n", endPosition);
+    //cprintf("size of addTag: %d\n", sizeof(addTag));
+	  memset((void*)((uint)str + (uint)endPosition), 0, 28);// 10(key) + 18(value)	
+    memmove((void*)((uint)str + (uint)endPosition), (void*)key, (uint)keyLength); 
+    memmove((void*)((uint)str + (uint)endPosition + 10), (void*)value, (uint)valueLength);
     cprintf("used up data buffer: %d\n", searchEnd_ec(str));
 	  //memmove((void*)((uint)str + (uint)endPosition), (void*)key, (uint)keyLength); 	
 	  //memmove((void*)((uint)str + (uint)endPosition + 10), (void*)value, (uint)valueLength);

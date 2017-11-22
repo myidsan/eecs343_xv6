@@ -395,15 +395,15 @@ ld  -m    elf_i386 -nostdlib --omagic \
 dd if=/dev/zero of=xv6.img count=10000
 10000+0 records in
 10000+0 records out
-5120000 bytes (5.1 MB) copied, 0.0178065 s, 288 MB/s
+5120000 bytes (5.1 MB) copied, 0.0338416 s, 151 MB/s
 dd if=kernel/bootblock of=xv6.img conv=notrunc
 1+0 records in
 1+0 records out
-512 bytes (512 B) copied, 0.000103884 s, 4.9 MB/s
+512 bytes (512 B) copied, 0.000181631 s, 2.8 MB/s
 dd if=kernel/kernel of=xv6.img seek=1 conv=notrunc
 269+1 records in
 269+1 records out
-138085 bytes (138 kB) copied, 0.000406644 s, 340 MB/s
+137746 bytes (138 kB) copied, 0.000802896 s, 172 MB/s
 gcc -c  -iquote include -Wall -Werror -ggdb  -o tools/mkfs.o tools/mkfs.c
 gcc  tools/mkfs.o -o tools/mkfs
 mkdir -p fs
@@ -548,12 +548,8 @@ $ tester
 tester
 fd of ls: 3
 7
-size of key: 4, size of addTag after key: 8
-size of val: 7, size of addTag after val: 8
 allocating since first time
-endPosition for creating new: 0
-size of addTag: 8
-used up data buffer: 2
+used up data buffer: 4
 TEST PASSED
 
 
@@ -561,6 +557,580 @@ test tagFile PASSED
 Description: call tagFile to tag a file.  Call getFileTag to read the tag of that file.
 
 Finished running test tagFile
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**********************************************************************
+Start running test tagFile-bad-fd
+Description: call tagFile with bad fd argument.  tagFile should return -1.
+
+Running xv6 user progam /home/slw579/eecs343/eecs343-ps/xv6/provided-basic-tests/tests/ctests/proj4/tagFile-bad-fd.c
+Trying to build project using make
+make
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG user/tester.c -MF user/tester.d -MT user/tester.d -MT user/tester.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 -c -o user/tester.o user/tester.c
+ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/tester user/tester.o user/ulib.o user/usys.o user/printf.o user/umalloc.o
+cp user/bin/tester fs/tester
+./tools/mkfs fs.img fs
+used 29 (bit 1 ninode 26) free 29 total 1024
+README
+usertests
+sh
+mkdir
+kill
+rm
+cat
+ls
+wc
+tagFile
+echo
+init
+ln
+forktest
+stressfs
+tester
+zombie
+grep
+balloc: first 454 blocks have been allocated
+balloc: write bitmap block at sector 28
+rm user/bin/tester
+make qemu-nox 
+Ctrl+a h for help
+/home/software/qemu/bin/qemu-system-i386 -nographic -hdb fs.img xv6.img -smp 2
+WARNING: Image format was not specified for 'fs.img' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+WARNING: Image format was not specified for 'xv6.img' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+xv6...
+lapicinit: 1 0xfee00000
+cpu1: starting
+cpu0: starting
+init: starting sh
+$ tester
+tester
+fd of ls: 3
+7
+file descriptor is invalid
+7
+file descriptor is invalid
+7
+allocating since first time
+used up data buffer: 4
+found key
+keyPosition is: 0
+position of start: 0
+found key
+7
+used up data buffer: 9
+found key
+keyPosition is: 0
+position of start: 0
+found key
+18
+used up data buffer: 4
+found key
+keyPosition is: 0
+position of start: 0
+good_max_len: 18
+found key
+7
+key input long
+7
+key input short
+19
+keyPosition is: -1
+key not found
+7
+fd of ls: 3
+7
+TEST PASSED
+
+
+test tagFile-bad-fd PASSED
+Description: call tagFile with bad fd argument.  tagFile should return -1.
+
+Finished running test tagFile-bad-fd
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**********************************************************************
+Start running test removeFileTag
+Description: call tagFile to tag a file.  Call getFileTag to read the tag of that file. Call removeFileTag to remove the tag.  Call getFileTag again to verify that the tag is removed.
+
+Running xv6 user progam /home/slw579/eecs343/eecs343-ps/xv6/provided-basic-tests/tests/ctests/proj4/removeFileTag.c
+Trying to build project using make
+make
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG user/tester.c -MF user/tester.d -MT user/tester.d -MT user/tester.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 -c -o user/tester.o user/tester.c
+ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/tester user/tester.o user/ulib.o user/usys.o user/printf.o user/umalloc.o
+cp user/bin/tester fs/tester
+./tools/mkfs fs.img fs
+used 29 (bit 1 ninode 26) free 29 total 1024
+README
+usertests
+sh
+mkdir
+kill
+rm
+cat
+ls
+wc
+tagFile
+echo
+init
+ln
+forktest
+stressfs
+tester
+zombie
+grep
+balloc: first 447 blocks have been allocated
+balloc: write bitmap block at sector 28
+rm user/bin/tester
+make qemu-nox 
+Ctrl+a h for help
+/home/software/qemu/bin/qemu-system-i386 -nographic -hdb fs.img xv6.img -smp 2
+WARNING: Image format was not specified for 'fs.img' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+WARNING: Image format was not specified for 'xv6.img' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+xv6...
+lapicinit: 1 0xfee00000
+cpu1: starting
+cpu0: starting
+init: starting sh
+$ tester
+tester
+fd of ls: 3
+7
+allocating since first time
+used up data buffer: 4
+found key
+keyPosition is: 0
+position of start: 0
+getFileTag output: 7 
+
+utilityfound key
+keyPosition is: -1
+key not found
+TEST PASSED
+
+
+test removeFileTag PASSED
+Description: call tagFile to tag a file.  Call getFileTag to read the tag of that file. Call removeFileTag to remove the tag.  Call getFileTag again to verify that the tag is removed.
+
+Finished running test removeFileTag
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**********************************************************************
+Start running test updateFileTag
+Description:calls getFileTag before tagFile, should return -1. calls tagFile with valid input, should create and return 1. calls getFileTag with invalid length, should return correct length. calls removeFileTag to remove tag, should return 1. calls getFileTag, should return -1.
+
+Running xv6 user progam /home/slw579/eecs343/eecs343-ps/xv6/provided-basic-tests/tests/ctests/proj4/updateFileTag.c
+Trying to build project using make
+make
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG user/tester.c -MF user/tester.d -MT user/tester.d -MT user/tester.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 -c -o user/tester.o user/tester.c
+ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/tester user/tester.o user/ulib.o user/usys.o user/printf.o user/umalloc.o
+cp user/bin/tester fs/tester
+./tools/mkfs fs.img fs
+used 29 (bit 1 ninode 26) free 29 total 1024
+README
+usertests
+sh
+mkdir
+kill
+rm
+cat
+ls
+wc
+tagFile
+echo
+init
+ln
+forktest
+stressfs
+tester
+zombie
+grep
+balloc: first 450 blocks have been allocated
+balloc: write bitmap block at sector 28
+rm user/bin/tester
+make qemu-nox 
+Ctrl+a h for help
+/home/software/qemu/bin/qemu-system-i386 -nographic -hdb fs.img xv6.img -smp 2
+WARNING: Image format was not specified for 'fs.img' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+WARNING: Image format was not specified for 'xv6.img' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+xv6...
+lapicinit: 1 0xfee00000
+cpu1: starting
+cpu0: starting
+init: starting sh
+$ tester
+tester
+fd of ls: 3
+tag not allocated yet
+stuck here?
+7
+allocating since first time
+used up data buffer: 4
+stuck here? later
+found key
+keyPosition is: 0
+7
+error
+found key
+keyPosition is: 0
+position of start: 0
+fd is before tagFile extend: 3
+13
+found key
+keyPosition for updating: 20
+fd is after tagFile extend: 3
+fd is fucked: 3
+found key
+keyPosition is: 0
+position of start: 0
+new length: 13
+found key
+keyPosition is: -1
+key not found
+TEST PASSED
+
+
+test updateFileTag PASSED
+Description:calls getFileTag before tagFile, should return -1. calls tagFile with valid input, should create and return 1. calls getFileTag with invalid length, should return correct length. calls removeFileTag to remove tag, should return 1. calls getFileTag, should return -1.
+
+Finished running test updateFileTag
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**********************************************************************
+Start running test tagFileLimit
+Description:call tagFile 16 times to fill up the whole allocated block. tagFile should return -1 on 17th tag creation
+
+Running xv6 user progam /home/slw579/eecs343/eecs343-ps/xv6/provided-basic-tests/tests/ctests/proj4/tagFileLimit.c
+Trying to build project using make
+make
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG user/tester.c -MF user/tester.d -MT user/tester.d -MT user/tester.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 -c -o user/tester.o user/tester.c
+ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/tester user/tester.o user/ulib.o user/usys.o user/printf.o user/umalloc.o
+cp user/bin/tester fs/tester
+./tools/mkfs fs.img fs
+used 29 (bit 1 ninode 26) free 29 total 1024
+README
+usertests
+sh
+mkdir
+kill
+rm
+cat
+ls
+wc
+tagFile
+echo
+init
+ln
+forktest
+stressfs
+tester
+zombie
+grep
+balloc: first 454 blocks have been allocated
+balloc: write bitmap block at sector 28
+rm user/bin/tester
+make qemu-nox 
+Ctrl+a h for help
+/home/software/qemu/bin/qemu-system-i386 -nographic -hdb fs.img xv6.img -smp 2
+WARNING: Image format was not specified for 'fs.img' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+WARNING: Image format was not specified for 'xv6.img' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+xv6...
+lapicinit: 1 0xfee00000
+cpu1: starting
+cpu0: starting
+init: starting sh
+$ tester
+tester
+fd of ls: 3
+7
+allocating since first time
+used up data buffer: 4
+found key
+keyPosition is: 0
+position of start: 0
+7
+used up data buffer: 4
+found key
+keyPosition is: 32
+position of start: 20
+7
+used up data buffer: 4
+found key
+keyPosition is: 64
+position of start: 40
+7
+used up data buffer: 4
+found key
+keyPosition is: 96
+position of start: 60
+7
+used up data buffer: 4
+found key
+keyPosition is: 128
+position of start: 80
+7
+used up data buffer: 4
+found key
+keyPosition is: 160
+position of start: a0
+7
+used up data buffer: 4
+7
+used up data buffer: 4
+7
+used up data buffer: 4
+7
+used up data buffer: 4
+7
+used up data buffer: 4
+7
+used up data buffer: 4
+7
+used up data buffer: 4
+7
+used up data buffer: 4
+7
+used up data buffer: 4
+7
+used up data buffer: 4
+7
+found key
+keyPosition for updating: ffffffff
+7
+no more space
+error17: should be -1, but is: -1
+TEST PASSED
+
+
+test tagFileLimit PASSED
+Description:call tagFile 16 times to fill up the whole allocated block. tagFile should return -1 on 17th tag creation
+
+Finished running test tagFileLimit
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**********************************************************************
+Start running test getAllTags
+Description: call tagFile to tag a file.  Call getFileTag to read the tag of that file.
+
+Running xv6 user progam /home/slw579/eecs343/eecs343-ps/xv6/provided-basic-tests/tests/ctests/proj4/getAllTags.c
+Trying to build project using make
+make
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG user/tester.c -MF user/tester.d -MT user/tester.d -MT user/tester.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 -c -o user/tester.o user/tester.c
+ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/tester user/tester.o user/ulib.o user/usys.o user/printf.o user/umalloc.o
+cp user/bin/tester fs/tester
+./tools/mkfs fs.img fs
+used 29 (bit 1 ninode 26) free 29 total 1024
+README
+usertests
+sh
+mkdir
+kill
+rm
+cat
+ls
+wc
+tagFile
+echo
+init
+ln
+forktest
+stressfs
+tester
+zombie
+grep
+balloc: first 447 blocks have been allocated
+balloc: write bitmap block at sector 28
+rm user/bin/tester
+make qemu-nox 
+Ctrl+a h for help
+/home/software/qemu/bin/qemu-system-i386 -nographic -hdb fs.img xv6.img -smp 2
+WARNING: Image format was not specified for 'fs.img' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+WARNING: Image format was not specified for 'xv6.img' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+xv6...
+lapicinit: 1 0xfee00000
+cpu1: starting
+cpu0: starting
+init: starting sh
+$ tester
+tester
+fd of ls: 3
+7
+allocating since first time
+used up data buffer: 4
+4
+used up data buffer: 4
+key is:type
+key length:4
+copied key is: type at keys[0]
+key is:number
+key length:6
+copied key is: number at keys[1]
+list of this file's tags:
+found key
+keyPosition is: 0
+position of start: 0
+type: utility
+found key
+keyPosition is: 32
+position of start: 20
+number: five
+TEST PASSED
+
+
+test getAllTags PASSED
+Description: call tagFile to tag a file.  Call getFileTag to read the tag of that file.
+
+Finished running test getAllTags
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**********************************************************************
+Start running test getFilesByTag
+Description: call tagFile to tag a file.  Call getFileTag to read the tag of that file.
+
+Running xv6 user progam /home/slw579/eecs343/eecs343-ps/xv6/provided-basic-tests/tests/ctests/proj4/getFilesByTag.c
+Trying to build project using make
+make
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 \
+		-M -MG user/tester.c -MF user/tester.d -MT user/tester.d -MT user/tester.o
+gcc  -I include -nostdinc -Wall -Werror -ggdb -fno-pic -fno-builtin -fno-strict-aliasing -fno-stack-protector -m32 -c -o user/tester.o user/tester.c
+ld  -m    elf_i386 -nostdlib --omagic --entry=main --section-start=.text=0x0 --output=user/bin/tester user/tester.o user/ulib.o user/usys.o user/printf.o user/umalloc.o
+cp user/bin/tester fs/tester
+./tools/mkfs fs.img fs
+used 29 (bit 1 ninode 26) free 29 total 1024
+README
+usertests
+sh
+mkdir
+kill
+rm
+cat
+ls
+wc
+tagFile
+echo
+init
+ln
+forktest
+stressfs
+tester
+zombie
+grep
+balloc: first 456 blocks have been allocated
+balloc: write bitmap block at sector 28
+rm user/bin/tester
+make qemu-nox 
+Ctrl+a h for help
+/home/software/qemu/bin/qemu-system-i386 -nographic -hdb fs.img xv6.img -smp 2
+WARNING: Image format was not specified for 'fs.img' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+WARNING: Image format was not specified for 'xv6.img' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+xv6...
+lapicinit: 1 0xfee00000
+cpu1: starting
+cpu0: starting
+init: starting sh
+$ tester
+tester
+7
+allocating since first time
+used up data buffer: 4
+4
+used up data buffer: 4
+8
+used up data buffer: 4
+key is:type
+key length:4
+copied key is: type at keys[0]
+key is:number
+key length:6
+copied key is: number at keys[1]
+key is:character
+key length:9
+copied key is: character at keys[2]
+number of tags: 3
+7
+allocating since first time
+used up data buffer: 9
+found key
+found file name is: ls
+
+file name length is: 2
+copied and is: ls
+ls
+8
+used up data buffer: 9
+found key
+found key
+found file name is: ls
+
+file name length is: 2
+copied and is: ls
+7
+found key
+keyPosition for updating: 40
+found key
+found file name is: mkdir
+
+file name length is: 5
+copied and is: mkdir
+found key
+found file name is: ls
+
+file name length is: 2
+copied and is: ls
+files for second call: 2
+results is : mkdir
+
+found key
+found file name is: mkdir
+
+file name length is: 5
+copied and is: mkdir
+found key
+found file name is: ls
+
+file name length is: 2
+copied and is: ls
+files for second call: 2
+TEST PASSED
+
+
+test getFilesByTag PASSED
+Description: call tagFile to tag a file.  Call getFileTag to read the tag of that file.
+
+Finished running test getFilesByTag
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
@@ -576,6 +1146,24 @@ build xv6 using make
 test tagFile PASSED
 Description: call tagFile to tag a file.  Call getFileTag to read the tag of that file.
 
-Passed 2 of 2 tests.
-Overall 2 of 2
+test tagFile-bad-fd PASSED
+Description: call tagFile with bad fd argument.  tagFile should return -1.
+
+test removeFileTag PASSED
+Description: call tagFile to tag a file.  Call getFileTag to read the tag of that file. Call removeFileTag to remove the tag.  Call getFileTag again to verify that the tag is removed.
+
+test updateFileTag PASSED
+Description:calls getFileTag before tagFile, should return -1. calls tagFile with valid input, should create and return 1. calls getFileTag with invalid length, should return correct length. calls removeFileTag to remove tag, should return 1. calls getFileTag, should return -1.
+
+test tagFileLimit PASSED
+Description:call tagFile 16 times to fill up the whole allocated block. tagFile should return -1 on 17th tag creation
+
+test getAllTags PASSED
+Description: call tagFile to tag a file.  Call getFileTag to read the tag of that file.
+
+test getFilesByTag PASSED
+Description: call tagFile to tag a file.  Call getFileTag to read the tag of that file.
+
+Passed 8 of 8 tests.
+Overall 8 of 8
 Points 5 of 5

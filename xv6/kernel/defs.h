@@ -52,9 +52,7 @@ int             readi(struct inode*, char*, uint, uint);
 void            stati(struct inode*, struct stat*);
 int             writei(struct inode*, char*, uint, uint);
 int             tagFile(int, char*, char*, int);
-/*
-int             getFilesByTag(char*, char*, int, char*, int);
-*/
+int             getFilesByTag(char*, struct inode*, char*, char*, int, char*, int);
 int             getFileTag(int, char*, char*, int);
 int             removeFileTag(int, char*);
 int             getAllTags(int, struct Key*, int);

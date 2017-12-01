@@ -17,42 +17,7 @@ def get_description(name):
     desc = desc[:-2]
   return desc.strip()
 
-test_values = [
-  #{'name': 'tagFile'},
-  #{'name': 'tagFile-bad-fd'},
-  #{'name': 'removeFileTag'},
-  #{'name': 'updateFileTag'},
-  #{'name': 'tagFileLimit'},
-  #{'name': 'getAllTags'},
-  #{'name': 'getFilesByTag'},
-  #{'name': 'reopen'},
-  #{'name': 'retag'},
-  {'name': 'tagFile'},
-  {'name': 'tagFile2'},
-  {'name': 'tagFile3'},
-  {'name': 'tagFile4'},
-  {'name': 'tagFile5'},
-  {'name': 'tagFile6'},
-  {'name': 'tagFile-bad-fd'},
-  {'name': 'tagFile-bad-key'},
-  {'name': 'tagFile-bad-val'},
-  {'name': 'removeFileTag'},
-  {'name': 'remove-bad-key'},
-  {'name': 'remove-bad-fd'},
-  {'name': 'getTag-long-value'},
-  {'name': 'getTag-bad-fd'},
-  {'name': 'getTag-bad-key'},
-  {'name': 'ec-tagFile7'},
-  {'name': 'ec-getAllTags'},
-  {'name': 'ec-getAllTags2'},
-  {'name': 'ec-getFilesByTag'},
-  {'name': 'ec-getFilesByTag2'},
-  {'name': 'ec-arbitraryLength'},
-  {'name': 'ec-arbitraryLength2'},
-  {'name': 'ec-manyBlocks'},
-  {'name': 'ec-manyBlocks2'},
-  {'name': 'ec-manyBlocks3'},
-]
+test_values = []
 
 all_tests = []
 build_test = Xv6Build

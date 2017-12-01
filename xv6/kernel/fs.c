@@ -960,6 +960,80 @@ getAllTags(int fileDescriptor, struct Key keys[], int maxTags) {
   return count;
 }
 
+int 
+getFilesByTag(char* name, struct inode *ip, char* key, char* value, int valueLength, char* results, int resultsLength) {
+  int total_cnt = 0, type = -1;
+  uint addr;
+  int index, keylen, found = -1;
+  struct tag *tagspace;
+  struct buf *bp;
+  ilock(ip);
+  type = ip->type;
+  iunlock(ip);
+  if (type == T_FILE) {
+    ilock(ip);
+    if ((addr = ip->addrs[NDIRECT+1]) == 0) {
+      iunlock(ip);
+      return -1;
+    }
+    ilock(ip);
+    bp = bread(ip->dev, addr);
+    tagspace = (struct tag *) bp->data;
+    //search for key in array
+    for (index = 0; index < 16; index++) {
+      if(tagspace[index].used == 1) {
+        keylen = strlen(key);
+        if(strncmp(key, tagspace[index].key, keylen) == 0) {
+          if(strncmp(value, tagspace[index].value, valueLength) == 0) {
+            found = 1;
+          }
+        }
+      }
+    }
+    brelse(bp);
+    iunlock(ip);
+    if(found) {
+      int i;
+      for (i = 0; i < DIRSIZ; ++i) {
+        if (resultsLength <= 0)
+          break;
+        *results = name[i];
+        (results)++;
+        (resultsLength)--;
+        if (name[i] == 0)
+          break;
+      }
+      ++total_cnt;
+    }
+  } else if (type == T_DIR) {
+    uint dir_off = 999999999;
+    int r = -1;
+    struct dirent de;
+    struct inode* next_ip;
+    for (dir_off = 0; dir_off < ip->size; dir_off += sizeof(struct dirent)) {
+      ilock(ip);
+      r = readi(ip, (char*)&de, dir_off, sizeof(struct dirent));
+      iunlock(ip);
+      if (r != sizeof(struct dirent))
+        break;
+      if (de.name[0] == '.' && de.name[1] == 0)
+        continue;
+      if (de.name[0] == '.' && de.name[1] == '.' && de.name[2] == 0)
+        continue;
+      if (de.inum != 0) {
+        ilock(ip);
+        next_ip = dirlookup(ip, de.name, NULL);
+        iunlock(ip);
+        if (next_ip != 0) {
+          total_cnt += getFilesByTag(de.name, next_ip, key, value, valueLength, results, resultsLength);
+          iput(next_ip);
+        }
+      }
+    }
+  }
+  return total_cnt;
+}
+
 
 /*
 int

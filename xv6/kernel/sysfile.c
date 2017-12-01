@@ -414,9 +414,7 @@ int sys_removeFileTag(void)
 
   if(argint(0, &fileDescriptor) < 0 || argstr(1, &key) < 0)
     return -1;
-
-  //return removeFileTag(fileDescriptor, key);
-  return 0;
+ return removeFileTag(fileDescriptor, key);
 }
 
 int
@@ -438,8 +436,7 @@ sys_getAllTags(void)
      argint(2, &maxTags) < 0 ||
      argptr(1, (char**)&keys, sizeof(struct Key)*maxTags) < 0) 
    return -1; 
-  //return getAllTags(fileDescriptor, keys, maxTags);
-  return 0;
+  return getAllTags(fileDescriptor, keys, maxTags);
 }
 
 int 

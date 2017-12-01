@@ -45,6 +45,8 @@ test_values = [
   {'name': 'ec-tagFile7'},
   {'name': 'ec-getAllTags'},
   {'name': 'ec-getAllTags2'},
+  {'name': 'ec-getFilesByTag'},
+  {'name': 'ec-getFilesByTag2'},
   {'name': 'ec-arbitraryLength'},
   {'name': 'ec-arbitraryLength2'},
   {'name': 'ec-manyBlocks'},

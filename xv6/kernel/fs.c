@@ -884,6 +884,83 @@ getFileTag(int fileDescriptor, char* key, char* buffer, int length)
   return -1;
 }
 
+int
+removeFileTag(int fileDescriptor, char* key)
+{
+  struct file *f;
+  int keyLength;
+  struct buf *bp;
+  uint addr;
+  struct tag *tp;
+  uint index;
+
+  if (fileDescriptor < 0 || fileDescriptor >= NOFILE || (f = proc->ofile[fileDescriptor]) == 0) return -1;
+  if (f->type != FD_INODE || !f->writable || !f->ip) return -1;
+  if (!key || (keyLength = strlen(key)) < 1 || keyLength > 9) return -1;
+  ilock(f->ip);
+  if ((addr = f->ip->addrs[NDIRECT+1]) == 0) {
+    iunlock(f->ip);
+    return -1;
+  }
+  bp = bread(f->ip->dev, addr);
+  tp = (struct tag *) bp->data;
+  //search for key in array
+  for (index=0; index<16; index++) {
+    if(tp[index].used==1) {
+      if(string_compare(key, tp[index].key)==0) {
+        memset((void*)tp[index].key, 0, 32);
+        bwrite(bp);
+        brelse(bp);
+        iupdate(f->ip);
+        iunlock(f->ip);
+        return 1;
+       }
+    }
+ }
+  brelse(bp);
+  iunlock(f->ip);
+  return -1;
+}
+
+int
+getAllTags(int fileDescriptor, struct Key keys[], int maxTags) {
+  struct file *f;
+  struct buf *bp;
+  uint addr;
+  struct tag *tp;
+  uint index;
+  uint count;
+  uint keyI;
+  if (fileDescriptor < 0 || fileDescriptor >= NOFILE || (f = proc->ofile[fileDescriptor]) == 0) return     -1;
+  if (f->type != FD_INODE || !f->readable || !f->ip) return -1;
+  if (maxTags < 0) return -1;
+  ilock(f->ip);
+  if ((addr = f->ip->addrs[NDIRECT+1]) == 0) {
+    iunlock(f->ip);
+    cprintf("getAllTags exit at non allocation\n");
+    return 0;
+  }
+  bp = bread(f->ip->dev, addr);
+  tp = (struct tag *) bp->data;
+  //search for key in array
+  count = 0;
+  keyI = 0;
+  for (index=0; index<16; index++) {
+    if(tp[index].used==1) {
+      count++;
+      if (keyI < maxTags) {
+        memmove((void*)keys[keyI].key, (void*)tp[index].key, 10);
+        keyI++;
+      }
+    }
+  }
+  brelse(bp);
+  iunlock(f->ip);
+  cprintf("getAllTags ran till the end\n");
+  return count;
+}
+
+
 /*
 int
 getFileTag(int fileDescriptor, char* key, char* buffer, int length)

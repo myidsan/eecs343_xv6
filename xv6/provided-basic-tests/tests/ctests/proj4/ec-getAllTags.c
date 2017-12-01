@@ -1,6 +1,4 @@
-/* Add a couple tags to a file.  Call getAllTags.  Confirm that the array of returned keys is complete 
-   and correct.  Then, for all keys in the returned array, call getFileTag and confirm that the 
-   returned values are correct. */
+/* Add a couple tags to a file.  Call getAllTags.  Confirm that the array of returned keys is complete and correct.  Then, for all keys in the returned array, call getFileTag and confirm that the returned values are correct. */
 
 #include "types.h"
 #include "user.h"

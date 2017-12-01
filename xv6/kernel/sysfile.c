@@ -415,7 +415,8 @@ int sys_removeFileTag(void)
   if(argint(0, &fileDescriptor) < 0 || argstr(1, &key) < 0)
     return -1;
 
-  return removeFileTag(fileDescriptor, key);
+  //return removeFileTag(fileDescriptor, key);
+  return 0;
 }
 
 int
@@ -437,7 +438,8 @@ sys_getAllTags(void)
      argint(2, &maxTags) < 0 ||
      argptr(1, (char**)&keys, sizeof(struct Key)*maxTags) < 0) 
    return -1; 
-  return getAllTags(fileDescriptor, keys, maxTags);
+  //return getAllTags(fileDescriptor, keys, maxTags);
+  return 0;
 }
 
 int 
@@ -447,7 +449,8 @@ sys_getFilesByTag(void)
   int valueLength, resultsLengths;  
   if (argstr(0, &key) < 0 || argstr(1, &value) < 0 ||  argint(2, &valueLength) < 0 || argstr(3, &results) < 0 || argint(4, &resultsLengths) < 0)
     return -1;
-  return getFilesByTag(key, value, valueLength, results, resultsLengths);
+ // return getFilesByTag(key, value, valueLength, results, resultsLengths);
+  return 0;
 }
 
 

@@ -32,35 +32,37 @@ main(int argc, char *argv[])
    int res = tagFile(fd, key, val, len);
    assert(res > 0);
 
-   char* key2 = "number";
    char* val2 = "five";
    int len2 = 4;
+   /*
    res = tagFile(fd, key2, val2, len2);
    assert(res > 0);
-   
-   key2 = "character";
-   val2 = "alphabet";
-   len2 = 8;
-   res = tagFile(fd, key2, val2, len2);
-   
-   struct Key keys[16];
-   int number = getAllTags(fd, keys, 16);
-   printf(1, "number of tags: %d\n", number);
-   assert(number == 3);
-   
-   int fd2 = open("mkdir", O_RDWR);
-   res = tagFile(fd2, key2, val, len);     
-   assert(res > 0);
-
-   // opened mkdir and ls, but mkdir has wrong key.
+   */
    char result[10];
    int files = getFilesByTag(key, val, 7, result, 10);     
    assert(files == 1); 
-
    assert(result[0] == 'l');
    assert(result[1] == 's');
    assert(!result[2]);
+   
+   int fd2 = open("mkdir", O_RDWR);
+   res = tagFile(fd2, key, val, len);     
+   assert(res > 0);
 
+   // opened mkdir and ls, but mkdir has wrong key.
+   char results[10];
+   files = getFilesByTag(key, val, 7, results, 10);     
+   assert(files == 2); 
+
+   assert(results[0] == 'm');
+   assert(results[1] == 'k');
+   assert(results[2] == 'd');
+   assert(results[3] == 'i');
+   assert(results[4] == 'r');
+   assert(!results[5]);
+   assert(results[6] == 'l');
+   assert(results[7] == 's');
+   assert(!results[8]);
 
    printf(1, "%s\n", result);
    res = tagFile(fd2, key, val2, len2);     
@@ -73,35 +75,20 @@ main(int argc, char *argv[])
    assert(result[0] == 'l');
    assert(result[1] == 's');
    assert(!result[2]);
+   
 
-   res = tagFile(fd2, key, val, len);     
-   assert(res > 0);
 
    // opened mkdir and ls, both have key and val
-   char results[10];
-   files = getFilesByTag(key, val, 7, results, 10);     
-   printf(1, "files for second call: %d\n", files);
-   assert(files == 2); 
-   printf(1, "results is : %s\n\n", results);
-   assert(results[0] == 'm');
-   assert(results[1] == 'k');
-   assert(results[2] == 'd');
-   assert(results[3] == 'i');
-   assert(results[4] == 'r');
-   assert(!results[5]);
-   assert(results[6] == 'l');
-   assert(results[7] == 's');
-   assert(!results[8]);
    
    close(fd);
    close(fd2);
    char results2[10];
-   char not_enough[6];
-   files = getFilesByTag(key, val, 7, not_enough, 6);     
+   char not_enough[1];
+   files = getFilesByTag(key, val, 7, not_enough, 1);     
    assert(files == -1);
    files = getFilesByTag(key, val, 7, results2, 10);     
    printf(1, "files for second call: %d\n", files);
-   assert(files == 2); 
+   assert(files == 1); 
    /*
    assert(results[0] == 'm');
    assert(results[1] == 'k');

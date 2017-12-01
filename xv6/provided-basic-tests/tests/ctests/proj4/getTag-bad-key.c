@@ -1,4 +1,5 @@
-/* call tagFile to tag a file.  Call getFileTag to read the tag of that file. */
+/* call tagFile to tag a file.  Call getFileTag to read the tag of that file. Call getTag a few times 
+   with the wrong key, should return -1. */
 #include "types.h"
 #include "user.h"
 
@@ -55,7 +56,6 @@ main(int argc, char *argv[])
 {
    ppid = getpid();
    int fd = open("ls", O_RDWR);
-   printf(1, "fd of ls: %d\n", fd);
    char* key = "type";
    char* val = "utility";
    int len = 7;
@@ -64,12 +64,21 @@ main(int argc, char *argv[])
 
    char buf[7];
    int valueLength = getFileTag(fd, key, buf, 7);
-   assertEquals(len, valueLength);
-
-   close(fd);
+   assert(valueLength == len);
 
    checkStringsAreEqual(val, buf, len);
 
+   char* badKey = "type1";
+
+   valueLength = getFileTag(fd, badKey, buf, 7);  // wrong key
+   assertEquals(-1, valueLength);
+
+   char* badKey2 = "typ";
+   valueLength = getFileTag(fd, badKey2, buf, 7);  // wrong key
+   assertEquals(-1, valueLength);
+
+   close(fd);
+   
    printf(1, "TEST PASSED\n");
    exit();
 }

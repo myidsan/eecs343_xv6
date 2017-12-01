@@ -1,4 +1,6 @@
-/* call tagFile to tag a file.  Call getFileTag to read the tag of that file. */
+/* call tagFile to tag a file.  Call getFileTag to read the tag of that file. Close the file and try 
+   to call getFileTag again.  Open the file in write only mode and call getFileTag again. Finally, 
+   open the file properly and get the tag. */
 #include "types.h"
 #include "user.h"
 
@@ -55,7 +57,6 @@ main(int argc, char *argv[])
 {
    ppid = getpid();
    int fd = open("ls", O_RDWR);
-   printf(1, "fd of ls: %d\n", fd);
    char* key = "type";
    char* val = "utility";
    int len = 7;
@@ -64,12 +65,25 @@ main(int argc, char *argv[])
 
    char buf[7];
    int valueLength = getFileTag(fd, key, buf, 7);
-   assertEquals(len, valueLength);
-
-   close(fd);
+   assert(valueLength == len);
 
    checkStringsAreEqual(val, buf, len);
 
+   close(fd);
+
+   valueLength = getFileTag(fd, key, buf, 7);  // fd is closed
+   assertEquals(-1, valueLength);
+
+   fd = open("ls", O_WRONLY);
+   valueLength = getFileTag(fd, key, buf, 7);  // fd is write only
+   assertEquals(-1, valueLength);
+
+   fd = open("ls", O_RDONLY);
+   valueLength = getFileTag(fd, key, buf, 7);  // OK
+   assertEquals(len, valueLength);
+
+   checkStringsAreEqual(val, buf, len);
+   
    printf(1, "TEST PASSED\n");
    exit();
 }

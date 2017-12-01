@@ -1,4 +1,6 @@
-/* call tagFile with bad fd argument.  tagFile should return -1. */
+/* call tagFile to tag a file.  Close the file, then reopen it.  Then call getFileTag to read the tag of 
+   that file. */
+
 #include "types.h"
 #include "user.h"
 
@@ -30,19 +32,23 @@ main(int argc, char *argv[])
    char* key = "type";
    char* val = "utility";
    int len = 7;
-   int res = tagFile(-1, key, val, len);
-   assert(res == -1);
-
-   res = tagFile(1000, key, val, len);
-   assert(res == -1);
-
+   int res = tagFile(fd, key, val, len);
+   assert(res > 0);
    close(fd);
-   res = tagFile(fd, key, val, len);
-   assert(res == -1);
 
    fd = open("ls", O_RDONLY);
-   res = tagFile(fd, key, val, len);
-   assert(res == -1);
+   char buf[7];
+   int valueLength = getFileTag(fd, key, buf, 7);
+   assert(valueLength == len);
+
+   close(fd);
+
+   int i;
+   for(i = 0; i < len; i++){
+      char v_actual = buf[i];
+      char v_expected = val[i];
+      assert(v_actual == v_expected);
+   }
 
    printf(1, "TEST PASSED\n");
    exit();

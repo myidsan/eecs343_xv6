@@ -1,4 +1,6 @@
-/* call tagFile to tag a file.  Call getFileTag to read the tag of that file. */
+/* call tagFile to tag a file with a 500 char value.  Call getFileTag to read the tag of that file. 
+   Call removeFileTag to remove it.  Call getFileTag to confirm that it has been removed. 
+   Call tagFile again with a shorter value.  Call get FileTag to confirm that the tag is correct. */
 #include "types.h"
 #include "user.h"
 
@@ -55,21 +57,43 @@ main(int argc, char *argv[])
 {
    ppid = getpid();
    int fd = open("ls", O_RDWR);
-   printf(1, "fd of ls: %d\n", fd);
-   char* key = "type";
-   char* val = "utility";
-   int len = 7;
+   char* key = "k";
+   
+   char val[500];
+   int i;
+   for(i = 0; i < 499; i++){
+      val[i] = 'z';
+   }
+   val[499] = '\0';
+
+   int len = 499;
    int res = tagFile(fd, key, val, len);
-   assert(res > 0);
+   assertEquals(1, res);
 
-   char buf[7];
-   int valueLength = getFileTag(fd, key, buf, 7);
+   char buf[500];
+   int valueLength = getFileTag(fd, key, buf, 500);
    assertEquals(len, valueLength);
-
-   close(fd);
 
    checkStringsAreEqual(val, buf, len);
 
+   res = removeFileTag(fd, key);
+   assertEquals(1, res);
+
+   valueLength = getFileTag(fd, key, buf, 500);
+   assertEquals(-1, valueLength);
+
+   char* key2 = "key2";
+   char* val2 = "this value is much shorter but still longer than 18 chars.";
+   int len2 = 58;
+   res = tagFile(fd, key2, val2, len2);
+   assertEquals(1, res);
+
+   valueLength = getFileTag(fd, key2, buf, 500);
+   assertEquals(len2, valueLength);
+
+   checkStringsAreEqual(val2, buf, len2);
+
+   close(fd);
    printf(1, "TEST PASSED\n");
    exit();
 }

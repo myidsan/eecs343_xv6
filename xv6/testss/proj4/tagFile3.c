@@ -1,4 +1,5 @@
-/* call tagFile to tag a file.  Call getFileTag to read the tag of that file. */
+/* call tagFile 16 times to give a file 16 tags.  Close the file, then reopen it.  Then call 
+   getFileTag to read the tags of that file. */
 #include "types.h"
 #include "user.h"
 
@@ -41,34 +42,61 @@ volatile int global = 1;
    exit(); \
 }
 
-void
-checkStringsAreEqual(char* expected, char* actual, int expectedLength)
-{
-   int i;
-   for(i = 0; i < expectedLength; i++){
-      assertCharEquals(expected, actual, i);
-   }
-}
-
 int
 main(int argc, char *argv[])
 {
+   int i, j;
+   int res;
+   int valueLength;
+   char v_actual;
+   char v_expected;
    ppid = getpid();
    int fd = open("ls", O_RDWR);
-   printf(1, "fd of ls: %d\n", fd);
-   char* key = "type";
-   char* val = "utility";
-   int len = 7;
-   int res = tagFile(fd, key, val, len);
-   assert(res > 0);
+   char key[10];
+   for(i = 0; i < 9; i++){
+      key[i] = 'k';
+   }
+   key[9] = 0;  // null termination
 
-   char buf[7];
-   int valueLength = getFileTag(fd, key, buf, 7);
-   assertEquals(len, valueLength);
+   char value[18];
+   for(i = 0; i < 17; i++){
+      value[i] = 'v';
+   }
+   value[17] = 0; // null termination
 
+   int len = 17;
+
+   // give the file 16 tags
+   for(i = 0; i < 16; i++){
+      key[8] = (char)(i + 65);     // set the last character before the NULL
+      value[16] = (char)(i + 65);  // set the last character before the NULL
+      res = tagFile(fd, key, value, len);
+      assert(res > 0);
+   }
+   
    close(fd);
 
-   checkStringsAreEqual(val, buf, len);
+   fd = open("ls", O_RDONLY);
+   char buf[18];
+
+   // get the file tag 16 times
+   for(i = 0; i < 16; i++){
+      key[8] = (char)(i + 65);
+      valueLength = getFileTag(fd, key, buf, 18);
+      assertEquals(len, valueLength);
+
+      for(j = 0; j < len; j++){
+         if(j == len - 1){
+            v_expected = (char)(i + 65);
+         } else {
+            v_expected = value[j];
+         }
+         v_actual = buf[j];
+         assertEquals(v_expected, v_actual);
+      }
+   }
+
+   close(fd);
 
    printf(1, "TEST PASSED\n");
    exit();

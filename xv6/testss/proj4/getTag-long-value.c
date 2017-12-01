@@ -1,4 +1,5 @@
-/* call tagFile to tag a file.  Call getFileTag to read the tag of that file. */
+/* call tagFile to tag a file.  Call getFileTag with a buffer that is too small.  Create a bigger buffer 
+   and call getFileTag again.  Repeat until the buffer is big enough to hold the value. */
 #include "types.h"
 #include "user.h"
 
@@ -55,20 +56,34 @@ main(int argc, char *argv[])
 {
    ppid = getpid();
    int fd = open("ls", O_RDWR);
-   printf(1, "fd of ls: %d\n", fd);
    char* key = "type";
    char* val = "utility";
    int len = 7;
    int res = tagFile(fd, key, val, len);
    assert(res > 0);
 
-   char buf[7];
-   int valueLength = getFileTag(fd, key, buf, 7);
-   assertEquals(len, valueLength);
+   len = 1;
+   char* buf;
+   int valueLength;
+
+   while(1){
+      buf = malloc(len);
+      valueLength = getFileTag(fd, key, buf, len);
+      assert(valueLength >= 0);
+
+      if(len >= valueLength){
+         break;
+      }
+
+      free(buf);
+
+      len++;
+   }
 
    close(fd);
 
    checkStringsAreEqual(val, buf, len);
+   checkStringsAreEqual(val, buf, valueLength);
 
    printf(1, "TEST PASSED\n");
    exit();

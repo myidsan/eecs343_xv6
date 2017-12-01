@@ -29,8 +29,7 @@ struct dinode {
   short minor;          // Minor device number (T_DEV only)
   short nlink;          // Number of links to inode in file system
   uint size;            // Size of file (bytes)
-  uint addrs[NDIRECT+1];   // Data block addresses
-	uint tags;
+  uint addrs[NDIRECT+2];   // Data block addresses
 };
 
 // Inodes per block.
@@ -52,5 +51,12 @@ struct dirent {
   ushort inum;
   char name[DIRSIZ];
 };
+
+struct tag {
+  char key[10];    // at most 10 bytes for key, including NULL
+  char value[18];  // at most 18 bytes for value, including NULL
+  int used;        // 4 bytes available for bookkeeping, etc, if needed
+ };
+
 
 #endif // _FS_H_

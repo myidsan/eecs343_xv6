@@ -1,4 +1,6 @@
-/* call tagFile to tag a file.  Call getFileTag to read the tag of that file. */
+/* call tagFile to tag a file, then call getFileTag to read the tag of that file. Then call tagFile 
+   to change the tag (same key), then call getFileTag to verify that the tag has changed. */
+
 #include "types.h"
 #include "user.h"
 
@@ -21,11 +23,10 @@ volatile int global = 1;
    exit(); \
 }
 
-#define assertEquals(expected, actual) if (expected == actual) {} else { \
+#define assertFirstGreaterThanSecond(first, second) if (first > second) {} else { \
    printf(1, "%s: %d ", __FILE__, __LINE__); \
-   printf(1, "assert failed (%s == %s)\n", # expected, # actual); \
-   printf(1, "assert failed (expected: %d)\n", expected); \
-   printf(1, "assert failed (actual: %d)\n", actual); \
+   printf(1, "assert failed (%s > %s)\n", # first, # second); \
+   printf(1, "assert failed (%d is not greater than %d)\n", first, second); \
    printf(1, "TEST FAILED\n"); \
    kill(ppid); \
    exit(); \
@@ -36,6 +37,16 @@ volatile int global = 1;
    printf(1, "assert failed (%s == %s)\n", # expected, # actual); \
    printf(1, "assert failed (expected: %s)\n", expected); \
    printf(1, "assert failed (actual: %s)\n", actual); \
+   printf(1, "TEST FAILED\n"); \
+   kill(ppid); \
+   exit(); \
+}
+
+#define assertEquals(expected, actual) if (expected == actual) {} else { \
+   printf(1, "%s: %d ", __FILE__, __LINE__); \
+   printf(1, "assert failed (%s == %s)\n", # expected, # actual); \
+   printf(1, "assert failed (expected: %d)\n", expected); \
+   printf(1, "assert failed (actual: %d)\n", actual); \
    printf(1, "TEST FAILED\n"); \
    kill(ppid); \
    exit(); \
@@ -55,13 +66,14 @@ main(int argc, char *argv[])
 {
    ppid = getpid();
    int fd = open("ls", O_RDWR);
-   printf(1, "fd of ls: %d\n", fd);
    char* key = "type";
    char* val = "utility";
    int len = 7;
    int res = tagFile(fd, key, val, len);
    assert(res > 0);
+   close(fd);
 
+   fd = open("ls", O_RDONLY);
    char buf[7];
    int valueLength = getFileTag(fd, key, buf, 7);
    assertEquals(len, valueLength);
@@ -69,6 +81,23 @@ main(int argc, char *argv[])
    close(fd);
 
    checkStringsAreEqual(val, buf, len);
+
+   // change tag
+   fd = open("ls", O_RDWR);
+   char* newVal = "other12345";
+   int newLen = 10;
+   res = tagFile(fd, key, newVal, newLen);
+   assertFirstGreaterThanSecond(res, 0);
+   close(fd);
+
+   fd = open("ls", O_RDONLY);
+   char newBuf[10];
+   valueLength = getFileTag(fd, key, newBuf, 10);
+   assertEquals(newLen, valueLength);
+
+   close(fd);
+
+   checkStringsAreEqual(newVal, newBuf, newLen);
 
    printf(1, "TEST PASSED\n");
    exit();

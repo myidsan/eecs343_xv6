@@ -52,10 +52,12 @@ int             readi(struct inode*, char*, uint, uint);
 void            stati(struct inode*, struct stat*);
 int             writei(struct inode*, char*, uint, uint);
 int             tagFile(int, char*, char*, int);
+/*
 int             removeFileTag(int, char*);
-int             getFileTag(int, char*, char*, int);
 int             getAllTags(int, struct Key*, int);
 int             getFilesByTag(char*, char*, int, char*, int);
+*/
+int             getFileTag(int, char*, char*, int);
 
 // ide.c
 void            ideinit(void);
@@ -135,6 +137,7 @@ char*           safestrcpy(char*, const char*, int);
 int             strlen(const char*);
 int             strncmp(const char*, const char*, uint);
 char*           strncpy(char*, const char*, int);
+int             string_compare(char*, char*);
 
 // syscall.c
 int             argint(int, int*);

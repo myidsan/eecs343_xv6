@@ -20,10 +20,6 @@ struct Key {
 
 #ifndef _TAG_H_
 #define _TAG_H_
-struct Tag {
-  char *key;
-  char *val;
-};
 #endif //_TAG_H_
 
 #endif //_TYPES_H_

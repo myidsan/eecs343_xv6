@@ -1,4 +1,6 @@
-/* call tagFile to tag a file.  Call getFileTag to read the tag of that file. */
+/* call tagFile to tag a file.  Call removeFileTag to remove the tag.  Call removeFileTag again 
+   on the same key, should return -1 because it's already removed.  Call it again with keys that never 
+   existed, should return -1. */
 #include "types.h"
 #include "user.h"
 
@@ -31,45 +33,32 @@ volatile int global = 1;
    exit(); \
 }
 
-#define assertCharEquals(expected, actual, i) if (expected[i] == actual[i]) {} else { \
-   printf(1, "%s: %d ", __FILE__, __LINE__); \
-   printf(1, "assert failed (%s == %s)\n", # expected, # actual); \
-   printf(1, "assert failed (expected: %s)\n", expected); \
-   printf(1, "assert failed (actual: %s)\n", actual); \
-   printf(1, "TEST FAILED\n"); \
-   kill(ppid); \
-   exit(); \
-}
-
-void
-checkStringsAreEqual(char* expected, char* actual, int expectedLength)
-{
-   int i;
-   for(i = 0; i < expectedLength; i++){
-      assertCharEquals(expected, actual, i);
-   }
-}
-
 int
 main(int argc, char *argv[])
 {
    ppid = getpid();
    int fd = open("ls", O_RDWR);
-   printf(1, "fd of ls: %d\n", fd);
    char* key = "type";
    char* val = "utility";
    int len = 7;
    int res = tagFile(fd, key, val, len);
    assert(res > 0);
 
-   char buf[7];
-   int valueLength = getFileTag(fd, key, buf, 7);
-   assertEquals(len, valueLength);
+   int res2 = removeFileTag(fd, key);
+   assert(res2 > 0);
+   
+   res2 = removeFileTag(fd, key);  // remove a key that was already removed
+   assertEquals(-1, res2);
+
+   char* badKey = "type1";
+   res2 = removeFileTag(fd, badKey);  // remove a key that was already removed
+   assertEquals(-1, res2);
+
+   char* badKey2 = "typ";
+   res2 = removeFileTag(fd, badKey2);  // remove a key that was already removed
+   assertEquals(-1, res2);
 
    close(fd);
-
-   checkStringsAreEqual(val, buf, len);
-
    printf(1, "TEST PASSED\n");
    exit();
 }

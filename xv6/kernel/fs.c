@@ -673,20 +673,72 @@ searchEnd_ec(uchar* str)
   return i;
 }
 
+
+
+
+
+int
+ tagFile(int fileDescriptor, char* key, char* value, int valueLength)
+ {
+   struct file *f;
+   struct buf *bp;
+   int keyLength;
+   uint addr;
+   struct tag *tp;
+   uint index;
+
+   if (fileDescriptor < 0 || fileDescriptor >= NOFILE || (f = proc->ofile[fileDescriptor]) == 0) return -1;
+   if (f->type != FD_INODE || !f->writable || !f->ip) return -1;
+   if (!key || (keyLength = strlen(key)) < 1 || keyLength > 9) return -1;
+   if (!value || valueLength < 0 || valueLength > 18) return -1;
+   ilock(f->ip);
+
+   if((addr = f->ip->addrs[NDIRECT+1]) == 0)
+     f->ip->addrs[NDIRECT+1] = addr = balloc(f->ip->dev);
+   bp = bread(f->ip->dev, addr);
+   tp = (struct tag *) bp->data;
+   //search for key in array
+   for (index=0; index<16; index++) {
+     if(tp[index].used==1) {
+       if(string_compare(key, tp[index].key)==0) {
+         memset((void*)tp[index].value, 0, 18);
+         memmove((void*)tp[index].value, (void*)value, (uint)valueLength);
+         bwrite(bp);
+         brelse(bp);
+         iupdate(f->ip);
+         iunlock(f->ip);
+         return 1;
+       }
+     }
+   }
+   //key doesn't exist. search free block in array
+   for (index=0; index<16; index++) {
+     if(tp[index].used!=1) {
+       memset((void*)tp[index].key, 0, 32);
+       memmove((void*)tp[index].key, (void*)key, (uint)keyLength);
+       memmove((void*)tp[index].value, (void*)value, (uint)valueLength);
+       tp[index].used=1;
+       bwrite(bp);
+       brelse(bp);
+       iupdate(f->ip);
+       iunlock(f->ip);
+       return 1;
+     }
+   }
+   //no free block in array
+   brelse(bp);
+   iupdate(f->ip);
+   iunlock(f->ip);
+   return -1;
+}
+
+/*
 int
 tagFile(int fileDescriptor, char* key, char* value, int valueLength)
 {
   struct file *f;
   struct buf *buftag;
   uchar *str;
-
-  /*
-  struct Tag addTag[1];
-  cprintf("size of key: %d, size of addTag after key: %d\n", sizeof(key), sizeof(addTag));
-  addTag[0].key = key;
-  cprintf("size of val: %d, size of addTag after val: %d\n", sizeof(value), sizeof(addTag));
-  addTag[0].val = value;
-  */
   
   // checks if fileDescriptor is valid and is open.
   if(fileDescriptor < 0 || fileDescriptor >= NOFILE || (f = proc->ofile[fileDescriptor]) == 0) 
@@ -749,7 +801,11 @@ tagFile(int fileDescriptor, char* key, char* value, int valueLength)
 	iunlock(f->ip);
   return 1;	
 }
+*/
 
+
+
+/*
 int 
 removeFileTag(int fileDescriptor, char* key)
 {
@@ -785,6 +841,50 @@ removeFileTag(int fileDescriptor, char* key)
   return 1;
 }
 
+*/
+
+int
+getFileTag(int fileDescriptor, char* key, char* buffer, int length)
+{
+  struct file *f;
+  int keyLength;
+  int valueLength;
+  struct buf *bp;
+  uint addr;
+  struct tag *tp;
+  uint index;
+  if (fileDescriptor < 0 || fileDescriptor >= NOFILE || (f = proc->ofile[fileDescriptor]) == 0) return -1;
+  if (f->type != FD_INODE || !f->readable || !f->ip) return -1;
+  if (!key || (keyLength = strlen(key)) < 1 || keyLength > 9) return -1;
+  if (!buffer) return -1;
+  if (length < 1) return -1;
+  ilock(f->ip);
+  if ((addr = f->ip->addrs[NDIRECT+1]) == 0) {
+    iunlock(f->ip);
+    return -1;
+  }
+  bp = bread(f->ip->dev, addr);
+  tp = (struct tag *) bp->data;
+  //search for key in array
+  for (index=0; index<16; index++) {
+    if(tp[index].used==1) {
+      if(string_compare(key, tp[index].key)==0) {
+        valueLength = 17;
+        while (valueLength >= 0 && !tp[index].value[valueLength]) valueLength--;
+        valueLength++;
+        memmove((void*)buffer, (void*)tp[index].value, (uint)min(length, valueLength));
+        brelse(bp);
+        iunlock(f->ip);
+        return valueLength;
+      }
+    }
+  }
+  brelse(bp);
+  iunlock(f->ip);
+  return -1;
+}
+
+/*
 int
 getFileTag(int fileDescriptor, char* key, char* buffer, int length)
 {
@@ -851,7 +951,9 @@ getFileTag(int fileDescriptor, char* key, char* buffer, int length)
     }
   }
 }
+*/
 
+/*
 int
 getAllTags(int fileDescriptor, struct Key keys[], int maxTag)
 {
@@ -897,7 +999,9 @@ getAllTags(int fileDescriptor, struct Key keys[], int maxTag)
   }
   return tagCount;
 }
+*/
 
+/*
 int
 getFilesByTag(char* key, char* value, int valueLength, char* results, int resultsLength)
 {
@@ -973,3 +1077,4 @@ getFilesByTag(char* key, char* value, int valueLength, char* results, int result
   }
   return count;
 }
+*/

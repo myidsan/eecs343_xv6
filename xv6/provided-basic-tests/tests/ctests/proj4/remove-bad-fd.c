@@ -1,4 +1,6 @@
-/* call tagFile to tag a file.  Call getFileTag to read the tag of that file. */
+/* call tagFile to tag a file.  Close the file and call removeFileTag, should return -1.  Open the file 
+   in read-only mode and call removeFileTag, should return -1.  Finally open the file properly and 
+   remove the tag. */
 #include "types.h"
 #include "user.h"
 
@@ -31,45 +33,30 @@ volatile int global = 1;
    exit(); \
 }
 
-#define assertCharEquals(expected, actual, i) if (expected[i] == actual[i]) {} else { \
-   printf(1, "%s: %d ", __FILE__, __LINE__); \
-   printf(1, "assert failed (%s == %s)\n", # expected, # actual); \
-   printf(1, "assert failed (expected: %s)\n", expected); \
-   printf(1, "assert failed (actual: %s)\n", actual); \
-   printf(1, "TEST FAILED\n"); \
-   kill(ppid); \
-   exit(); \
-}
-
-void
-checkStringsAreEqual(char* expected, char* actual, int expectedLength)
-{
-   int i;
-   for(i = 0; i < expectedLength; i++){
-      assertCharEquals(expected, actual, i);
-   }
-}
-
 int
 main(int argc, char *argv[])
 {
    ppid = getpid();
    int fd = open("ls", O_RDWR);
-   printf(1, "fd of ls: %d\n", fd);
    char* key = "type";
    char* val = "utility";
    int len = 7;
    int res = tagFile(fd, key, val, len);
    assert(res > 0);
 
-   char buf[7];
-   int valueLength = getFileTag(fd, key, buf, 7);
-   assertEquals(len, valueLength);
-
    close(fd);
 
-   checkStringsAreEqual(val, buf, len);
+   int res2 = removeFileTag(fd, key);  // fd is closed
+   assertEquals(-1, res2);
 
+   fd = open("ls", O_RDONLY);
+   res2 = removeFileTag(fd, key);  // fd is read only
+   assertEquals(-1, res2);
+
+   fd = open("ls", O_RDWR);
+   res2 = removeFileTag(fd, key);  // OK
+   assert(res2 > 0);
+   
    printf(1, "TEST PASSED\n");
    exit();
 }

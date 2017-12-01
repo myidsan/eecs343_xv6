@@ -450,4 +450,71 @@ sys_getFilesByTag(void)
   return 0;
 }
 
+ int compareFileTag(struct inode* ip, char* key, char* value, int valueLength) {
+   int i, buf_len;
+   char buf[512] = {0};
+   if (valueLength > 512)
+     return -1;
+   buf_len = getFileTagI(ip, key, buf, 512);
+   if (buf_len != valueLength)
+     return -1;
+   for (i = 0; i < buf_len; ++i)
+     if (buf[i] != value[i])
+       return -1;
+   return 0;
+ }
 
+
+
+
+int getFilesByTag(char* name, struct inode *ip, char* key, char* value, int valueLength,  char** results, int* resultsLength) {
+   int total_cnt = 0, type = -1;
+   ilock(ip);
+   type = ip->type;
+   iunlock(ip);
+   if (0) {
+     cprintf("getFilesByTag %p: %s@%p(%d/%d/%d) %s %s(%d) remaining=%d\n",
+             (void*)&resultsLength, name, (void*)ip, type, T_FILE, T_DIR, key, value, valueLength, *resultsLength);
+   }
+   if (type == T_FILE) {
+     if (compareFileTag(ip, key, value, valueLength) >= 0) {
+       int i;
+       for (i = 0; i < DIRSIZ; ++i) {
+         if (*resultsLength <= 0)
+           break;
+         **results = name[i];
+         ++(*results);
+         --(*resultsLength);
+         if (name[i] == 0)
+           break;
+       }
+       ++total_cnt;
+     }
+} else if (type == T_DIR) {
+     uint dir_off = 999999999;
+     int r = -1;
+     struct dirent de;
+     struct inode* next_ip;
+     for (dir_off = 0; dir_off < ip->size; dir_off += sizeof(struct dirent)) {
+       ilock(ip);
+       r = readi(ip, (char*)&de, dir_off, sizeof(struct dirent));
+       iunlock(ip);
+       if (r != sizeof(struct dirent))
+         break;
+       if (de.name[0] == '.' && de.name[1] == 0)
+         continue;
+       if (de.name[0] == '.' && de.name[1] == '.' && de.name[2] == 0)
+         continue;
+       if (de.inum != 0) {
+         ilock(ip);
+         next_ip = dirlookup(ip, de.name, NULL);
+         iunlock(ip);
+         if (next_ip != 0) {
+           total_cnt += getFilesByTag(de.name, next_ip, key, value, valueLength, results,     resultsLength);
+           iput(next_ip);
+         }
+       }
+     }
+   }
+   return total_cnt;
+ }

@@ -439,16 +439,6 @@ sys_getAllTags(void)
   return getAllTags(fileDescriptor, keys, maxTags);
 }
 
-int 
-sys_getFilesByTag(void)
-{
-  char *key, *value, *results;
-  int valueLength, resultsLengths;  
-  if (argstr(0, &key) < 0 || argstr(1, &value) < 0 ||  argint(2, &valueLength) < 0 || argstr(3, &results) < 0 || argint(4, &resultsLengths) < 0)
-    return -1;
- // return getFilesByTag(key, value, valueLength, results, resultsLengths);
-  return 0;
-}
 
  int compareFileTag(struct inode* ip, char* key, char* value, int valueLength) {
    int i, buf_len;

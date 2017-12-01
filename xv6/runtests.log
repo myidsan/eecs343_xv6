@@ -395,15 +395,15 @@ ld  -m    elf_i386 -nostdlib --omagic \
 dd if=/dev/zero of=xv6.img count=10000
 10000+0 records in
 10000+0 records out
-5120000 bytes (5.1 MB) copied, 0.0342861 s, 149 MB/s
+5120000 bytes (5.1 MB) copied, 0.0341354 s, 150 MB/s
 dd if=kernel/bootblock of=xv6.img conv=notrunc
 1+0 records in
 1+0 records out
-512 bytes (512 B) copied, 6.3723e-05 s, 8.0 MB/s
+512 bytes (512 B) copied, 6.3279e-05 s, 8.1 MB/s
 dd if=kernel/kernel of=xv6.img seek=1 conv=notrunc
 268+1 records in
 268+1 records out
-137388 bytes (137 kB) copied, 0.000710927 s, 193 MB/s
+137388 bytes (137 kB) copied, 0.000682875 s, 201 MB/s
 gcc -c  -iquote include -Wall -Werror -ggdb  -o tools/mkfs.o tools/mkfs.c
 gcc  tools/mkfs.o -o tools/mkfs
 mkdir -p fs
@@ -527,7 +527,7 @@ stressfs
 tester
 zombie
 grep
-balloc: first 448 blocks have been allocated
+balloc: first 447 blocks have been allocated
 balloc: write bitmap block at sector 28
 rm user/bin/tester
 make qemu-nox 
@@ -551,11 +551,6 @@ fd of ls: 3
 allocating since first time
 endPosition for creating new: 0
 found key
-
-keyPosition is: 0
-position of start: 0
-valueLength: 7
-utilityfound key
 
 keyPosition is: 0
 position of start: 0
@@ -640,7 +635,6 @@ keyPosition is: 0
 position of start: 0
 valueLength: 7
 sansumiTEST PASSED
-
 
 test retag PASSED
 Description: call tagFile to tag a file.  Call getFileTag to read the tag of that file.

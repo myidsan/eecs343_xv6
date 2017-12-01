@@ -33,27 +33,14 @@ main(int argc, char *argv[])
    int res = tagFile(fd, key, val, len);
    assert(res > 0);
 
-   char buf[7];
-   int valueLength = getFileTag(fd, key, buf, 7);
-   printf(1, "valueLength: %d\n", valueLength);
-   assert(valueLength == len);
-
-
-   int i;
-   for(i = 0; i < len; i++){
-     char v_actual = buf[i];
-     char v_expected = val[i];
-     printf(1, "%c", v_actual);
-     assert(v_actual == v_expected);
-     //printf(1, "%c", v_expected);
-   }
    close(fd);
    
    fd = open("ls", O_RDWR);
    char buf2[7];
-   valueLength = getFileTag(fd, key, buf2, 7);
+   int valueLength = getFileTag(fd, key, buf2, 7);
    printf(1, "getFileTag response after reopen: %d\n", valueLength);
    assert(valueLength == len);
+   int i;
    for(i = 0; i < len; i++){
      char v_actual = buf2[i];
      char v_expected = val[i];
